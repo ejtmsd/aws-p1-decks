@@ -18,11 +18,11 @@ window.PRICING_CONFIG = {
   /* Hourly rates per role. Order here controls row order in
      the breakdown table. */
   roles: [
-    { key: 'writing',     label: 'Content Strategy / Writing', rate: 185 },
-    { key: 'speakerMgmt', label: 'Speaker Management',         rate: 185 },
-    { key: 'design',      label: 'Design',                     rate: 175 },
+    { key: 'writing',     label: 'Content Strategy / Writing', rate: 200 },
+    { key: 'speakerMgmt', label: 'Speaker Management',         rate: 150 },
+    { key: 'design',      label: 'Design',                     rate: 150 },
     { key: 'designDir',   label: 'Design Direction',           rate: 200 },
-    { key: 'pm',          label: 'Project Management',         rate: 175 },
+    { key: 'pm',          label: 'Project Management',         rate: 150 },
     { key: 'qc',          label: 'Quality Control',            rate: 100 }
   ],
 
@@ -45,18 +45,18 @@ window.PRICING_CONFIG = {
   depthLevels: [
     {
       id: 'mods',
-      label: 'Deck mods only',
-      hours: { writing: 4,  speakerMgmt: 0,  design: 20, designDir: 3, pm: 6, qc: 5 }
+      label: 'Light copyedits only',
+      hours: { writing: 4,  speakerMgmt: 2,  design: 20, designDir: 3, pm: 6,  qc: 5 }
     },
     {
       id: 'script',
       label: 'Scripting from framework',
-      hours: { writing: 20, speakerMgmt: 8,  design: 20, designDir: 3, pm: 6, qc: 5 }
+      hours: { writing: 20, speakerMgmt: 8,  design: 20, designDir: 3, pm: 8,  qc: 6 }
     },
     {
       id: 'full',
       label: 'Full narrative + scripting',
-      hours: { writing: 48, speakerMgmt: 22, design: 20, designDir: 8, pm: 6, qc: 5 }
+      hours: { writing: 48, speakerMgmt: 22, design: 20, designDir: 8, pm: 10, qc: 7 }
     }
   ],
 
@@ -71,7 +71,7 @@ window.PRICING_CONFIG = {
 
   /* Stepper limits. On-site days of 0 means no on-site support. */
   limits: {
-    symposiums: { min: 1, max: 3 },
+    symposiums: { min: 1, max: 10 },
     speakers:   { min: 1, max: 12 },
     edits:      { min: 0, max: 10 },
     dryRuns:    { min: 0, max: 6 },
@@ -86,7 +86,7 @@ window.PRICING_CONFIG = {
     {
       id: 'lean',
       label: 'Lean',
-      tagline: 'Deck mods, light support',
+      tagline: 'Light copyedits, light support',
       preset: { band: 'b20', depth: 'mods',   speakers: 3, edits: 2, dryRuns: 1, onSiteDays: 0 }
     },
     {

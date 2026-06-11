@@ -22,12 +22,12 @@ Never render a tier as a fixed subtitle or identity under a location. It must re
 
 ## Engine math, per deck
 
-1. Writing depth sets absolute base hours per role (three levels: Deck mods only / Scripting from framework / Full narrative + scripting; values in `depthLevels[].hours`).
+1. Writing depth sets absolute base hours per role (three levels: Light copyedits only / Scripting from framework / Full narrative + scripting; values in `depthLevels[].hours`).
 2. Modifiers add hours: slides above 20 add 0.6 design hours per extra slide (slide bands: up to 20 / 35 / 50, computed on band max); each speaker adds 3 speaker management hours; each edit round adds 4 design + 2 writing; each dry run adds 4 PM + 3 writing.
 3. Cost = sum of role hours x rates, plus flat on-site day rate x days. On-site is a days stepper, 0 to 5, where 0 means none. There is no separate on/off toggle.
 4. Headline prices round UP to the nearest $100 (`roundUpTo`). The role breakdown table shows exact math; a footnote explains the gap. Program totals sum the rounded per-deck figures so visible math adds up.
 
-Current placeholder rates (pending confirmation, label everything "Estimate, not a quote"): Writing and Speaker Mgmt $185/hr, Design $175/hr, Design Direction $200/hr, PM $175/hr, QC $100/hr, on-site $3,500/day flat.
+Current rates (team-confirmed via pricing-model.xlsx, still label everything "Estimate, not a quote"): Writing $200/hr, Speaker Mgmt $150/hr, Design $150/hr, Design Direction $200/hr, PM $150/hr, QC $100/hr, on-site $3,500/day flat.
 
 ## UI spec
 
@@ -41,8 +41,8 @@ Current placeholder rates (pending confirmation, label everything "Estimate, not
 ## Verification checklist (run after any change)
 
 - Any symposium can be set to any tier, and each event's price recalculates independently.
-- Expected defaults with current placeholders: London (Lean) $11,500, Ottawa (Signature) $20,400, Canberra (Premium) $39,400, per-symposium program total $71,300; Quick estimate at Signature x3 is $20,400 per deck, $61,200 program.
-- Exact per-deck math before rounding: Lean 11,450; Signature 20,345; Premium 39,315.
+- Expected defaults with current numbers: London (Lean) $10,700, Ottawa (Signature) $19,200, Canberra (Premium) $38,100, per-symposium program total $68,000; Quick estimate at Signature x3 is $19,200 per deck, $57,600 program.
+- Exact per-deck math before rounding: Lean 10,650; Signature 19,150; Premium 38,050.
 - Preset on-site is Premium-only (Lean and Signature presets are onSiteDays: 0; Premium is 2). On-site days remain configurable on any tier via the Custom panel.
 - Premium preset includes 2 dry runs managed.
 - No formula numbers in `index.html`; `node --check pricing.config.js` passes; no em dashes in any file.

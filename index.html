@@ -1087,6 +1087,48 @@ a:hover { color: var(--accent); }
   margin-top: var(--space-4);
 }
 
+.team-footnote-meta {
+  margin-top: var(--space-6);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: var(--space-5);
+  row-gap: var(--space-3);
+  max-width: 720px;
+}
+
+.team-footnote-meta dt {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest, 0.12em);
+  text-transform: uppercase;
+  color: var(--markacy-orange);
+  align-self: center;
+}
+
+.team-footnote-meta dd {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  text-wrap: balance;
+}
+
+.team-footnote-meta dd .nowrap {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .team-footnote-meta {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-1);
+  }
+  .team-footnote-meta dd {
+    margin-bottom: var(--space-3);
+  }
+}
+
 .team-closing {
   font-family: var(--font-serif);
   font-style: italic;
@@ -2916,8 +2958,12 @@ a:hover { color: var(--accent); }
         </div>
       </div>
     </div>
-    <p class="team-model-intro reveal" style="margin-top: var(--space-6);"><em>Plus your dedicated delivery team, assigned post-scoping.</em></p>
-    <p class="team-model-intro reveal">AWS partners: Makenzie Delmotte (1P Cohort Events) · Sara Morgan (PMM, Public Sector)</p>
+    <dl class="team-footnote-meta reveal">
+      <dt>Delivery team</dt>
+      <dd>Assigned post-scoping</dd>
+      <dt>AWS partners</dt>
+      <dd>Makenzie Delmotte <span class="nowrap">(1P Cohort Events)</span>, Sara Morgan <span class="nowrap">(PMM, Public Sector)</span></dd>
+    </dl>
 
     <p class="team-closing reveal">You get a dedicated team, not a shared resource pool. Everyone who touches your work knows your brand and your voice before the work begins.</p>
   </div>
@@ -3157,7 +3203,7 @@ a:hover { color: var(--accent); }
         </div>
 
         <div class="pricing-control">
-          <p class="pricing-control-label">On-site support days</p>
+          <p class="pricing-control-label">On-site support days per deck</p>
           <div class="pricing-stepper" id="ctlOnSiteDays">
             <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer on-site days">&minus;</button>
             <span class="pricing-step-value">1</span>
@@ -3800,8 +3846,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     card.type = 'button';
     card.className = 'pricing-tier-card';
     card.dataset.tier = t.id;
-    card.innerHTML = '<span class="pricing-tier-badge" hidden>Recommended</span>' +
-                     '<p class="pricing-tier-name">' + t.label + '</p>' +
+    card.innerHTML = '<p class="pricing-tier-name">' + t.label + '</p>' +
                      '<p class="pricing-tier-tagline">' + t.tagline + '</p>' +
                      '<ul class="pricing-tier-inclusions">' +
                      presetInclusions(t).map(function(item) { return '<li>' + item + '</li>'; }).join('') +
@@ -3872,12 +3917,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
 
     // service-level selector. Tiers are independent options; the
-    // recommended tier per event is a changeable default, so the
-    // badge only marks the suggestion for the active symposium.
-    var recommended = isQuick ? null : symposiumById(state.activeCity).recommendedTier;
     tiersEl.querySelectorAll('.pricing-tier-card').forEach(function(card) {
       card.classList.toggle('is-active', card.dataset.tier === cfg.tier);
-      card.querySelector('.pricing-tier-badge').hidden = card.dataset.tier !== recommended;
     });
     $('pricingTiersLabel').textContent = isQuick
       ? 'Service level (applies to all symposiums)'
