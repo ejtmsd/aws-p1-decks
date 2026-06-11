@@ -53,7 +53,9 @@ How the math works, per deck:
 3. Cost = sum of role hours x rates, plus flat on-site day rate x days if enabled.
 4. Headline figures round to the nearest $250 (`roundTo` in config); the role breakdown table shows exact math. Program totals sum the rounded per-deck figures so visible math adds up.
 
-Two modes: Quick estimate (one config x number of symposiums) and Per-symposium (London, Ottawa, Canberra configured independently; defaults Lean / Signature / Premium). Changing any input after selecting a tier marks the config Custom.
+Two independent axes, deliberately decoupled: tiers (Lean / Signature / Premium) are service-level options that can apply to any event, and symposiums (London, Ottawa, Canberra) are the three events. Each symposium carries a client-facing readiness note and a `recommendedTier`, which is our suggested starting point based on readiness (the only per-event distinction the client confirmed). It is a changeable default, not an identity; any symposium can run at any service level.
+
+Two modes: Quick estimate (one global service level x number of symposiums) and Per-symposium (each event has its own service-level selector, defaulting to its recommended tier with a "Recommended" badge, plus independent scope inputs; the program total sums the three). Changing any input after selecting a tier marks the config Custom.
 
 The role breakdown is shown by default (`defaults.showBreakdown: true`). Set it to `false` before sharing if hours and rates should stay private until toggled.
 
