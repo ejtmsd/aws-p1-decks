@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Pricing</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 2rem 1rem; }
+    .pricing-wrap { max-width: 680px; margin: 0 auto; }
+    .card { background: #fff; border: 0.5px solid rgba(0,0,0,0.12); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 12px; }
+    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #999; margin-bottom: 12px; }
+    .slider-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+    .slide-label { font-size: 13px; color: #999; white-space: nowrap; }
+    .slider-row input[type=range] { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 2px; background: #e0e0e0; outline: none; cursor: pointer; }
+    .slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1a1a1a; cursor: pointer; }
+    .slide-count { font-size: 32px; font-weight: 500; color: #1a1a1a; min-width: 44px; text-align: right; }
+    .anchor-labels { display: flex; justify-content: space-between; font-size: 11px; color: #bbb; margin-top: 4px; }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .metric { background: #f7f7f5; border-radius: 8px; padding: 1rem 1.25rem; }
+    .metric-label { font-size: 12px; color: #888; margin-bottom: 4px; }
+    .metric-value { font-size: 24px; font-weight: 500; color: #1a1a1a; }
+    .metric-sub { font-size: 12px; color: #bbb; margin-top: 2px; }
+    .breakdown-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .breakdown-table thead tr { border-bottom: 0.5px solid rgba(0,0,0,0.2); }
+    .breakdown-table tbody tr { border-bottom: 0.5px solid rgba(0,0,0,0.08); }
+    .breakdown-table tbody tr:last-child { border-bottom: none; }
+    .breakdown-table th { padding: 0 0 8px; font-size: 11px; font-weight: 500; color: #aaa; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; }
+    .breakdown-table th.c { text-align: center; }
+    .breakdown-table th.r { text-align: right; }
+    .breakdown-table td { padding: 11px 0; font-size: 14px; color: #1a1a1a; }
+    .breakdown-table td.c { text-align: center; color: #aaa; font-size: 13px; }
+    .breakdown-table td.r { text-align: right; font-weight: 500; }
+    .breakdown-table td.rate { text-align: right; font-size: 13px; color: #bbb; }
+    .total-row td { font-weight: 500; font-size: 15px; border-top: 1.5px solid rgba(0,0,0,0.15) !important; padding-top: 14px !important; }
+    .notes-list { list-style: none; }
+    .notes-list li { font-size: 13px; color: #888; padding: 4px 0 4px 18px; position: relative; }
+    .notes-list li::before { content: '*'; position: absolute; left: 0; color: #ccc; }
+  </style>
+</head>
+<body>
+<div class="pricing-wrap">
+
+  <div class="card">
+    <p class="section-label">Slide count</p>
+    <div class="slider-row">
+      <span class="slide-label">Slides</span>
+      <input type="range" min="20" max="45" value="20" step="1" id="slides">
+      <span class="slide-count" id="slide-display">20</span>
+    </div>
+    <div class="anchor-labels">
+      <span>20 slides — $9,250</span>
+      <span>45 slides — $20,700</span>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="metric">
+      <div class="metric-label">Per deck</div>
+      <div class="metric-value" id="total-per-deck">$9,250</div>
+      <div class="metric-sub" id="total-hours-label">55.75 total hours</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Quarterly (4 decks)</div>
+      <div class="metric-value" id="total-quarterly">$37,000</div>
+      <div class="metric-sub">billed per deck</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="section-label">Cost breakdown — per deck</p>
+    <table class="breakdown-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th class="c">Hours</th>
+          <th class="r" style="width:80px;">Rate</th>
+          <th class="r" style="width:90px;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Design</td>
+          <td class="c" id="h-design">34</td>
+          <td class="rate">$175/hr</td>
+          <td class="r" id="a-design">$5,950</td>
+        </tr>
+        <tr>
+          <td>Project management</td>
+          <td class="c" id="h-pm">9</td>
+          <td class="rate">$175/hr</td>
+          <td class="r" id="a-pm">$1,575</td>
+        </tr>
+        <tr>
+          <td>Quality control</td>
+          <td class="c" id="h-qc">8.25</td>
+          <td class="rate">$100/hr</td>
+          <td class="r" id="a-qc">$825</td>
+        </tr>
+        <tr>
+          <td>Design direction</td>
+          <td class="c" id="h-dd">4.5</td>
+          <td class="rate">$200/hr</td>
+          <td class="r" id="a-dd">$900</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total</td>
+          <td class="c" id="h-total">55.75</td>
+          <td></td>
+          <td class="r" id="a-total">$9,250</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <p class="section-label">What's included</p>
+    <ul class="notes-list">
+      <li id="inc-slides">Up to 20 slides per deck</li>
+      <li>Up to 4 rounds of edits per deck</li>
+      <li>Up to 4 meeting touchpoints per deck</li>
+      <li>Motion and animation not included</li>
+    </ul>
+  </div>
+
+</div>
+<script>
+  const RATES = { design: 175, pm: 175, qc: 100, dd: 200 };
+  const AT20  = { design: 34,  pm: 9,   qc: 8.25, dd: 4.5 };
+  const AT45  = { design: 90,  pm: 10,  qc: 12,   dd: 10  };
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+  function fmtHours(h) {
+    const r = Math.round(h * 4) / 4;
+    return r % 1 === 0 ? r.toString() : r.toFixed(2).replace(/0+$/, '');
+  }
+
+  function update(slides) {
+    const t = (slides - 20) / 25;
+    const h = {
+      design: lerp(AT20.design, AT45.design, t),
+      pm:     lerp(AT20.pm,     AT45.pm,     t),
+      qc:     lerp(AT20.qc,     AT45.qc,     t),
+      dd:     lerp(AT20.dd,     AT45.dd,     t),
+    };
+    const a = {
+      design: h.design * RATES.design,
+      pm:     h.pm     * RATES.pm,
+      qc:     h.qc     * RATES.qc,
+      dd:     h.dd     * RATES.dd,
+    };
+    const totalHours = h.design + h.pm + h.qc + h.dd;
+    const totalAmt   = a.design + a.pm + a.qc + a.dd;
+
+    document.getElementById('slide-display').textContent   = slides;
+    document.getElementById('h-design').textContent        = fmtHours(h.design);
+    document.getElementById('h-pm').textContent            = fmtHours(h.pm);
+    document.getElementById('h-qc').textContent            = fmtHours(h.qc);
+    document.getElementById('h-dd').textContent            = fmtHours(h.dd);
+    document.getElementById('h-total').textContent         = fmtHours(totalHours);
+    document.getElementById('a-design').textContent        = fmt(a.design);
+    document.getElementById('a-pm').textContent            = fmt(a.pm);
+    document.getElementById('a-qc').textContent            = fmt(a.qc);
+    document.getElementById('a-dd').textContent            = fmt(a.dd);
+    document.getElementById('a-total').textContent         = fmt(totalAmt);
+    document.getElementById('total-per-deck').textContent  = fmt(totalAmt);
+    document.getElementById('total-quarterly').textContent = fmt(totalAmt * 4);
+    document.getElementById('total-hours-label').textContent = fmtHours(totalHours) + ' total hours';
+    document.getElementById('inc-slides').textContent      = 'Up to ' + slides + ' slides per deck';
+  }
+
+  document.getElementById('slides').addEventListener('input', e => update(+e.target.value));
+  update(20);
+</script>
+</body>
+</html>

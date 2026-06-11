@@ -1,0 +1,94 @@
+
+<style>
+  .pricing-wrap { padding: 1.5rem 0; max-width: 680px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .breakdown-table { width: 100%; border-collapse: collapse; }
+  .breakdown-table tr { border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .breakdown-table tr:last-child { border-bottom: none; }
+  .breakdown-table td { padding: 11px 0; font-size: 14px; color: var(--color-text-primary); }
+  .breakdown-table .role { color: var(--color-text-secondary); }
+  .breakdown-table .hours { text-align: center; color: var(--color-text-tertiary); font-size: 13px; }
+  .breakdown-table .amount { text-align: right; font-weight: 500; }
+  .breakdown-table th { padding: 0 0 8px; font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 0.5px solid var(--color-border-secondary); }
+  .breakdown-table th.r { text-align: right; }
+  .breakdown-table th.c { text-align: center; }
+  .total-row td { font-size: 15px; font-weight: 500; border-top: 1.5px solid var(--color-border-primary) !important; border-bottom: none !important; padding-top: 14px !important; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 12px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem 1.25rem; }
+  .metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .metric-value { font-size: 24px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-sub { font-size: 12px; color: var(--color-text-tertiary); margin-top: 2px; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 100px; background: #E1F5EE; color: #0F6E56; margin-bottom: 16px; }
+  .notes-list { list-style: none; padding: 0; margin: 0; }
+  .notes-list li { font-size: 13px; color: var(--color-text-secondary); padding: 4px 0 4px 18px; position: relative; }
+  .notes-list li::before { content: '*'; position: absolute; left: 0; color: var(--color-text-tertiary); }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 14px 0; }
+</style>
+
+<div class="pricing-wrap">
+
+  <div class="summary-grid">
+    <div class="metric">
+      <div class="metric-label">Per deck</div>
+      <div class="metric-value">$9,250</div>
+      <div class="metric-sub">Up to 20 slides</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Quarterly package</div>
+      <div class="metric-value">$37,000</div>
+      <div class="metric-sub">4 decks / quarter</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="section-label">Cost breakdown — per deck</p>
+    <table class="breakdown-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th class="c">Hours</th>
+          <th class="r">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Design</td>
+          <td class="hours">34 hr</td>
+          <td class="amount">$5,950</td>
+        </tr>
+        <tr>
+          <td>Project management</td>
+          <td class="hours">9 hr</td>
+          <td class="amount">$1,575</td>
+        </tr>
+        <tr>
+          <td>Quality control</td>
+          <td class="hours">8.25 hr</td>
+          <td class="amount">$825</td>
+        </tr>
+        <tr>
+          <td>Design direction</td>
+          <td class="hours">4.5 hr</td>
+          <td class="amount">$900</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total</td>
+          <td class="hours">55.75 hr</td>
+          <td class="amount">$9,250</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <p class="section-label">What's included</p>
+    <ul class="notes-list">
+      <li>Up to 20 slides per deck</li>
+      <li>Up to 4 rounds of edits per deck</li>
+      <li>Up to 4 meeting touchpoints per deck</li>
+      <li>Motion and animation not included</li>
+    </ul>
+  </div>
+
+</div>

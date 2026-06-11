@@ -1,0 +1,332 @@
+<!--
+  PRICING SECTION — SketchDeck x Simplicity
+  Drop this block into your existing page wherever the pricing section should appear.
+  No external dependencies. Styles are scoped to .sd-pricing to avoid conflicts.
+-->
+
+<!-- PRICING SECTION -->
+<section id="pricing" class="sd-pricing">
+  <div class="sd-pricing__inner">
+
+    <div class="sd-pricing__header">
+      <p class="sd-pricing__label">Pricing</p>
+      <h2 class="sd-pricing__title">Clear numbers.<br>No surprises.</h2>
+    </div>
+
+    <div class="sd-pricing__toggle">
+      <button class="sd-pricing__toggle-btn sd-pricing__toggle-btn--active" onclick="sdSetOption('A')">Option A — 2-week engagement</button>
+      <button class="sd-pricing__toggle-btn" onclick="sdSetOption('B')">Option B — 1-week engagement</button>
+    </div>
+
+    <div class="sd-pricing__metrics">
+      <div class="sd-pricing__metric">
+        <div class="sd-pricing__metric-label">Duration</div>
+        <div class="sd-pricing__metric-value" id="sd-m-duration">2 weeks</div>
+      </div>
+      <div class="sd-pricing__metric">
+        <div class="sd-pricing__metric-label">Videos supported</div>
+        <div class="sd-pricing__metric-value" id="sd-m-videos">1 to 3</div>
+      </div>
+      <div class="sd-pricing__metric">
+        <div class="sd-pricing__metric-label">Estimate</div>
+        <div class="sd-pricing__metric-value sd-pricing__metric-value--total" id="sd-m-total">$17,800</div>
+      </div>
+    </div>
+
+    <table class="sd-pricing__table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Hours</th>
+          <th>Rate</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="sd-table-body"></tbody>
+    </table>
+
+    <div class="sd-pricing__notes" id="sd-notes-block"></div>
+
+  </div>
+</section>
+<!-- END PRICING SECTION -->
+
+
+<!-- PRICING STYLES — scope: .sd-pricing -->
+<style>
+  .sd-pricing {
+    padding: 120px 48px;
+  }
+
+  .sd-pricing__inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .sd-pricing__header {
+    margin-bottom: 40px;
+  }
+
+  /* 
+    These heading styles inherit from your existing page styles.
+    Override below if needed to match your site's type scale.
+  */
+  .sd-pricing__label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #FF9900;
+    margin-bottom: 16px;
+  }
+
+  .sd-pricing__title {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    /* inherits color from your page */
+  }
+
+  /* Toggle */
+  .sd-pricing__toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    overflow: hidden;
+    width: fit-content;
+  }
+
+  .sd-pricing__toggle-btn {
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 400;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    /* inherits color from your page */
+  }
+
+  .sd-pricing__toggle-btn--active {
+    background: rgba(255, 255, 255, 0.08);
+    font-weight: 500;
+  }
+
+  /* Metrics */
+  .sd-pricing__metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .sd-pricing__metric {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+
+  .sd-pricing__metric-label {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-bottom: 6px;
+  }
+
+  .sd-pricing__metric-value {
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .sd-pricing__metric-value--total {
+    color: #FF9900;
+  }
+
+  /* Table */
+  .sd-pricing__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  .sd-pricing__table thead th {
+    font-size: 11px;
+    font-weight: 500;
+    text-align: left;
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.5;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .sd-pricing__table thead th:not(:first-child) {
+    text-align: right;
+  }
+
+  .sd-pricing__table tbody td {
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    vertical-align: middle;
+  }
+
+  .sd-pricing__table tbody td:not(:first-child) {
+    text-align: right;
+    opacity: 0.6;
+  }
+
+  .sd-pricing__table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .sd-pricing__table .sd-pricing__role {
+    font-weight: 500;
+  }
+
+  .sd-pricing__table .sd-pricing__total-row td {
+    font-weight: 500;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: none;
+    padding-top: 16px;
+    opacity: 1;
+  }
+
+  .sd-pricing__table .sd-pricing__total-row td:last-child {
+    color: #FF9900;
+    font-size: 17px;
+  }
+
+  /* Notes */
+  .sd-pricing__notes {
+    margin-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sd-pricing__note {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    opacity: 0.6;
+    line-height: 1.6;
+  }
+
+  .sd-pricing__note-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    margin-top: 8px;
+    opacity: 0.4;
+  }
+
+  @media (max-width: 640px) {
+    .sd-pricing {
+      padding: 80px 24px;
+    }
+
+    .sd-pricing__metrics {
+      grid-template-columns: 1fr;
+    }
+
+    .sd-pricing__toggle {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+</style>
+
+
+<!-- PRICING SCRIPT -->
+<script>
+  (function () {
+    var options = {
+      A: {
+        duration: '2 weeks',
+        videos: '1 to 3',
+        total: '$17,800',
+        rows: [
+          { role: 'Senior Designer',  hrs: 80, rate: 175, total: 14000 },
+          { role: 'Project Manager',  hrs: 8,  rate: 175, total: 1400  },
+          { role: 'QC Specialist',    hrs: 8,  rate: 100, total: 800   },
+          { role: 'Design Director',  hrs: 8,  rate: 200, total: 1600  },
+        ],
+        notes: [
+          'Modeled as 2 weeks of dedicated support. We can cover 1 to 3 videos within this window depending on the complexity of each demo.',
+          'If the full 2 weeks are not needed, we bill only for time used.',
+          'We have not yet fully scoped process and workflow detail, so these numbers carry some assumptions. Final figures will tighten once we do.',
+          'Follow-up engagements run more efficiently. We document process and preferences from the start, which reduces onboarding time for similar projects i.e. New York Summit, re:Invent and beyond.',
+          'Compared to a standalone consultant, both options include project management, remote QC, and program documentation at no additional cost.',
+        ]
+      },
+      B: {
+        duration: '1 week',
+        videos: '1',
+        total: '$8,900',
+        rows: [
+          { role: 'Senior Designer',  hrs: 40, rate: 175, total: 7000 },
+          { role: 'Project Manager',  hrs: 4,  rate: 175, total: 700  },
+          { role: 'QC Specialist',    hrs: 4,  rate: 100, total: 400  },
+          { role: 'Design Director',  hrs: 4,  rate: 200, total: 800  },
+        ],
+        notes: [
+          'Modeled for a single video of lower to moderate complexity within a 1-week window.',
+          'Scope and process assumptions apply. We can sharpen this number quickly once we have more detail.',
+          'If additional support is needed mid-engagement, we can flex up without starting a new engagement.',
+          'Follow-up engagements run more efficiently. We document process and preferences from the start, which reduces onboarding time for similar projects i.e. New York Summit, re:Invent and beyond.',
+          'Compared to a standalone consultant, both options include project management, remote QC, and program documentation at no additional cost.',
+        ]
+      }
+    };
+
+    function fmt(n) {
+      return '$' + n.toLocaleString();
+    }
+
+    window.sdSetOption = function (key) {
+      var opt = options[key];
+
+      document.getElementById('sd-m-duration').textContent = opt.duration;
+      document.getElementById('sd-m-videos').textContent = opt.videos;
+      document.getElementById('sd-m-total').textContent = opt.total;
+
+      var total = opt.rows.reduce(function (s, r) { return s + r.total; }, 0);
+
+      var tbody = document.getElementById('sd-table-body');
+      tbody.innerHTML = opt.rows.map(function (r) {
+        return '<tr>' +
+          '<td class="sd-pricing__role">' + r.role + '</td>' +
+          '<td>' + r.hrs + ' hrs</td>' +
+          '<td>' + fmt(r.rate) + '/hr</td>' +
+          '<td>' + fmt(r.total) + '</td>' +
+          '</tr>';
+      }).join('') +
+        '<tr class="sd-pricing__total-row">' +
+        '<td colspan="3">Total</td>' +
+        '<td>' + fmt(total) + '</td>' +
+        '</tr>';
+
+      var notes = document.getElementById('sd-notes-block');
+      notes.innerHTML = opt.notes.map(function (n) {
+        return '<div class="sd-pricing__note"><div class="sd-pricing__note-dot"></div><span>' + n + '</span></div>';
+      }).join('');
+
+      document.querySelectorAll('.sd-pricing__toggle-btn').forEach(function (btn, i) {
+        btn.classList.toggle('sd-pricing__toggle-btn--active', (i === 0 && key === 'A') || (i === 1 && key === 'B'));
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      window.sdSetOption('A');
+    });
+  })();
+</script>
+<!-- END PRICING SCRIPT -->

@@ -1,0 +1,3861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SketchDeck × AWS | 1P Public Sector Symposiums Proposal</title>
+
+<!-- Resource hints -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+<!-- Google Fonts (moved from @import in CSS for parallel loading) -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" as="style">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap">
+
+<link rel="stylesheet" href="24sa-brand.css">
+<style>
+/* ============================================================
+   AWS PROPOSAL - OVERRIDES & PAGE-SPECIFIC STYLES
+   Built on 24sa-brand.css + creative direction guide
+   ============================================================ */
+
+/* - Accent alias (maps to brand yellow) - */
+:root {
+  --accent: var(--futureman-yellow);
+  --accent-dim: rgba(255, 212, 0, 0.12);
+  --accent-glow: rgba(255, 212, 0, 0.06);
+}
+
+/* - Password Gate - */
+.pw-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0908;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.pw-gate.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.pw-gate-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.pw-gate-box input {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  text-align: center;
+  outline: none;
+  width: 220px;
+  transition: border-color 0.2s ease;
+}
+.pw-gate-box input:focus {
+  border-color: var(--accent);
+}
+.pw-gate-box input.shake {
+  animation: pw-shake 0.4s ease;
+}
+@keyframes pw-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.pw-gate-box button {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.8rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #0a0908;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.pw-gate-box button:hover {
+  opacity: 0.85;
+}
+.page-content.locked {
+  display: none;
+}
+
+/* - Body: use brand fonts, not Inter - */
+body {
+  overflow-x: hidden;
+  background-image: url('noisy-grey-background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* - Orange accent line at top - */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 10001;
+}
+
+/* - Link hover: accent - */
+a:hover { color: var(--accent); }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.proposal-nav {
+  position: fixed;
+  top: 2px;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-8);
+  transition: background-color var(--duration-normal) var(--ease-smooth),
+              backdrop-filter var(--duration-normal) var(--ease-smooth);
+  background: transparent;
+}
+
+.proposal-nav.scrolled {
+  background: rgba(10, 9, 8, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nav-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(0.92) sepia(0.08) saturate(0.5);
+  opacity: 0.9;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+.nav-logo:hover {
+  opacity: 1;
+}
+
+.nav-logo-24sa {
+  height: 36px;
+}
+
+.nav-logo-sketchdeck {
+  height: 72px;
+}
+
+.nav-logo-simplicity {
+  height: 32px;
+  filter: brightness(0) invert(1);
+}
+
+.nav-logo-aws {
+  height: 32px;
+}
+
+.nav-sep {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--24sa-off-white);
+  opacity: 0.25;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--24sa-off-white);
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .proposal-nav {
+    padding: var(--space-4) var(--space-4);
+  }
+  .nav-links {
+    display: none;
+  }
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+#hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 0;
+  background: #1a1a1a;
+}
+
+/* - Marquee film-reel rows - */
+.hero-marquee-wrap {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  overflow: hidden;
+  width: 100vw;
+  margin: var(--space-6) 0 var(--space-8);
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.hero-marquee-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  width: max-content;
+  will-change: transform;
+}
+
+.hero-marquee-row--top {
+  animation: marqueeLeft 30s linear infinite;
+}
+
+.hero-marquee-row--bottom {
+  animation: marqueeRight 38s linear infinite;
+}
+
+@keyframes marqueeLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeRight {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.hero-marquee-row img {
+  display: block;
+  width: 280px;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 12px var(--accent-glow);
+  border: 1px solid var(--accent-dim);
+  object-fit: cover;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .hero-marquee-row img { width: 200px; }
+  .hero-marquee-row--top  { animation-duration: 22s; }
+  .hero-marquee-row--bottom { animation-duration: 28s; }
+}
+@media (max-width: 480px) {
+  .hero-marquee-row img { width: 150px; }
+}
+
+/* - Hero content overlay - */
+.hero-content {
+  position: relative;
+  z-index: 100;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-40) 0 var(--space-12);
+}
+
+.hero-content > :not(.hero-marquee-wrap) {
+  max-width: 680px;
+  width: 90%;
+}
+
+.hero-content > .hero-cta {
+  width: auto;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-6);
+  opacity: 0;
+  transform: translateY(30px);
+  animation: heroReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+.hero-headline {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-hero);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-tight);
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-5);
+  opacity: 0;
+  transform: translateY(40px);
+  animation: heroReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+.hero-subheadline {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  max-width: 52ch;
+  margin: 0 auto var(--space-8) auto;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: heroReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.0s forwards;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-8);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-pill);
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--duration-normal) var(--ease-smooth),
+              color var(--duration-normal) var(--ease-smooth),
+              box-shadow var(--duration-normal) var(--ease-smooth);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 2.6s forwards,
+             ctaGlow 3s 3.6s ease-in-out infinite;
+}
+
+.hero-cta:hover {
+  background: var(--accent);
+  color: var(--24sa-black);
+  box-shadow: 0 0 25px rgba(255, 212, 0, 0.2);
+}
+
+@keyframes heroReveal {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ctaGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 212, 0, 0.05); }
+  50% { box-shadow: 0 0 18px rgba(255, 212, 0, 0.1); }
+}
+
+/* ============================================================
+   SHARED SECTION STYLES
+   ============================================================ */
+.section-preheading {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-4);
+}
+
+.section-heading {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-display);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-3);
+}
+
+.section-heading::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--24sa-off-white);
+  margin-top: var(--space-4);
+}
+
+/* ============================================================
+   SECTION: THE BRIEF
+   ============================================================ */
+.section-brief {
+  padding: var(--space-32) var(--space-6);
+  background: var(--warm-dark);
+}
+
+.brief-inner {
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+}
+
+.brief-body {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  margin-top: var(--space-8);
+}
+
+.brief-body strong {
+  color: var(--24sa-off-white);
+  font-weight: var(--weight-semibold);
+}
+
+.brief-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--24sa-off-white);
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-4);
+}
+
+.brief-deliverables {
+  list-style: none;
+  padding: 0;
+}
+
+.brief-deliverables li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.brief-deliverables li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  margin-top: 0.55rem;
+}
+
+.brief-closing {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  color: var(--24sa-off-white);
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--warm-border);
+}
+
+/* ============================================================
+   SECTION: HOW WE WORK (PARALLAX SCROLL-THROUGH)
+   ============================================================ */
+/* ---- PROCESS: Sticky two-column scroll ---- */
+.section-process {
+  background: #1a1a1a;
+  color: var(--24sa-off-white);
+  padding: 0;
+  position: relative;
+  overflow: visible;
+}
+
+.process-header {
+  padding: var(--space-24) var(--space-8) var(--space-4);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-process .section-heading {
+  color: var(--24sa-off-white);
+}
+
+.section-process .section-heading::after {
+  background: rgba(243, 238, 231, 0.2);
+}
+
+.section-process .section-preheading {
+  color: var(--24sa-off-white);
+}
+
+.process-subheading {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  max-width: 600px;
+  margin-top: var(--space-4);
+}
+
+/* Two-column layout */
+.process-columns {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+/* Left sticky nav */
+.process-nav {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: var(--space-12);
+}
+
+.process-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.process-nav-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  cursor: pointer;
+  transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 0.3;
+}
+
+.process-nav-item:hover {
+  opacity: 0.6;
+}
+
+.process-nav-item.is-active {
+  opacity: 1;
+}
+
+.process-nav-num {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-widest);
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 2em;
+  transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.process-nav-item.is-active .process-nav-num {
+  transform: scale(1.15);
+}
+
+.process-nav-title {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);
+  color: var(--24sa-off-white);
+  line-height: var(--leading-tight);
+  transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.process-nav-item.is-active .process-nav-title {
+  font-size: clamp(var(--text-2xl), 2.4vw, var(--text-3xl));
+  color: var(--accent);
+}
+
+/* Right scrolling panels */
+.process-steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.process-step {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  padding: var(--space-10) 0 var(--space-10) var(--space-12);
+  border-left: 1px solid rgba(243, 238, 231, 0.08);
+  position: relative;
+}
+
+.process-step:first-child {
+  margin-top: 20vh;
+}
+
+.process-step::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.process-step.is-active::before {
+  transform: scaleY(1);
+}
+
+.process-step-inner {
+  max-width: 520px;
+}
+
+.process-step-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 212, 0, 0.08);
+  border: 1px solid rgba(255, 212, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-6);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.process-step.is-active .process-step-icon {
+  background: rgba(255, 212, 0, 0.12);
+  border-color: var(--accent);
+}
+
+.process-step-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.process-step-num {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-3);
+}
+
+.process-step-title {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: clamp(var(--text-2xl), 2.8vw, var(--text-4xl));
+  font-weight: var(--weight-regular);
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-4);
+  line-height: var(--leading-tight);
+}
+
+.process-step-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+}
+
+/* Ghost number watermark */
+.process-step-ghost {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(8rem, 16vw, 14rem);
+  font-weight: var(--weight-regular);
+  line-height: 1;
+  color: rgba(255, 212, 0, 0.04);
+  position: absolute;
+  right: -10%;
+  top: 50%;
+  transform: translateY(-55%);
+  pointer-events: none;
+  z-index: 0;
+  transition: color 0.6s ease;
+}
+
+.process-step.is-active .process-step-ghost {
+  color: rgba(255, 212, 0, 0.06);
+}
+
+/* Full-width summary (zoom-out moment) */
+.process-summary-section {
+  padding: var(--space-32) var(--space-8);
+  background: #111;
+  position: relative;
+  overflow: hidden;
+}
+
+.process-summary-section::before {
+  display: none;
+}
+
+.process-summary-label {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-10);
+}
+
+.process-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-4);
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Connecting line behind the grid - static track */
+.process-summary-grid::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: rgba(255, 212, 0, 0.1);
+}
+
+/* Animated progress line */
+.process-summary-grid::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: none;
+  box-shadow: none;
+}
+
+.process-summary-grid.is-animating::after {
+  animation: progressSweep 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes progressSweep {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+.process-summary-card {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.process-summary-card-num {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  border: 2px solid rgba(255, 212, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: rgba(255, 212, 0, 0.3);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.process-summary-card-num.is-lit {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.process-summary-card-title {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-base);
+  color: var(--24sa-off-white);
+  line-height: var(--leading-tight);
+  opacity: 0.4;
+  transition: opacity 0.5s ease;
+}
+
+.process-summary-card-title.is-lit {
+  opacity: 1;
+}
+
+/* - Responsive - */
+@media (max-width: 900px) {
+  .process-columns {
+    grid-template-columns: 1fr;
+    padding: 0 var(--space-4);
+  }
+  .process-nav {
+    position: relative;
+    height: auto;
+    padding: 0 0 var(--space-8);
+  }
+  .process-nav-list {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: var(--space-4);
+    padding-bottom: var(--space-2);
+    -webkit-overflow-scrolling: touch;
+  }
+  .process-nav-item {
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .process-nav-item.is-active .process-nav-title {
+    font-size: var(--text-lg);
+  }
+  .process-step {
+    min-height: auto;
+    padding: var(--space-12) 0 var(--space-12) var(--space-6);
+    border-left: 1px solid rgba(243, 238, 231, 0.08);
+  }
+  .process-step-ghost {
+    font-size: 6rem;
+    right: -5%;
+  }
+  .process-summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6) var(--space-4);
+  }
+  .process-summary-grid::before {
+    display: none;
+  }
+}
+
+/* ============================================================
+   SECTION: YOUR TEAM
+   ============================================================ */
+.section-team {
+  padding: var(--space-32) var(--space-6);
+  background: var(--24sa-black);
+}
+
+.team-inner {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+.team-subheading {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  max-width: 600px;
+  margin-top: var(--space-4);
+}
+
+.team-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: var(--space-16);
+  margin-bottom: var(--space-6);
+}
+
+/* - Connected org-chart diagram - */
+.team-org {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+}
+
+.team-org-tier {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-6);
+  position: relative;
+  padding-top: 16px;
+}
+
+.team-org-tier:first-child {
+  padding-top: 0;
+}
+
+/* Connecting lines - hidden */
+.team-org-tier--branched::before,
+.team-org-tier--two::before,
+.team-org-tier--branched > .team-org-node::before,
+.team-org-connector,
+.team-org-connector::after {
+  display: none;
+}
+
+/* Node card */
+.team-org-node {
+  background: var(--24sa-off-white);
+  border: 1px solid rgba(10, 9, 8, 0.08);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  min-width: 200px;
+  max-width: 260px;
+  text-align: center;
+  position: relative;
+  transition: border-color var(--duration-normal) var(--ease-smooth),
+              transform var(--duration-normal) var(--ease-smooth),
+              box-shadow var(--duration-normal) var(--ease-smooth);
+}
+
+.team-org-node:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+}
+
+/* Float animation removed */
+
+/* Connector pulse */
+@keyframes connectorPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.team-org.is-visible .team-org-connector::after {
+  animation: connectorPulse 2.5s ease-in-out infinite;
+}
+
+/* Orange pip - hidden */
+.team-org-tier--branched > .team-org-node::after {
+  display: none;
+}
+
+.team-card-role {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);
+  color: var(--warm-dark);
+  margin-bottom: var(--space-2);
+}
+
+.team-card-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-black);
+}
+
+@media (max-width: 640px) {
+  .team-org-tier {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .team-org-tier--branched::before { display: none; }
+  .team-org-tier--branched > .team-org-node::before { display: none; }
+  .team-org-node { max-width: 100%; min-width: 0; width: 100%; }
+}
+
+/* - Team callouts - */
+.team-callouts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.team-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+}
+
+.team-callout::before {
+  content: '';
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-ellipse);
+  background: var(--accent);
+  margin-top: 0.5rem;
+}
+
+/* - Value-added support list - */
+.support-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-2);
+}
+
+.support-list li {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--24sa-off-white);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--warm-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.support-list li:last-child {
+  border-bottom: none;
+}
+
+.support-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-ellipse);
+  border: 1px solid var(--accent);
+  flex-shrink: 0;
+}
+
+/* - Working model intro copy - */
+.team-model-intro {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  max-width: 720px;
+}
+
+.team-model-intro + .team-model-intro {
+  margin-top: var(--space-4);
+}
+
+.team-closing {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  color: var(--24sa-off-white);
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--warm-border);
+}
+
+/* - On-call face cards - */
+.team-faces-subheading {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-regular);
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-8);
+}
+
+.team-faces-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.team-face-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  background: var(--24sa-off-white);
+  border: 1px solid rgba(10, 9, 8, 0.08);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--duration-normal) var(--ease-smooth);
+  height: 100%;
+}
+
+.team-face-card:hover {
+  border-color: rgba(10, 9, 8, 0.2);
+}
+
+.team-face-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid rgba(10, 9, 8, 0.08);
+  filter: grayscale(100%);
+}
+
+.team-face-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.team-face-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);
+  color: var(--warm-dark);
+  line-height: var(--leading-tight);
+}
+
+.team-face-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--24sa-black);
+  line-height: var(--leading-relaxed);
+}
+
+.team-face-company {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--markacy-orange);
+  margin-top: 2px;
+  line-height: var(--leading-normal);
+}
+
+/* ============================================================
+   SECTION: PLATFORM
+   ============================================================ */
+.section-platform {
+  background: var(--warm-dark);
+  padding: var(--space-32) var(--space-6);
+}
+
+.platform-inner {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+/* Dark background - headings stay brand defaults */
+.section-platform .section-preheading {
+  color: var(--markacy-orange);
+}
+.section-platform .section-heading {
+  color: var(--24sa-off-white);
+}
+
+.platform-subheading {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--muted-text);
+  max-width: 600px;
+  margin-top: var(--space-4);
+}
+
+/* Side-by-side hero: text left, video right */
+.platform-hero {
+  display: flex;
+  gap: var(--space-12);
+  align-items: flex-start;
+  margin-top: var(--space-8);
+}
+
+.platform-hero-text {
+  flex: 1 1 0;
+}
+
+.platform-intro {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: rgba(243, 238, 231, 0.7);
+  max-width: var(--container-narrow);
+  margin-top: var(--space-8);
+}
+
+/* - Video embed - */
+.platform-video {
+  flex: 0 0 46%;
+  aspect-ratio: 16 / 9;
+  background: #1a2744;
+  border: 1px solid rgba(243, 238, 231, 0.08);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  margin-top: 26rem;
+}
+
+.platform-video-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--24sa-off-white);
+}
+
+@media (max-width: 768px) {
+  .platform-hero {
+    flex-direction: column;
+  }
+  .platform-video {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* - Feature cards: 2×2 asymmetric bento grid - */
+.platform-features {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto auto;
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+}
+
+@media (max-width: 768px) {
+  .platform-features {
+    grid-template-columns: 1fr;
+  }
+}
+
+.platform-feature {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-10);
+  border-radius: 1.5rem;
+  border: none;
+  box-shadow: none;
+  min-height: 260px;
+  transition: transform var(--duration-normal) var(--ease-smooth);
+}
+
+.platform-feature:hover {
+  transform: translateY(-4px);
+  box-shadow: none;
+}
+
+/* Card color assignments - solid brand fills */
+.platform-feature:nth-child(1) {
+  background: var(--sketchdeck-blue);
+}
+.platform-feature:nth-child(2) {
+  background: var(--futureman-yellow);
+}
+.platform-feature:nth-child(3) {
+  background: var(--markacy-orange);
+}
+.platform-feature:nth-child(4) {
+  background: var(--24sa-off-white);
+}
+
+.platform-feature-icon {
+  display: none;
+}
+
+.platform-feature-title {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+  color: var(--warm-dark);
+  margin-bottom: 0;
+}
+
+.platform-feature-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: rgba(10, 9, 8, 0.7);
+}
+
+.platform-closing {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: rgba(243, 238, 231, 0.6);
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(243, 238, 231, 0.08);
+}
+
+/* ============================================================
+   SECTION: PORTFOLIO
+   ============================================================ */
+.section-portfolio {
+  padding: var(--space-16) var(--space-6) var(--space-32);
+  background: var(--warm-dark);
+}
+
+.portfolio-inner {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+}
+
+.portfolio-subheading {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  max-width: 650px;
+  margin-top: var(--space-4);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-16);
+}
+
+@media (max-width: 1024px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.portfolio-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--warm-card);
+  border: 1px solid var(--warm-border);
+  transition: box-shadow var(--duration-normal) var(--ease-out),
+              border-color var(--duration-normal) var(--ease-smooth);
+  opacity: 0;
+}
+
+.portfolio-card:hover {
+  border-color: var(--warm-border-hover);
+  box-shadow: var(--shadow-xl);
+}
+
+.portfolio-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  position: relative;
+}
+
+.portfolio-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background var(--duration-normal) var(--ease-smooth);
+  z-index: 1;
+}
+
+.portfolio-card:hover .portfolio-card-image::after {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.portfolio-card-image .placeholder-gradient {
+  width: 100%;
+  height: 100%;
+}
+
+.portfolio-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-8) var(--space-6);
+  z-index: 2;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.portfolio-card:hover .portfolio-card-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.portfolio-card-client {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+}
+
+.portfolio-card-name {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-2);
+}
+
+.portfolio-card-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-3);
+}
+
+
+.portfolio-closing {
+  text-align: center;
+  margin-top: var(--space-24);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-xl);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+}
+
+/* ============================================================
+   LIGHTBOX / MODAL
+   ============================================================ */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 20000;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-8);
+  background: none;
+  border: none;
+  color: var(--24sa-off-white);
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 20001;
+  opacity: 0.6;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+  font-family: var(--font-sans);
+}
+
+.lightbox-close:hover { opacity: 1; }
+
+.lightbox-content {
+  max-width: 900px;
+  width: 90%;
+  text-align: center;
+  animation: lightboxIn 0.3s var(--ease-out);
+}
+
+@keyframes lightboxIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.lightbox-image-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+  position: relative;
+}
+
+.lightbox-image-wrap .placeholder-gradient {
+  width: 100%;
+  height: 100%;
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(243, 238, 231, 0.08);
+  border: none;
+  color: var(--24sa-off-white);
+  font-size: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-ellipse);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-smooth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-nav:hover { background: rgba(255, 212, 0, 0.3); }
+.lightbox-prev { left: var(--space-4); }
+.lightbox-next { right: var(--space-4); }
+
+.lightbox-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.lightbox-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-ellipse);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-smooth);
+}
+
+.lightbox-dot.active { background: var(--accent); }
+
+.lightbox-info-name {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-regular);
+  color: var(--24sa-off-white);
+  margin-bottom: var(--space-2);
+}
+
+.lightbox-info-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--24sa-off-white);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-3);
+}
+
+.lightbox-info-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* ============================================================
+   PRICING
+   ============================================================ */
+.section-pricing {
+  padding: var(--space-20) var(--space-6);
+  background: var(--24sa-off-white);
+  color: var(--24sa-black);
+}
+
+.section-pricing .section-preheading {
+  color: var(--muted-text-light);
+}
+
+.section-pricing .section-heading {
+  color: var(--24sa-black);
+}
+
+.section-pricing .section-heading::after {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.pricing-inner {
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+}
+
+.pricing-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 520px) {
+  .pricing-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-metric {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+}
+
+.pricing-metric-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--muted-text-light);
+  margin-bottom: var(--space-2);
+}
+
+.pricing-metric-value {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+  color: var(--24sa-black);
+}
+
+.pricing-metric-sub {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  margin-top: var(--space-1);
+}
+
+.pricing-card {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 520px) {
+  .pricing-card {
+    padding: var(--space-4) var(--space-4);
+  }
+}
+
+.pricing-card-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--muted-text-light);
+  margin-bottom: var(--space-3);
+}
+
+/* Slide count slider */
+.pricing-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.pricing-slider-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  white-space: nowrap;
+}
+
+.pricing-slider-row input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.12);
+  outline: none;
+  cursor: pointer;
+}
+
+.pricing-slider-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--24sa-black);
+  cursor: pointer;
+}
+
+.pricing-slide-count {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-regular);
+  color: var(--24sa-black);
+  min-width: 44px;
+  text-align: right;
+}
+
+.pricing-anchor-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  margin-top: var(--space-1);
+  opacity: 0.7;
+}
+
+/* - Configurator: disclaimer - */
+.pricing-disclaimer {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--muted-text-light);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+/* - Configurator: mode toggle - */
+.pricing-mode-toggle {
+  display: inline-flex;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-ellipse, 999px);
+  padding: 3px;
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.pricing-mode-btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--24sa-black);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-ellipse, 999px);
+  padding: var(--space-2) var(--space-5);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pricing-mode-btn.is-active {
+  background: var(--24sa-black);
+  color: var(--24sa-off-white);
+}
+
+/* - Configurator: symposium tabs - */
+.pricing-city-tabs {
+  display: flex;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.pricing-city-tab {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--muted-text-light);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-2) 0 var(--space-3);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.pricing-city-tab.is-active {
+  color: var(--24sa-black);
+  border-bottom-color: var(--24sa-black);
+}
+
+.pricing-city-tab-cost {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--muted-text-light);
+  margin-top: 2px;
+}
+
+/* - Configurator: tier cards - */
+.pricing-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 640px) {
+  .pricing-tiers {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-tier-card {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.pricing-tier-card:hover {
+  border-color: rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
+}
+
+.pricing-tier-card.is-active {
+  border-color: var(--24sa-black);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.pricing-tier-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  color: var(--24sa-black);
+  margin-bottom: var(--space-1);
+}
+
+.pricing-tier-tagline {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+}
+
+.pricing-tier-custom-note {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  margin-top: var(--space-2);
+  grid-column: 1 / -1;
+  min-height: 1.2em;
+}
+
+/* - Configurator: input controls - */
+.pricing-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-5) var(--space-6);
+}
+
+.pricing-control--wide {
+  grid-column: 1 / -1;
+}
+
+.pricing-control-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--muted-text-light);
+  margin-bottom: var(--space-2);
+}
+
+/* Segmented buttons (slide bands, writing depth) */
+.pricing-seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pricing-seg-btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--24sa-black);
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-ellipse, 999px);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pricing-seg-btn.is-active {
+  background: var(--24sa-black);
+  border-color: var(--24sa-black);
+  color: var(--24sa-off-white);
+}
+
+/* Steppers */
+.pricing-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pricing-step-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--24sa-black);
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-ellipse, 999px);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pricing-step-btn:hover {
+  background: var(--24sa-black);
+  color: var(--24sa-off-white);
+}
+
+.pricing-step-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+  background: transparent;
+  color: var(--24sa-black);
+}
+
+.pricing-step-value {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  color: var(--24sa-black);
+  min-width: 28px;
+  text-align: center;
+}
+
+.pricing-stepper--small .pricing-step-btn {
+  width: 26px;
+  height: 26px;
+  font-size: var(--text-sm);
+}
+
+.pricing-stepper--small .pricing-step-value {
+  font-size: var(--text-lg);
+  min-width: 22px;
+}
+
+/* On-site toggle switch */
+.pricing-onsite-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pricing-switch {
+  width: 46px;
+  height: 26px;
+  border-radius: var(--radius-ellipse, 999px);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.08);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pricing-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--24sa-off-white);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.pricing-switch[aria-checked="true"] {
+  background: var(--24sa-black);
+  border-color: var(--24sa-black);
+}
+
+.pricing-switch[aria-checked="true"] .pricing-switch-knob {
+  transform: translateX(20px);
+}
+
+.pricing-onsite-unit {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+}
+
+.pricing-onsite-row.is-off .pricing-stepper,
+.pricing-onsite-row.is-off .pricing-onsite-unit {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* - Configurator: per-symposium summary strip - */
+.pricing-city-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 640px) {
+  .pricing-city-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-city-summary-item {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--24sa-black);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.pricing-city-summary-item .city-tier {
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+}
+
+.pricing-city-summary-item .city-cost {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+}
+
+/* - Configurator: breakdown toggle and footnotes - */
+.pricing-breakdown-row {
+  margin-top: var(--space-6);
+}
+
+.pricing-breakdown-toggle {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--24sa-black);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--24sa-black);
+  padding: 0 0 2px;
+  cursor: pointer;
+}
+
+.pricing-footnote {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  margin-top: var(--space-4);
+}
+
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.breakdown-table th {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--muted-text-light);
+  padding: 0 0 var(--space-2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  text-align: left;
+}
+
+.breakdown-table th.col-hours {
+  text-align: center;
+}
+
+.breakdown-table th.col-rate,
+.breakdown-table th.col-amount {
+  text-align: right;
+}
+
+.breakdown-table td {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--24sa-black);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.breakdown-table .hours {
+  text-align: center;
+  color: var(--muted-text-light);
+  font-size: var(--text-xs);
+}
+
+.breakdown-table .rate {
+  text-align: right;
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+}
+
+.breakdown-table .amount {
+  text-align: right;
+  font-weight: var(--weight-medium);
+}
+
+.breakdown-table .total-row td {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: none;
+  padding-top: var(--space-3);
+  font-weight: var(--weight-semibold);
+  color: var(--24sa-black);
+}
+
+.inclusions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inclusions-list li {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--muted-text-light);
+  padding: var(--space-2) 0 var(--space-2) var(--space-6);
+  position: relative;
+  line-height: var(--leading-relaxed);
+}
+
+.inclusions-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75rem;
+  width: 5px;
+  height: 5px;
+  background: var(--markacy-orange);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.section-footer {
+  background: var(--futureman-yellow);
+  padding: 18rem var(--space-6) var(--space-8);
+}
+
+.footer-inner {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  text-align: center;
+  padding-inline: var(--space-12);
+}
+
+.footer-tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-regular);
+  color: var(--24sa-black);
+  margin-bottom: var(--space-12);
+}
+
+.footer-companies {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-16);
+  margin-bottom: var(--space-12);
+  text-align: left;
+  align-items: start;
+}
+
+.footer-companies > div {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fixed-height logo area so descriptions align */
+.footer-logo-wrap {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .footer-companies {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .footer-logo-wrap {
+    justify-content: center;
+  }
+}
+
+.footer-company-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+  filter: brightness(0);
+  opacity: 0.9;
+}
+
+.footer-logo-sketchdeck {
+  height: 60px;
+}
+
+.footer-logo-simplicity {
+  height: 28px;
+  filter: brightness(0);
+}
+
+.footer-logo-24sa {
+  height: 36px;
+}
+
+.footer-company-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-black);
+}
+
+.footer-contacts {
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  margin-bottom: var(--space-8);
+}
+
+.footer-contacts-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--24sa-black);
+  margin-bottom: var(--space-4);
+}
+
+.footer-contact {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--24sa-black);
+  margin-bottom: var(--space-1);
+}
+
+.footer-contact a {
+  color: var(--24sa-black);
+  text-decoration: underline;
+}
+
+.footer-copyright {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: rgba(0, 0, 0, 0.5);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+.grain::after {
+  z-index: 0;
+}
+
+.grain > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glow::before {
+  z-index: 0;
+}
+
+/* ============================================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================================ */
+
+/* YouTube facade play button */
+.video-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 2;
+}
+.video-play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* content-visibility removed - it caused anchor scroll offsets
+   to miscalculate because section heights were estimated, not real. */
+
+/* Disable grain texture on small mobile for GPU savings */
+@media (max-width: 480px) {
+  .grain::after {
+    display: none;
+  }
+}
+
+/* Disable card float animation on mobile */
+@media (max-width: 768px) {
+  .portfolio-card {
+    animation: none !important;
+  }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-row--top,
+  .hero-marquee-row--bottom {
+    animation: none !important;
+  }
+  .portfolio-card {
+    animation: none !important;
+  }
+  .hero-headline,
+  .hero-subheadline,
+  .hero-cta {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div class="pw-gate" id="pwGate">
+  <div class="pw-gate-box">
+    <input type="password" id="pwInput" placeholder="Enter password" autocomplete="off" autofocus>
+    <button type="button" id="pwSubmit">Enter</button>
+  </div>
+</div>
+
+<div class="page-content locked" id="pageContent">
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="proposal-nav" id="mainNav">
+  <div class="nav-brand">
+    <img src="logos/sketchdeck.png" alt="SketchDeck" class="nav-logo nav-logo-sketchdeck">
+    <span class="nav-sep">&times;</span>
+    <img src="logos/simplicity-logo.webp" alt="Simplicity" class="nav-logo nav-logo-simplicity">
+    <span class="nav-sep">&times;</span>
+    <img src="logos/AWS-logo.svg.png" alt="AWS" class="nav-logo nav-logo-aws">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#brief">The Brief</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#platform">Platform</a></li>
+    <li><a href="#work">Portfolio</a></li>
+    <li><a href="#investment">Pricing</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     SECTION 1: HERO
+     ============================================================ -->
+<section id="hero" class="grain glow">
+  <div class="hero-content">
+    <h1 class="hero-headline">Keynotes worthy of the room.</h1>
+
+    <div class="hero-marquee-wrap" id="heroMarquee">
+      <!-- Row 1: scrolls left -->
+      <div class="hero-marquee-row hero-marquee-row--top">
+        <img src="slide-shots/opt/Screenshot%202026-03-18%20at%201.07.13%E2%80%AFAM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-18%20at%201.07.13%E2%80%AFAM.jpg 300w, slide-shots/opt/Screenshot%202026-03-18%20at%201.07.13%E2%80%AFAM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.27.25%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.27.25%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.27.25%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%205.11.58%E2%80%AFPM%20copy.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%205.11.58%E2%80%AFPM%20copy.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%205.11.58%E2%80%AFPM%20copy.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.30.38%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.30.38%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.30.38%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/unnamed%20%281%29.jpg" srcset="slide-shots/opt-mobile/unnamed%20%281%29.jpg 300w, slide-shots/opt/unnamed%20%281%29.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.32.37%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.32.37%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.32.37%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-18%20at%201.07.29%E2%80%AFAM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-18%20at%201.07.29%E2%80%AFAM.jpg 300w, slide-shots/opt/Screenshot%202026-03-18%20at%201.07.29%E2%80%AFAM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.34.24%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.34.24%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.34.24%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.46%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%2011.55.46%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.46%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <!-- duplicate for seamless loop -->
+        <img src="slide-shots/opt/Screenshot%202026-03-18%20at%201.07.13%E2%80%AFAM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-18%20at%201.07.13%E2%80%AFAM.jpg 300w, slide-shots/opt/Screenshot%202026-03-18%20at%201.07.13%E2%80%AFAM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.27.25%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.27.25%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.27.25%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%205.11.58%E2%80%AFPM%20copy.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%205.11.58%E2%80%AFPM%20copy.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%205.11.58%E2%80%AFPM%20copy.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.30.38%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.30.38%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.30.38%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/unnamed%20%281%29.jpg" srcset="slide-shots/opt-mobile/unnamed%20%281%29.jpg 300w, slide-shots/opt/unnamed%20%281%29.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.32.37%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.32.37%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.32.37%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-18%20at%201.07.29%E2%80%AFAM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-18%20at%201.07.29%E2%80%AFAM.jpg 300w, slide-shots/opt/Screenshot%202026-03-18%20at%201.07.29%E2%80%AFAM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.34.24%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.34.24%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.34.24%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.46%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%2011.55.46%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.46%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+      </div>
+      <!-- Row 2: scrolls right (reversed order for variety) -->
+      <div class="hero-marquee-row hero-marquee-row--bottom">
+        <img src="slide-shots/opt/unnamed.jpg" srcset="slide-shots/opt-mobile/unnamed.jpg 300w, slide-shots/opt/unnamed.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.28.51%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.28.51%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.28.51%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%205.23.18%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%205.23.18%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%205.23.18%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.31.18%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.31.18%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.31.18%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.31.35%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.31.35%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.31.35%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.32.47%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.32.47%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.32.47%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.34.44%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.34.44%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.34.44%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.56%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%2011.55.56%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.56%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <!-- duplicate for seamless loop -->
+        <img src="slide-shots/opt/unnamed.jpg" srcset="slide-shots/opt-mobile/unnamed.jpg 300w, slide-shots/opt/unnamed.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.28.51%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.28.51%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.28.51%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%205.23.18%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%205.23.18%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%205.23.18%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.31.18%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.31.18%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.31.18%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.31.35%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.31.35%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.31.35%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.32.47%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.32.47%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.32.47%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%206.34.44%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%206.34.44%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%206.34.44%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+        <img src="slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.56%E2%80%AFPM.jpg" srcset="slide-shots/opt-mobile/Screenshot%202026-03-20%20at%2011.55.56%E2%80%AFPM.jpg 300w, slide-shots/opt/Screenshot%202026-03-20%20at%2011.55.56%E2%80%AFPM.jpg 560w" sizes="(max-width: 480px) 150px, (max-width: 768px) 200px, 280px" decoding="async" alt="">
+      </div>
+    </div>
+
+    <p class="hero-subheadline">SketchDeck is a dedicated creative agency for executive keynotes, storytelling, and speaker enablement, built for the pace, precision, and bar-raising ambition AWS demands. Trusted across Amazon teams.</p>
+    <a href="#brief" class="hero-cta">Next ↓</a>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2: THE BRIEF
+     ============================================================ -->
+<section class="section-brief grain" id="brief">
+  <div class="brief-inner">
+    <p class="section-preheading reveal">The Opportunity</p>
+    <h2 class="section-heading reveal">The Brief</h2>
+    <div class="brief-body reveal">
+      <p>You're raising the bar on 1P cohort keynotes, starting with three Public Sector Symposiums in 2026: <strong>Ottawa, Canberra, and London.</strong> We understand the assignment.</p>
+      <p>The core deck is handled. Opus is building it. What these keynotes need is everything that makes them land in the room: a cohesive story across every speaker, hands-on speaker enablement, airtight project management, and a partner who speaks AWS, so your program leads <em>and</em> your executive speakers feel supported from the first brief to the final click backstage.</p>
+    </div>
+
+    <p class="brief-label reveal">What we'll deliver</p>
+    <ul class="brief-deliverables">
+      <li>A senior writer/strategist fluent in the AWS voice, shaping each speaker's story to one all-up narrative</li>
+      <li>Speaker management: story sessions, talk tracks, dry runs, and calm, hands-on support through the inevitable last-minute changes</li>
+      <li>Deck modification from your core symposium template, elevated per audience, never off-brand</li>
+      <li>Project management as the connective glue across speakers, production agencies, and deadlines</li>
+      <li>On-site support: edits up to showtime, so nothing derails the moment</li>
+      <li>A single point of accountability, plus a partnership built to scale across your broader 2026 portfolio</li>
+    </ul>
+
+    <div style="text-align: center; margin-top: var(--space-12);">
+      <a href="#process" class="hero-cta reveal">Next ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3: HOW WE WORK
+     ============================================================ -->
+<section class="section-process" id="process">
+  <div class="process-header">
+    <p class="section-preheading reveal">Our Process</p>
+    <h2 class="section-heading reveal">How We Work</h2>
+    <p class="process-subheading reveal">A production system built for executive speed and <nobr>keynote-grade</nobr> quality.</p>
+  </div>
+
+  <!-- Two-column sticky scroll -->
+  <div class="process-columns">
+
+    <!-- Left: sticky step nav -->
+    <nav class="process-nav" id="processNav">
+      <ul class="process-nav-list">
+        <li class="process-nav-item is-active" data-step="0">
+          <span class="process-nav-num">01</span>
+          <span class="process-nav-title">Intake &amp; Alignment</span>
+        </li>
+        <li class="process-nav-item" data-step="1">
+          <span class="process-nav-num">02</span>
+          <span class="process-nav-title">Narrative &amp; Speaker Story</span>
+        </li>
+        <li class="process-nav-item" data-step="2">
+          <span class="process-nav-num">03</span>
+          <span class="process-nav-title">Scripting &amp; Content</span>
+        </li>
+        <li class="process-nav-item" data-step="3">
+          <span class="process-nav-num">04</span>
+          <span class="process-nav-title">Deck Modification &amp; Build</span>
+        </li>
+        <li class="process-nav-item" data-step="4">
+          <span class="process-nav-num">05</span>
+          <span class="process-nav-title">Dry Runs &amp; Rapid Revisions</span>
+        </li>
+        <li class="process-nav-item" data-step="5">
+          <span class="process-nav-num">06</span>
+          <span class="process-nav-title">Final Delivery &amp; Debrief</span>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Right: scrolling step panels -->
+    <div class="process-steps" id="processSteps">
+
+      <div class="process-step is-active" data-step="0">
+        <span class="process-step-ghost">01</span>
+        <div class="process-step-inner">
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <p class="process-step-num">Step 01</p>
+          <h3 class="process-step-title">Intake &amp; Alignment</h3>
+          <p class="process-step-desc">Every engagement starts from the all-up narrative and the public-sector messaging framework: audience, singular objective, and what success looks like in the room. The brief gets faster over time as we internalize the AWS voice and how each business team frames big ideas.</p>
+        </div>
+      </div>
+
+      <div class="process-step" data-step="1">
+        <span class="process-step-ghost">02</span>
+        <div class="process-step-inner">
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+          </div>
+          <p class="process-step-num">Step 02</p>
+          <h3 class="process-step-title">Narrative &amp; Speaker Story</h3>
+          <p class="process-step-desc">Slides are the last thing we think about. First we map the throughline: where the argument peaks, what has to land emotionally. Then we meet each speaker to shape their segment so it fits one cohesive arc, not five disconnected talks.</p>
+        </div>
+      </div>
+
+      <div class="process-step" data-step="2">
+        <span class="process-step-ghost">03</span>
+        <div class="process-step-inner">
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          </div>
+          <p class="process-step-num">Step 03</p>
+          <h3 class="process-step-title">Scripting &amp; Content</h3>
+          <p class="process-step-desc">We turn frameworks and raw talking points into damn good copy in authentic AWS tone: scripts, talk tracks, and speaker notes that sound like the people delivering them.</p>
+        </div>
+      </div>
+
+      <div class="process-step" data-step="3">
+        <span class="process-step-ghost">04</span>
+        <div class="process-step-inner">
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <p class="process-step-num">Step 04</p>
+          <h3 class="process-step-title">Deck Modification &amp; Build</h3>
+          <p class="process-step-desc">Our designers adapt the core symposium deck per audience: bold where it needs to be, precise where it matters, always on-brand. We work natively in PowerPoint, so every file is editable and production-ready.</p>
+        </div>
+      </div>
+
+      <div class="process-step" data-step="4">
+        <span class="process-step-ghost">05</span>
+        <div class="process-step-inner">
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <p class="process-step-num">Step 05</p>
+          <h3 class="process-step-title">Dry Runs &amp; Rapid Revisions</h3>
+          <p class="process-step-desc">We run the dry runs, hold version control, and absorb the two-days-out, nineteen-changes reality without breaking the file (or a sweat). Same-day and next-day turnarounds. On-site when it counts.</p>
+        </div>
+      </div>
+
+      <div class="process-step" data-step="5">
+        <span class="process-step-ghost">06</span>
+        <div class="process-step-inner">
+          <div class="process-step-icon">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          </div>
+          <p class="process-step-num">Step 06</p>
+          <h3 class="process-step-title">Final Delivery &amp; Debrief</h3>
+          <p class="process-step-desc">Full QA pass (animation, fonts, aspect ratio, backup PDF, speaker notes), then a clean handoff to your production agencies (Sleek, Uptown, TK). After each event we debrief on what landed, and that becomes the baseline for the next build. Every keynote gets tighter because we're compounding.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Full-width summary (zoom-out moment after sticky releases) -->
+  <div class="process-summary-section">
+    <p class="process-summary-label">The Full Process</p>
+    <div class="process-summary-grid">
+      <div class="process-summary-card">
+        <div class="process-summary-card-num">01</div>
+        <p class="process-summary-card-title">Intake &amp; Alignment</p>
+      </div>
+      <div class="process-summary-card">
+        <div class="process-summary-card-num">02</div>
+        <p class="process-summary-card-title">Narrative &amp; Speaker Story</p>
+      </div>
+      <div class="process-summary-card">
+        <div class="process-summary-card-num">03</div>
+        <p class="process-summary-card-title">Scripting &amp; Content</p>
+      </div>
+      <div class="process-summary-card">
+        <div class="process-summary-card-num">04</div>
+        <p class="process-summary-card-title">Deck Modification &amp; Build</p>
+      </div>
+      <div class="process-summary-card">
+        <div class="process-summary-card-num">05</div>
+        <p class="process-summary-card-title">Dry Runs &amp; Rapid Revisions</p>
+      </div>
+      <div class="process-summary-card">
+        <div class="process-summary-card-num">06</div>
+        <p class="process-summary-card-title">Final Delivery &amp; Debrief</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     SECTION 4: YOUR TEAM
+     ============================================================ -->
+<section class="section-team grain glow" id="team">
+  <div class="team-inner">
+    <p class="section-preheading reveal">The People</p>
+    <h2 class="section-heading reveal">Your Team &amp; Working Model</h2>
+    <p class="team-subheading reveal">Purpose-built for this account. Fluent in AWS before the first brief lands.</p>
+
+    <p class="team-label reveal">Core Project Team</p>
+    <div class="team-org reveal-stagger">
+      <!-- Top tier: three equal leadership roles -->
+      <div class="team-org-tier">
+        <div class="team-org-node">
+          <p class="team-card-role">Senior Writer / Content Strategist</p>
+          <p class="team-card-desc">Owns the AWS voice and turns frameworks into speaker-ready story. The heartbeat of this engagement.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">Project Manager</p>
+          <p class="team-card-desc">Single point of accountability across speakers, agencies, revisions, and deliverables.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">Design Director</p>
+          <p class="team-card-desc">Creative oversight, brand stewardship, and the quality bar.</p>
+        </div>
+      </div>
+      <div class="team-org-connector"></div>
+      <!-- Delivery tier -->
+      <div class="team-org-tier team-org-tier--branched">
+        <div class="team-org-node">
+          <p class="team-card-role">Senior Designer</p>
+          <p class="team-card-desc">Deck modification and narrative-to-slide translation.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">QC Specialist</p>
+          <p class="team-card-desc">Final-pass review on every deliverable before it leaves our hands.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">On-Site Designer</p>
+          <p class="team-card-desc">Live, backstage change support at the event.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-callouts reveal-stagger" style="margin-top: var(--space-8);">
+      <div class="team-callout">Trained on AWS brand and voice before the first deck begins</div>
+      <div class="team-callout">Contributors span multiple time zones for continuous workflow, and your global symposium calendar</div>
+      <div class="team-callout">We scale the model to match the work: light where you're covered, full where you're not</div>
+    </div>
+
+    <p class="team-label reveal">How the Model Works</p>
+    <p class="team-model-intro reveal">We operate as the connective layer between two groups who have to move as one:</p>
+    <div class="team-org reveal-stagger" style="margin-top: var(--space-6);">
+      <div class="team-org-tier team-org-tier--two">
+        <div class="team-org-node">
+          <p class="team-card-role">The 1P Program Leads</p>
+          <p class="team-card-desc">Makenzie, Sara, and the business stakeholders own the narrative, the budget, and the strategy. We turn that direction into execution and give them total visibility every step of the way.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">The Event Speakers</p>
+          <p class="team-card-desc">AWS executives and customer voices who need their story shaped, their slides built, and their nerves handled. We work hand-to-hand with each of them.</p>
+        </div>
+      </div>
+    </div>
+    <p class="team-model-intro reveal" style="margin-top: var(--space-6);">Our job is to keep both sides aligned to one story, so the leads stay firmly in control and the speakers feel genuinely cared for, all the way to the stage.</p>
+
+    <p class="team-label reveal">Who's on This Partnership</p>
+    <div class="team-faces-grid reveal-stagger">
+      <div class="team-face-card">
+        <img src="headshots/Elliot.jpeg" alt="Elliot Miller" class="team-face-avatar">
+        <div class="team-face-info">
+          <p class="team-face-name">Elliot Miller</p>
+          <p class="team-face-title">Sr Partnerships Director</p>
+          <p class="team-face-company">SketchDeck</p>
+        </div>
+      </div>
+      <div class="team-face-card">
+        <img src="headshots/Jenna.jpeg" alt="Jenna Briggs" class="team-face-avatar">
+        <div class="team-face-info">
+          <p class="team-face-name">Jenna Briggs</p>
+          <p class="team-face-title">SVP Client Services</p>
+          <p class="team-face-company">Simplicity</p>
+        </div>
+      </div>
+      <div class="team-face-card">
+        <img src="headshots/Cindi.jpeg" alt="Cindi Newell-Timmons" class="team-face-avatar">
+        <div class="team-face-info">
+          <p class="team-face-name">Cindi Newell-Timmons</p>
+          <p class="team-face-title">VP Client Services</p>
+          <p class="team-face-company">Simplicity</p>
+        </div>
+      </div>
+    </div>
+    <p class="team-model-intro reveal" style="margin-top: var(--space-6);"><em>Plus your dedicated delivery team, assigned post-scoping.</em></p>
+    <p class="team-model-intro reveal">AWS partners: Makenzie Delmotte (1P Cohort Events) · Sara Morgan (PMM, Public Sector)</p>
+
+    <p class="team-closing reveal">You get a dedicated team, not a shared resource pool. Everyone who touches your work knows your brand and your voice before the work begins.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5: THE SKETCHDECK PLATFORM
+     ============================================================ -->
+<section class="section-platform" id="platform">
+  <div class="platform-inner">
+    <div class="platform-hero">
+      <div class="platform-hero-text">
+        <p class="section-preheading reveal">The Platform</p>
+        <h2 class="section-heading reveal">Full Transparency, Built In. For Leads and Speakers Alike.</h2>
+        <p class="platform-subheading reveal">One place for the whole program, with a right-sized view for everyone in it.</p>
+        <div class="platform-intro reveal">
+          <p>Both your program leads and your speakers work <em>directly</em> with the SketchDeck team inside one platform: annotate on slides, leave comments in context, message the designer or writer, and pull the latest file anytime. No email version chaos. No "which deck is final?" No black-box agency experience.</p>
+          <p style="margin-top: var(--space-4);">What makes it work is <strong>differentiated access</strong>:</p>
+          <p style="margin-top: var(--space-4);"><strong>1P team leads</strong> get the control tower: every symposium, every speaker's status, every version, plus real-time budget, spend, turnaround, and QC metrics. Full visibility into how the program is running, without having to ask.</p>
+          <p style="margin-top: var(--space-4);"><strong>Speakers and other stakeholders</strong> get a focused, frictionless view: just their slides, their notes, and their feedback thread. They comment, talk directly to the team, and grab the latest file, without wading through program-wide data or budget they don't need to see.</p>
+        </div>
+      </div>
+      <div class="platform-video reveal" id="platformVideo" data-video-id="JKUKZIkOKeA">
+        <img src="https://img.youtube.com/vi/JKUKZIkOKeA/hqdefault.jpg" alt="SketchDeck Platform Demo" loading="lazy" style="width:100%;height:100%;position:absolute;top:0;left:0;object-fit:cover;">
+        <div class="video-play-btn" aria-label="Play video">
+          <svg width="68" height="48" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="rgba(255,212,0,0.9)"/><path d="M45 24L27 14v20" fill="#000"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="platform-features">
+      <div class="platform-feature reveal">
+        <div class="platform-feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <p class="platform-feature-title">AI-Assisted Project Briefs</p>
+        <p class="platform-feature-desc">Structured intake that captures the right information upfront, so designers and writers hit the ground running.</p>
+      </div>
+      <div class="platform-feature reveal">
+        <div class="platform-feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="platform-feature-title">Collaborative Visual Feedback</p>
+        <p class="platform-feature-desc">Annotate directly on slides; mark rounds, track changes, resolve comments in context. Speakers and leads both comment where it counts, never in a lost email chain.</p>
+      </div>
+      <div class="platform-feature reveal">
+        <div class="platform-feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="platform-feature-title">Central Project &amp; Asset Library</p>
+        <p class="platform-feature-desc">Every deck, version, and brand asset in one searchable, secure, compliant home. Everyone always has the latest file, scoped to what they should see.</p>
+      </div>
+      <div class="platform-feature reveal">
+        <div class="platform-feature-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <p class="platform-feature-title">Real-Time Metrics &amp; Visibility</p>
+        <p class="platform-feature-desc">Leads see project status, turnaround performance, revision cycles, and spend in real time. Full program transparency, on tap.</p>
+      </div>
+    </div>
+
+    <p class="platform-closing reveal">Same platform, streamlined two ways: for a busy executive who just wants their slides right, and for a program owner who needs to see everything at once.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6: PORTFOLIO
+     ============================================================ -->
+<section class="section-portfolio grain glow" id="work">
+  <div class="portfolio-inner">
+    <p class="section-preheading reveal">Portfolio</p>
+    <h2 class="section-heading reveal">Selected Work</h2>
+
+    <div class="portfolio-grid">
+
+      <!-- Card 1: Salesforce -->
+      <div class="portfolio-card" data-project="0" onclick="openLightbox(0)">
+        <div class="portfolio-card-image">
+          <img src="covers/salesforce-1.jpg" alt="Salesforce Keynote" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div class="portfolio-card-overlay">
+            <p class="portfolio-card-client">Client: Salesforce</p>
+            <p class="portfolio-card-name">Executive Keynote Suite</p>
+            <p class="portfolio-card-desc">Main stage, breakout, and customer story keynotes. Bold data viz, cinematic imagery, and seamless animation for LED walls.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Okta -->
+      <div class="portfolio-card" data-project="1" onclick="openLightbox(1)">
+        <div class="portfolio-card-image">
+          <img src="covers/okta-1.jpg" alt="Okta Oktane Keynote" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div class="portfolio-card-overlay">
+            <p class="portfolio-card-client">Client: Okta</p>
+            <p class="portfolio-card-name">Oktane Main Stage</p>
+            <p class="portfolio-card-desc">Oktane main stage keynote. High-energy visual storytelling with product demos woven into the narrative arc.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Stellar -->
+      <div class="portfolio-card" data-project="2" onclick="openLightbox(2)">
+        <div class="portfolio-card-image">
+          <img src="stellar/stellar-section7-full.png.webp" alt="Stellar Keynote" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div class="portfolio-card-overlay">
+            <p class="portfolio-card-client">Client: Stellar</p>
+            <p class="portfolio-card-name">Investor &amp; Partner Keynotes</p>
+            <p class="portfolio-card-desc">Premium presentation design for C-suite audiences. Clean, data-rich layouts that balance sophistication with accessibility. Every chart tells a story.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Ambry Genetics -->
+      <div class="portfolio-card" data-project="3" onclick="openLightbox(3)">
+        <div class="portfolio-card-image">
+          <img src="ambry/cover.png" alt="Ambry Genetics" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div class="portfolio-card-overlay">
+            <p class="portfolio-card-client">Client: Ambry Genetics</p>
+            <p class="portfolio-card-name">Brand &amp; Presentation Design</p>
+            <p class="portfolio-card-desc">Presentation design and visual identity for a leading genomics company. Science-driven storytelling for clinical, investor, and conference audiences.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Microsoft -->
+      <div class="portfolio-card" data-project="4" onclick="openLightbox(4)">
+        <div class="portfolio-card-image">
+          <img src="covers/microsoft-1.jpg" alt="Microsoft Executive Comms" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div class="portfolio-card-overlay">
+            <p class="portfolio-card-client">Client: Microsoft</p>
+            <p class="portfolio-card-name">Executive Communications</p>
+            <p class="portfolio-card-desc">Ongoing executive comms across product launches, earnings narratives, and leadership presentations. Enterprise storytelling at scale.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Dropbox -->
+      <div class="portfolio-card" data-project="5" onclick="openLightbox(5)">
+        <div class="portfolio-card-image">
+          <img src="dropbox/cover.png" alt="Dropbox Keynote" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+          <div class="portfolio-card-overlay">
+            <p class="portfolio-card-client">Client: Dropbox</p>
+            <p class="portfolio-card-name">Brand &amp; Keynote Design</p>
+            <p class="portfolio-card-desc">Keynote and brand presentation design for Dropbox. Clean, modern visual storytelling aligned with the Dropbox design system.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION: PRICING
+     ============================================================ -->
+<section class="section-pricing" id="investment">
+  <div class="pricing-inner">
+    <p class="section-preheading reveal">Investment</p>
+    <h2 class="section-heading reveal">Pricing Estimate</h2>
+    <p class="pricing-disclaimer reveal">Estimate, not a quote. Configure each variable to see how the investment flexes.</p>
+
+    <!-- Mode toggle: one config across all symposiums, or per-symposium -->
+    <div class="pricing-mode-toggle reveal" id="pricingModeToggle">
+      <button type="button" class="pricing-mode-btn" data-mode="quick">Quick estimate</button>
+      <button type="button" class="pricing-mode-btn" data-mode="per">Per-symposium</button>
+    </div>
+
+    <!-- Symposium tabs (per-symposium mode only, built from config) -->
+    <div class="pricing-city-tabs" id="pricingCityTabs" hidden></div>
+
+    <!-- Tier selector (built from config) -->
+    <div class="pricing-tiers reveal" id="pricingTiers"></div>
+
+    <!-- Inputs -->
+    <div class="pricing-card reveal">
+      <p class="pricing-card-label" id="pricingConfigLabel">Configure</p>
+      <div class="pricing-controls">
+
+        <div class="pricing-control" id="ctlSymposiumsWrap">
+          <p class="pricing-control-label">Number of symposiums</p>
+          <div class="pricing-stepper" id="ctlSymposiums">
+            <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer symposiums">&minus;</button>
+            <span class="pricing-step-value">3</span>
+            <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More symposiums">+</button>
+          </div>
+        </div>
+
+        <div class="pricing-control">
+          <p class="pricing-control-label">Slides per deck</p>
+          <div class="pricing-seg" id="ctlBand"></div>
+        </div>
+
+        <div class="pricing-control pricing-control--wide">
+          <p class="pricing-control-label">Writing &amp; content depth</p>
+          <div class="pricing-seg" id="ctlDepth"></div>
+        </div>
+
+        <div class="pricing-control">
+          <p class="pricing-control-label">Speakers per keynote</p>
+          <div class="pricing-stepper" id="ctlSpeakers">
+            <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer speakers">&minus;</button>
+            <span class="pricing-step-value">4</span>
+            <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More speakers">+</button>
+          </div>
+        </div>
+
+        <div class="pricing-control">
+          <p class="pricing-control-label">Rounds of edits</p>
+          <div class="pricing-stepper" id="ctlEdits">
+            <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer edit rounds">&minus;</button>
+            <span class="pricing-step-value">3</span>
+            <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More edit rounds">+</button>
+          </div>
+        </div>
+
+        <div class="pricing-control">
+          <p class="pricing-control-label">Dry runs managed</p>
+          <div class="pricing-stepper" id="ctlDryRuns">
+            <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer dry runs">&minus;</button>
+            <span class="pricing-step-value">2</span>
+            <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More dry runs">+</button>
+          </div>
+        </div>
+
+        <div class="pricing-control">
+          <p class="pricing-control-label">On-site support</p>
+          <div class="pricing-onsite-row">
+            <button type="button" class="pricing-switch" id="ctlOnSite" role="switch" aria-checked="false" aria-label="Toggle on-site support">
+              <span class="pricing-switch-knob"></span>
+            </button>
+            <div class="pricing-stepper pricing-stepper--small" id="ctlOnSiteDays">
+              <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer on-site days">&minus;</button>
+              <span class="pricing-step-value">1</span>
+              <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More on-site days">+</button>
+            </div>
+            <span class="pricing-onsite-unit" id="ctlOnSiteUnit">day</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Live outputs -->
+    <div class="pricing-metrics reveal">
+      <div class="pricing-metric">
+        <p class="pricing-metric-label" id="pricingPerDeckLabel">Per deck</p>
+        <p class="pricing-metric-value" id="pricingPerDeck">$0</p>
+        <p class="pricing-metric-sub" id="pricingPerDeckSub"></p>
+      </div>
+      <div class="pricing-metric">
+        <p class="pricing-metric-label">Program total</p>
+        <p class="pricing-metric-value" id="pricingProgramTotal">$0</p>
+        <p class="pricing-metric-sub" id="pricingProgramSub"></p>
+      </div>
+    </div>
+
+    <!-- Per-symposium summary strip (per-symposium mode only) -->
+    <div class="pricing-city-summary" id="pricingCitySummary" hidden></div>
+
+    <!-- Role breakdown, toggleable so hours and rates stay private when needed -->
+    <div class="pricing-breakdown-row reveal">
+      <button type="button" class="pricing-breakdown-toggle" id="pricingBreakdownToggle" aria-expanded="false">Show role breakdown</button>
+    </div>
+    <div class="pricing-card" id="pricingBreakdownCard" hidden>
+      <p class="pricing-card-label" id="pricingBreakdownLabel">Role breakdown, per deck</p>
+      <table class="breakdown-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th class="col-hours">Hours</th>
+            <th class="col-rate">Rate</th>
+            <th class="col-amount">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="pricingBreakdownBody"></tbody>
+      </table>
+      <p class="pricing-footnote">Breakdown shows exact math. Headline figures round to the nearest $250.</p>
+    </div>
+
+    <p class="pricing-footnote reveal">Figures are planning estimates. Final scope and pricing confirmed after the scoping conversation.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     LIGHTBOX MODAL
+     ============================================================ -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <div class="lightbox-content">
+    <div class="lightbox-image-wrap" id="lightboxImageWrap"></div>
+    <button class="lightbox-nav lightbox-prev" onclick="lightboxPrev()">&#8249;</button>
+    <button class="lightbox-nav lightbox-next" onclick="lightboxNext()">&#8250;</button>
+    <div class="lightbox-dots" id="lightboxDots"></div>
+    <h3 class="lightbox-info-name" id="lightboxName"></h3>
+    <p class="lightbox-info-desc" id="lightboxDesc"></p>
+  </div>
+</div>
+
+<!-- ============================================================
+     SECTION 7: FOOTER
+     ============================================================ -->
+<footer class="section-footer" id="footer">
+  <div class="footer-inner">
+    <h2 class="footer-tagline reveal">Worthy of the room. Ready for the sprint.</h2>
+
+    <div class="footer-companies reveal-stagger">
+      <div>
+        <div class="footer-logo-wrap">
+          <img src="logos/sketchdeck.png" alt="SketchDeck" class="footer-company-logo footer-logo-sketchdeck" loading="lazy">
+        </div>
+        <p class="footer-company-desc">Presentation design, keynote production, and visual storytelling.</p>
+      </div>
+      <div>
+        <div class="footer-logo-wrap">
+          <img src="logos/simplicity-logo.webp" alt="Simplicity Consulting" class="footer-company-logo footer-logo-simplicity" loading="lazy">
+        </div>
+        <p class="footer-company-desc">Strategic consulting and program management for enterprise marketing and events.</p>
+      </div>
+      <div>
+        <div class="footer-logo-wrap">
+          <img src="logos/24sa-logo.png" alt="24 Seven" class="footer-company-logo footer-logo-24sa" loading="lazy">
+        </div>
+        <p class="footer-company-desc">The parent company powering our talent network and operational scale.</p>
+      </div>
+    </div>
+
+    <div class="footer-contacts reveal">
+      <p class="footer-contacts-label">Contact</p>
+      <p class="footer-contact">Cindi Newell-Timmons · VP Client Services, Simplicity · <a href="mailto:cindi@simplicityci.com">cindi@simplicityci.com</a></p>
+      <p class="footer-contact">Elliot Miller · Amazon Creative Partnerships, SketchDeck · <a href="mailto:elliot.miller@sketchdeck.com">elliot.miller@sketchdeck.com</a></p>
+    </div>
+
+    <p class="footer-copyright">&copy; 2026 SketchDeck · Simplicity Consulting · 24 Seven Agencies · Confidential</p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     CDN LIBRARIES
+     ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- All pricing numbers and formulas live in pricing.config.js -->
+<script src="pricing.config.js"></script>
+
+<script>
+// ====== PORTFOLIO DATA ======
+const PROJECTS = [
+  {
+    name: 'Salesforce: Executive Keynote Suite',
+    client: 'Salesforce',
+    desc: 'Full keynote design for executive presentations including main stage, breakout sessions, and customer story segments. Bold data visualization, cinematic imagery, and seamless animation sequences designed for massive LED walls.',
+    tags: ['Keynote', 'Main Stage', 'Data Viz', 'Enterprise'],
+    slides: [
+      { image: 'salesforce/opt/slide-1.jpg', label: 'Salesforce Keynote Slide 1' },
+      { image: 'salesforce/opt/slide-2.jpg', label: 'Salesforce Keynote Slide 2' },
+      { image: 'salesforce/opt/slide-3.jpg', label: 'Salesforce Keynote Slide 3' },
+      { image: 'salesforce/opt/slide-4.jpg', label: 'Salesforce Keynote Slide 4' },
+      { image: 'salesforce/opt/slide-5.jpg', label: 'Salesforce Keynote Slide 5' },
+      { image: 'salesforce/opt/slide-6.jpg', label: 'Salesforce Keynote Slide 6' },
+    ]
+  },
+  {
+    name: 'Okta: Oktane Main Stage',
+    client: 'Okta',
+    desc: 'Main stage keynote design for Okta\'s annual Oktane conference. High-energy visual storytelling with product demos woven into the narrative arc. Designed for speaker confidence and audience impact.',
+    tags: ['Keynote', 'Conference', 'Product Launch', 'SaaS'],
+    slides: [
+      { image: 'okta/opt/slide-1.jpg', label: 'Okta Keynote Slide 1' },
+      { image: 'okta/opt/slide-2.jpg', label: 'Okta Keynote Slide 2' },
+      { image: 'okta/opt/slide-3.jpg', label: 'Okta Keynote Slide 3' },
+      { image: 'okta/opt/slide-4.jpg', label: 'Okta Keynote Slide 4' },
+      { image: 'okta/opt/slide-5.jpg', label: 'Okta Keynote Slide 5' },
+      { image: 'okta/opt/slide-6.jpg', label: 'Okta Keynote Slide 6' },
+      { image: 'okta/opt/slide-7.jpg', label: 'Okta Keynote Slide 7' },
+      { image: 'okta/opt/slide-8.jpg', label: 'Okta Keynote Slide 8' },
+      { image: 'okta/opt/slide-9.jpg', label: 'Okta Keynote Slide 9' },
+    ]
+  },
+  {
+    name: 'Stellar: Investor & Partner Keynotes',
+    client: 'Stellar',
+    desc: 'Premium presentation design for C-suite audiences. Clean, data-rich layouts that balance sophistication with accessibility. Every chart tells a story.',
+    tags: ['Executive Comms', 'Investor Relations', 'Data-Driven'],
+    slides: [
+      { video: 'stellar/Stellar_Meridian Sessions_20241108_V2.mp4', label: 'Stellar Meridian Sessions Video' },
+      { image: 'stellar/stellar-section7-full.png.webp', label: 'Stellar Section 7' },
+      { image: 'stellar/slide-1.png', label: 'Stellar Slide 1' },
+      { image: 'stellar/slide-2.png', label: 'Stellar Slide 2' },
+      { image: 'stellar/slide-3.png', label: 'Stellar Slide 3' },
+      { image: 'stellar/slide-4.png', label: 'Stellar Slide 4' },
+      { image: 'stellar/slide-5.png', label: 'Stellar Slide 5' },
+      { image: 'stellar/slide-6.png', label: 'Stellar Slide 6' },
+      { image: 'stellar/slide-7.png', label: 'Stellar Slide 7' },
+      { image: 'stellar/social-ads-1.gif', label: 'Stellar Social Ads' },
+    ]
+  },
+  {
+    name: 'Ambry Genetics: Brand & Presentation Design',
+    client: 'Ambry Genetics',
+    desc: 'Presentation design and visual identity for a leading genomics company. Science-driven storytelling for clinical, investor, and conference audiences.',
+    tags: ['Healthcare', 'Brand System', 'Conference', 'Data Viz'],
+    slides: [
+      { image: 'ambry/gif-1.gif', label: 'Ambry Genetics Animation 1' },
+      { image: 'ambry/cover.png', label: 'Ambry Genetics Cover' },
+      { image: 'ambry/slide-1.png', label: 'Ambry Genetics Slide 1' },
+      { image: 'ambry/slide-2.png', label: 'Ambry Genetics Slide 2' },
+      { image: 'ambry/slide-3.png', label: 'Ambry Genetics Slide 3' },
+      { image: 'ambry/slide-4.png', label: 'Ambry Genetics Slide 4' },
+    ]
+  },
+  {
+    name: 'Microsoft: Executive Communications',
+    client: 'Microsoft',
+    desc: 'Long-running engagement supporting Microsoft executive communications across product launches, earnings narratives, and internal leadership presentations. Deep understanding of enterprise storytelling at scale.',
+    tags: ['Enterprise', 'Ongoing', 'Executive Comms', 'Product Marketing'],
+    slides: [
+      { image: 'microsoft/opt/slide-1.jpg', label: 'Microsoft Slide 1' },
+      { image: 'microsoft/opt/slide-2.jpg', label: 'Microsoft Slide 2' },
+      { image: 'microsoft/opt/slide-3.jpg', label: 'Microsoft Slide 3' },
+      { image: 'microsoft/opt/slide-4.jpg', label: 'Microsoft Slide 4' },
+      { image: 'microsoft/opt/slide-5.jpg', label: 'Microsoft Slide 5' },
+      { image: 'microsoft/opt/slide-6.jpg', label: 'Microsoft Slide 6' },
+      { image: 'microsoft/opt/slide-7.jpg', label: 'Microsoft Slide 7' },
+    ]
+  },
+  {
+    name: 'Dropbox: Brand & Keynote Design',
+    client: 'Dropbox',
+    desc: 'Keynote and brand presentation design for Dropbox. Clean, modern visual storytelling aligned with the Dropbox design system.',
+    tags: ['Brand', 'Keynote', 'SaaS', 'Design System'],
+    slides: [
+      { image: 'dropbox/cover.png', label: 'Dropbox Cover' },
+      { image: 'dropbox/slide-1.png', label: 'Dropbox Slide 1' },
+      { image: 'dropbox/slide-2.png', label: 'Dropbox Slide 2' },
+      { image: 'dropbox/slide-3.png', label: 'Dropbox Slide 3' },
+      { image: 'dropbox/slide-4.png', label: 'Dropbox Slide 4' },
+      { image: 'dropbox/slide-5.png', label: 'Dropbox Slide 5' },
+      { image: 'dropbox/slide-6.png', label: 'Dropbox Slide 6' },
+      { image: 'dropbox/slide-7.png', label: 'Dropbox Slide 7' },
+      { image: 'dropbox/slide-8.png', label: 'Dropbox Slide 8' },
+      { image: 'dropbox/slide-9.png', label: 'Dropbox Slide 9' },
+      { image: 'dropbox/slide-10.png', label: 'Dropbox Slide 10' },
+      { image: 'dropbox/slide-11.png', label: 'Dropbox Slide 11' },
+      { image: 'dropbox/slide-12.png', label: 'Dropbox Slide 12' },
+    ]
+  },
+];
+
+
+// ====== GSAP ANIMATIONS ======
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero scroll-out: fade marquee and text away
+ScrollTrigger.create({
+  trigger: '#hero',
+  start: 'top top',
+  end: 'bottom top',
+  scrub: 0.5,
+  onUpdate: (self) => {
+    const p = self.progress;
+
+    // Fade out marquee
+    const marquee = document.getElementById('heroMarquee');
+    if (marquee) {
+      marquee.style.opacity = 1 - p;
+      marquee.style.transform = `translateY(${-p * 30}px)`;
+    }
+
+    // Fade out hero text
+    const content = document.querySelector('.hero-content');
+    if (content) {
+      content.style.opacity = 1 - p * 2;
+      content.style.transform = `translateY(${-p * 60}px)`;
+    }
+  }
+});
+
+// Nav background on scroll
+ScrollTrigger.create({
+  trigger: '#brief',
+  start: 'top 80%',
+  onEnter: () => document.getElementById('mainNav').classList.add('scrolled'),
+  onLeaveBack: () => document.getElementById('mainNav').classList.remove('scrolled'),
+});
+
+// Reveal animations
+document.querySelectorAll('.reveal').forEach((el) => {
+  gsap.to(el, {
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+    },
+    opacity: 1,
+    y: 0,
+    duration: 0.7,
+    ease: 'power3.out',
+  });
+});
+
+// Reveal-stagger groups
+document.querySelectorAll('.reveal-stagger').forEach((group) => {
+  gsap.to(group.children, {
+    scrollTrigger: {
+      trigger: group,
+      start: 'top 85%',
+      once: true,
+    },
+    opacity: 1,
+    y: 0,
+    duration: 0.6,
+    stagger: 0.08,
+    ease: 'power3.out',
+  });
+});
+
+// Brief deliverables stagger
+gsap.to('.brief-deliverables li', {
+  scrollTrigger: {
+    trigger: '.brief-deliverables',
+    start: 'top 80%',
+    once: true,
+  },
+  opacity: 1,
+  y: 0,
+  duration: 0.5,
+  stagger: 0.1,
+  ease: 'power3.out',
+});
+
+// Team org float activation
+(function() {
+  const org = document.querySelector('.team-org');
+  if (!org) return;
+  const obs = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) org.classList.add('is-visible');
+  }, { threshold: 0.3 });
+  obs.observe(org);
+})();
+
+// Process sticky-scroll with IntersectionObserver
+(function initProcessStickyScroll() {
+  const steps = document.querySelectorAll('.process-step');
+  const navItems = document.querySelectorAll('.process-nav-item');
+  if (!steps.length || !navItems.length) return;
+
+  let currentStep = 0;
+
+  // IntersectionObserver to detect which step is in view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = parseInt(entry.target.dataset.step, 10);
+        if (idx !== currentStep) {
+          // Update steps
+          steps.forEach(s => s.classList.remove('is-active'));
+          entry.target.classList.add('is-active');
+          // Update nav
+          navItems.forEach(n => n.classList.remove('is-active'));
+          navItems[idx].classList.add('is-active');
+          currentStep = idx;
+        }
+      }
+    });
+  }, {
+    rootMargin: '-40% 0px -40% 0px',
+    threshold: 0
+  });
+
+  steps.forEach(step => observer.observe(step));
+
+  // Click nav to scroll to step
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.step, 10);
+      steps[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  // Animate summary cards with progress sweep
+  const summarySection = document.querySelector('.process-summary-section');
+  if (summarySection) {
+    const summaryGrid = summarySection.querySelector('.process-summary-grid');
+    const summaryObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const cards = summarySection.querySelectorAll('.process-summary-card');
+          const nums = summarySection.querySelectorAll('.process-summary-card-num');
+          const titles = summarySection.querySelectorAll('.process-summary-card-title');
+
+          // Start progress line sweep
+          summaryGrid.classList.add('is-animating');
+
+          // Light up each circle sequentially as the line reaches it
+          nums.forEach((num, i) => {
+            const delay = (i / (nums.length - 1)) * 2000;
+            setTimeout(() => {
+              num.classList.add('is-lit');
+              if (titles[i]) titles[i].classList.add('is-lit');
+            }, delay);
+          });
+
+          summaryObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    summaryObserver.observe(summarySection);
+  }
+})();
+
+// Portfolio cards stagger
+gsap.to('.portfolio-card', {
+  scrollTrigger: {
+    trigger: '.portfolio-grid',
+    start: 'top 80%',
+    once: true,
+  },
+  opacity: 1,
+  y: 0,
+  duration: 0.7,
+  stagger: 0.12,
+  ease: 'power3.out',
+});
+
+
+// ====== PORTFOLIO CARD 3D TILT (mouse only, skip on touch devices) ======
+if (!('ontouchstart' in window)) {
+  document.querySelectorAll('.portfolio-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      gsap.set(card, { y: -4, rotateY: x * 6, rotateX: -y * 6, transformPerspective: 800 });
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, { y: 0, rotateY: 0, rotateX: 0, duration: 0.4, ease: 'power2.out' });
+    });
+  });
+}
+
+
+// ====== LIGHTBOX ======
+let currentProject = 0;
+let currentSlide = 0;
+
+function openLightbox(projectIdx) {
+  currentProject = projectIdx;
+  currentSlide = 0;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function lightboxPrev() {
+  const project = PROJECTS[currentProject];
+  currentSlide = (currentSlide - 1 + project.slides.length) % project.slides.length;
+  renderLightbox();
+}
+
+function lightboxNext() {
+  const project = PROJECTS[currentProject];
+  currentSlide = (currentSlide + 1) % project.slides.length;
+  renderLightbox();
+}
+
+function renderLightbox() {
+  const project = PROJECTS[currentProject];
+  const slide = project.slides[currentSlide];
+
+  const wrap = document.getElementById('lightboxImageWrap');
+  if (slide.video) {
+    wrap.innerHTML = `<video src="${encodeURI(slide.video)}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius-lg);"></video>`;
+  } else if (slide.image) {
+    wrap.innerHTML = `<img src="${encodeURI(slide.image)}" alt="${slide.label}" style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius-lg);">`;
+  } else {
+    wrap.innerHTML = `<div class="placeholder-gradient" style="width:100%;height:100%;background:${slide.gradient};border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.3);font-size:var(--text-sm);">${slide.label}</div>`;
+  }
+
+  const dots = document.getElementById('lightboxDots');
+  dots.innerHTML = project.slides.map((_, i) =>
+    `<button class="lightbox-dot${i === currentSlide ? ' active' : ''}" onclick="currentSlide=${i};renderLightbox()"></button>`
+  ).join('');
+
+  document.getElementById('lightboxName').textContent = project.name;
+  document.getElementById('lightboxDesc').textContent = project.desc;
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('lightbox').classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lightboxPrev();
+  if (e.key === 'ArrowRight') lightboxNext();
+});
+
+// Close on backdrop click
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+
+
+// ====== SMOOTH SCROLL ======
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      var top = target.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  });
+});
+
+
+// ====== PRICING CONFIGURATOR ======
+// All numbers and formulas come from pricing.config.js (window.PRICING_CONFIG).
+// This block is UI wiring and math only; edit the config file to change pricing.
+(function() {
+  var C = window.PRICING_CONFIG;
+  if (!C || !document.getElementById('pricingTiers')) return;
+
+  // ---- helpers ----
+  function $(id) { return document.getElementById(id); }
+  function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+  function roundDisp(n) { return Math.round(n / C.roundTo) * C.roundTo; }
+  function fmtHours(h) {
+    var r = Math.round(h * 4) / 4;
+    return r % 1 === 0 ? r.toString() : r.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+  }
+  function tierById(id) {
+    for (var i = 0; i < C.tiers.length; i++) if (C.tiers[i].id === id) return C.tiers[i];
+    return null;
+  }
+  function bandById(id) {
+    for (var i = 0; i < C.slideBands.length; i++) if (C.slideBands[i].id === id) return C.slideBands[i];
+    return C.slideBands[0];
+  }
+  function clamp(n, lim) { return Math.min(lim.max, Math.max(lim.min, n)); }
+
+  function configFromTier(tierId) {
+    var p = tierById(tierId).preset;
+    return {
+      tier: tierId,
+      band: p.band, depth: p.depth,
+      speakers: p.speakers, edits: p.edits, dryRuns: p.dryRuns,
+      onSiteOn: p.onSiteOn, onSiteDays: p.onSiteDays
+    };
+  }
+
+  // ---- pricing engine ----
+  // Depth hours are cumulative: each level adds onto the previous.
+  function depthHours(depthId) {
+    var h = {};
+    C.roles.forEach(function(r) { h[r.key] = 0; });
+    for (var i = 0; i < C.depthLevels.length; i++) {
+      var lvl = C.depthLevels[i];
+      var add = lvl.baseHours || lvl.addHours || {};
+      for (var k in add) h[k] += add[k];
+      if (lvl.id === depthId) break;
+    }
+    return h;
+  }
+
+  function calcDeck(cfg) {
+    var m = C.modifiers;
+    var h = depthHours(cfg.depth);
+
+    var extraSlides = Math.max(0, bandById(cfg.band).slides - m.slidesIncluded);
+    h.design += extraSlides * m.designHoursPerExtraSlide;
+    h.speakerMgmt += cfg.speakers * m.speakerMgmtHoursPerSpeaker;
+    for (var k in m.perEditRound) h[k] += cfg.edits * m.perEditRound[k];
+    for (var k2 in m.perDryRun) h[k2] += cfg.dryRuns * m.perDryRun[k2];
+
+    var rows = [], total = 0, totalHours = 0;
+    C.roles.forEach(function(r) {
+      if (h[r.key] > 0) {
+        var amount = h[r.key] * r.rate;
+        rows.push({ label: r.label, hours: h[r.key], rate: '$' + r.rate + '/hr', amount: amount });
+        total += amount;
+        totalHours += h[r.key];
+      }
+    });
+
+    if (cfg.onSiteOn && cfg.onSiteDays > 0) {
+      var onSiteAmt = cfg.onSiteDays * C.onSite.dayRate;
+      rows.push({
+        label: C.onSite.label,
+        hours: null,
+        rate: '$' + C.onSite.dayRate.toLocaleString() + '/day x ' + cfg.onSiteDays,
+        amount: onSiteAmt
+      });
+      total += onSiteAmt;
+    }
+
+    return { rows: rows, total: total, totalHours: totalHours };
+  }
+
+  // ---- state ----
+  var state = {
+    mode: C.defaults.mode,
+    symposiumCount: C.defaults.symposiumCount,
+    showBreakdown: C.defaults.showBreakdown,
+    quick: configFromTier(C.defaults.quickTier),
+    per: {},
+    activeCity: C.symposiums[0].id
+  };
+  C.symposiums.forEach(function(s) { state.per[s.id] = configFromTier(s.defaultTier); });
+
+  function activeCfg() {
+    return state.mode === 'quick' ? state.quick : state.per[state.activeCity];
+  }
+
+  function cityLabel(id) {
+    for (var i = 0; i < C.symposiums.length; i++) if (C.symposiums[i].id === id) return C.symposiums[i].label;
+    return id;
+  }
+
+  // ---- build static option groups from config ----
+  function buildSeg(el, items, getId, getLabel) {
+    el.innerHTML = '';
+    items.forEach(function(item) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pricing-seg-btn';
+      b.dataset.value = getId(item);
+      b.textContent = getLabel(item);
+      el.appendChild(b);
+    });
+  }
+
+  buildSeg($('ctlBand'), C.slideBands, function(x) { return x.id; }, function(x) { return x.label; });
+  buildSeg($('ctlDepth'), C.depthLevels, function(x) { return x.id; }, function(x) { return x.label; });
+
+  var tiersEl = $('pricingTiers');
+  tiersEl.innerHTML = '';
+  C.tiers.forEach(function(t) {
+    var card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'pricing-tier-card';
+    card.dataset.tier = t.id;
+    card.innerHTML = '<p class="pricing-tier-name">' + t.label + '</p>' +
+                     '<p class="pricing-tier-tagline">' + t.tagline + '</p>';
+    tiersEl.appendChild(card);
+  });
+  var customNote = document.createElement('p');
+  customNote.className = 'pricing-tier-custom-note';
+  customNote.id = 'pricingCustomNote';
+  tiersEl.appendChild(customNote);
+
+  var tabsEl = $('pricingCityTabs');
+  tabsEl.innerHTML = '';
+  C.symposiums.forEach(function(s) {
+    var tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'pricing-city-tab';
+    tab.dataset.city = s.id;
+    tab.innerHTML = s.label + '<span class="pricing-city-tab-cost" data-cost></span>';
+    tabsEl.appendChild(tab);
+  });
+
+  // ---- render ----
+  function setSegActive(el, value) {
+    el.querySelectorAll('.pricing-seg-btn').forEach(function(b) {
+      b.classList.toggle('is-active', b.dataset.value === value);
+    });
+  }
+
+  function setStepper(id, value, lim) {
+    var el = $(id);
+    el.querySelector('.pricing-step-value').textContent = value;
+    el.querySelector('[data-dir="-1"]').disabled = value <= lim.min;
+    el.querySelector('[data-dir="1"]').disabled = value >= lim.max;
+  }
+
+  function render() {
+    var cfg = activeCfg();
+    var deck = calcDeck(cfg);
+
+    // mode toggle
+    $('pricingModeToggle').querySelectorAll('.pricing-mode-btn').forEach(function(b) {
+      b.classList.toggle('is-active', b.dataset.mode === state.mode);
+    });
+
+    var isQuick = state.mode === 'quick';
+    tabsEl.hidden = isQuick;
+    $('ctlSymposiumsWrap').style.display = isQuick ? '' : 'none';
+    $('pricingCitySummary').hidden = isQuick;
+
+    // city tabs
+    if (!isQuick) {
+      tabsEl.querySelectorAll('.pricing-city-tab').forEach(function(tab) {
+        tab.classList.toggle('is-active', tab.dataset.city === state.activeCity);
+        var cost = calcDeck(state.per[tab.dataset.city]).total;
+        tab.querySelector('[data-cost]').textContent = fmt(roundDisp(cost));
+      });
+    }
+
+    // tier cards
+    tiersEl.querySelectorAll('.pricing-tier-card').forEach(function(card) {
+      card.classList.toggle('is-active', card.dataset.tier === cfg.tier);
+    });
+    $('pricingCustomNote').textContent = cfg.tier === 'custom'
+      ? 'Custom configuration. Select a tier to reset the inputs.'
+      : '';
+
+    // config label
+    $('pricingConfigLabel').textContent = isQuick
+      ? 'Configure (applies to all symposiums)'
+      : 'Configure ' + cityLabel(state.activeCity);
+
+    // inputs
+    setStepper('ctlSymposiums', state.symposiumCount, C.limits.symposiums);
+    setSegActive($('ctlBand'), cfg.band);
+    setSegActive($('ctlDepth'), cfg.depth);
+    setStepper('ctlSpeakers', cfg.speakers, C.limits.speakers);
+    setStepper('ctlEdits', cfg.edits, C.limits.edits);
+    setStepper('ctlDryRuns', cfg.dryRuns, C.limits.dryRuns);
+    setStepper('ctlOnSiteDays', cfg.onSiteDays, C.limits.onSiteDays);
+    $('ctlOnSite').setAttribute('aria-checked', cfg.onSiteOn ? 'true' : 'false');
+    $('ctlOnSite').parentElement.classList.toggle('is-off', !cfg.onSiteOn);
+    $('ctlOnSiteUnit').textContent = cfg.onSiteDays === 1 ? 'day' : 'days';
+
+    // metrics
+    // Program totals sum the ROUNDED per-deck figures so the visible
+    // math always adds up for the client.
+    var perDeckDisp = roundDisp(deck.total);
+    var programTotal, programSub;
+    if (isQuick) {
+      programTotal = perDeckDisp * state.symposiumCount;
+      programSub = state.symposiumCount + (state.symposiumCount === 1 ? ' symposium' : ' symposiums') + ' x ' + fmt(perDeckDisp);
+      $('pricingPerDeckLabel').textContent = 'Per deck';
+    } else {
+      programTotal = 0;
+      var parts = [];
+      C.symposiums.forEach(function(s) {
+        programTotal += roundDisp(calcDeck(state.per[s.id]).total);
+        parts.push(s.label);
+      });
+      programSub = parts.join(' + ');
+      $('pricingPerDeckLabel').textContent = 'Per deck · ' + cityLabel(state.activeCity);
+    }
+
+    $('pricingPerDeck').textContent = fmt(perDeckDisp);
+    $('pricingPerDeckSub').textContent = fmtHours(deck.totalHours) + ' role hours' + (cfg.onSiteOn ? ' + on-site' : '');
+    $('pricingProgramTotal').textContent = fmt(programTotal);
+    $('pricingProgramSub').textContent = programSub;
+
+    // per-symposium summary strip
+    if (!isQuick) {
+      var strip = $('pricingCitySummary');
+      strip.innerHTML = '';
+      C.symposiums.forEach(function(s) {
+        var sCfg = state.per[s.id];
+        var sTier = sCfg.tier === 'custom' ? 'Custom' : tierById(sCfg.tier).label;
+        var item = document.createElement('div');
+        item.className = 'pricing-city-summary-item';
+        item.innerHTML = '<span>' + s.label + ' <span class="city-tier">' + sTier + '</span></span>' +
+                         '<span class="city-cost">' + fmt(roundDisp(calcDeck(sCfg).total)) + '</span>';
+        strip.appendChild(item);
+      });
+    }
+
+    // breakdown
+    $('pricingBreakdownCard').hidden = !state.showBreakdown;
+    $('pricingBreakdownToggle').textContent = state.showBreakdown ? 'Hide role breakdown' : 'Show role breakdown';
+    $('pricingBreakdownToggle').setAttribute('aria-expanded', state.showBreakdown ? 'true' : 'false');
+    if (state.showBreakdown) {
+      $('pricingBreakdownLabel').textContent = isQuick
+        ? 'Role breakdown, per deck'
+        : 'Role breakdown, per deck · ' + cityLabel(state.activeCity);
+      var body = $('pricingBreakdownBody');
+      body.innerHTML = '';
+      deck.rows.forEach(function(r) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + r.label + '</td>' +
+                       '<td class="hours">' + (r.hours === null ? 'flat' : fmtHours(r.hours)) + '</td>' +
+                       '<td class="rate">' + r.rate + '</td>' +
+                       '<td class="amount">' + fmt(r.amount) + '</td>';
+        body.appendChild(tr);
+      });
+      var totalTr = document.createElement('tr');
+      totalTr.className = 'total-row';
+      totalTr.innerHTML = '<td>Total</td>' +
+                          '<td class="hours">' + fmtHours(deck.totalHours) + '</td>' +
+                          '<td></td>' +
+                          '<td class="amount">' + fmt(deck.total) + '</td>';
+      body.appendChild(totalTr);
+    }
+  }
+
+  // ---- events ----
+  $('pricingModeToggle').addEventListener('click', function(e) {
+    var btn = e.target.closest('.pricing-mode-btn');
+    if (!btn) return;
+    state.mode = btn.dataset.mode;
+    render();
+  });
+
+  tabsEl.addEventListener('click', function(e) {
+    var tab = e.target.closest('.pricing-city-tab');
+    if (!tab) return;
+    state.activeCity = tab.dataset.city;
+    render();
+  });
+
+  tiersEl.addEventListener('click', function(e) {
+    var card = e.target.closest('.pricing-tier-card');
+    if (!card) return;
+    var fresh = configFromTier(card.dataset.tier);
+    if (state.mode === 'quick') state.quick = fresh;
+    else state.per[state.activeCity] = fresh;
+    render();
+  });
+
+  function markCustom(cfg) { cfg.tier = 'custom'; }
+
+  function wireStepper(id, lim, apply) {
+    $(id).addEventListener('click', function(e) {
+      var btn = e.target.closest('.pricing-step-btn');
+      if (!btn || btn.disabled) return;
+      apply(parseInt(btn.dataset.dir, 10), lim);
+      render();
+    });
+  }
+
+  wireStepper('ctlSymposiums', C.limits.symposiums, function(dir, lim) {
+    state.symposiumCount = clamp(state.symposiumCount + dir, lim);
+  });
+  wireStepper('ctlSpeakers', C.limits.speakers, function(dir, lim) {
+    var cfg = activeCfg(); cfg.speakers = clamp(cfg.speakers + dir, lim); markCustom(cfg);
+  });
+  wireStepper('ctlEdits', C.limits.edits, function(dir, lim) {
+    var cfg = activeCfg(); cfg.edits = clamp(cfg.edits + dir, lim); markCustom(cfg);
+  });
+  wireStepper('ctlDryRuns', C.limits.dryRuns, function(dir, lim) {
+    var cfg = activeCfg(); cfg.dryRuns = clamp(cfg.dryRuns + dir, lim); markCustom(cfg);
+  });
+  wireStepper('ctlOnSiteDays', C.limits.onSiteDays, function(dir, lim) {
+    var cfg = activeCfg(); cfg.onSiteDays = clamp(cfg.onSiteDays + dir, lim); markCustom(cfg);
+  });
+
+  $('ctlBand').addEventListener('click', function(e) {
+    var btn = e.target.closest('.pricing-seg-btn');
+    if (!btn) return;
+    var cfg = activeCfg(); cfg.band = btn.dataset.value; markCustom(cfg);
+    render();
+  });
+
+  $('ctlDepth').addEventListener('click', function(e) {
+    var btn = e.target.closest('.pricing-seg-btn');
+    if (!btn) return;
+    var cfg = activeCfg(); cfg.depth = btn.dataset.value; markCustom(cfg);
+    render();
+  });
+
+  $('ctlOnSite').addEventListener('click', function() {
+    var cfg = activeCfg(); cfg.onSiteOn = !cfg.onSiteOn; markCustom(cfg);
+    render();
+  });
+
+  $('pricingBreakdownToggle').addEventListener('click', function() {
+    state.showBreakdown = !state.showBreakdown;
+    render();
+  });
+
+  render();
+})();
+
+
+// ====== YOUTUBE LAZY LOAD (IntersectionObserver) ======
+(function() {
+  const videoEl = document.getElementById('platformVideo');
+  if (!videoEl) return;
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const videoId = videoEl.dataset.videoId;
+        videoEl.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&loop=1&playlist=' + videoId + '&controls=0&showinfo=0&rel=0" title="SketchDeck Platform Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe>';
+        videoObserver.disconnect();
+      }
+    });
+  }, { rootMargin: '200px' });
+  videoObserver.observe(videoEl);
+})();
+</script>
+
+</div><!-- /.page-content -->
+
+<script>
+// Password gate
+(function() {
+  var gate = document.getElementById('pwGate');
+  var content = document.getElementById('pageContent');
+  var input = document.getElementById('pwInput');
+  var btn = document.getElementById('pwSubmit');
+
+  function attempt() {
+    if (input.value === 'Day1') {
+      gate.classList.add('hidden');
+      content.classList.remove('locked');
+    } else {
+      input.classList.add('shake');
+      input.value = '';
+      setTimeout(function() { input.classList.remove('shake'); }, 400);
+    }
+  }
+
+  btn.addEventListener('click', attempt);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') attempt();
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1038 @@
+/* ============================================================
+   24 Seven Agencies (24SA) - Brand Style System v2
+   A house of leading creative & marketing agencies.
+   Futureman · SketchDeck · Markacy
+
+   FONTS:    Instrument Serif (headlines) + Rethink Sans (body)
+   COLORS:   #FFD400 · #C0D8FF · #FF5E2E · #F3EEE7 · #000000
+   TEXTURES: Dark film grain, radial light sweeps
+   SHAPES:   Ellipses / ovals with thin strokes
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   FONT IMPORTS
+   Instrument Serif: Regular 400, Regular 400 Italic
+   Rethink Sans: 400, 500, 600, 700
+   ------------------------------------------------------------ */
+/* Google Fonts moved to <link> in HTML <head> for parallel loading */
+
+
+/* ------------------------------------------------------------
+   1. DESIGN TOKENS
+   ------------------------------------------------------------ */
+
+:root {
+
+  /* - Official Brand Colors - */
+  --24sa-black:            #000000;
+  --24sa-off-white:        #F3EEE7;
+  --futureman-yellow:      #FFD400;
+  --sketchdeck-blue:       #C0D8FF;
+  --markacy-orange:        #FF5E2E;
+
+  /* - Extended Neutrals (derived from brand) - */
+  --warm-dark:             #0A0908;
+  --warm-surface:          #121110;
+  --warm-card:             #1A1816;
+  --warm-border:           rgba(243, 238, 231, 0.08);
+  --warm-border-hover:     rgba(243, 238, 231, 0.15);
+  --muted-text:            #8A857D;
+  --muted-text-light:      #6B665E;
+
+  /* - Semantic Aliases - */
+  --color-bg-dark:         var(--24sa-black);
+  --color-bg-light:        var(--24sa-off-white);
+  --color-text-on-dark:    var(--24sa-off-white);
+  --color-text-on-light:   var(--24sa-black);
+
+  /* - Typography - */
+  --font-serif:            'Instrument Serif', 'Georgia', serif;
+  --font-sans:             'Rethink Sans', 'Helvetica Neue', 'Arial', sans-serif;
+
+  /* - Font Weights - */
+  --weight-regular:        400;
+  --weight-medium:         500;
+  --weight-semibold:       600;
+  --weight-bold:           700;
+  --weight-extrabold:      800;
+
+  /* - Fluid Type Scale - */
+  --text-xs:               clamp(0.7rem,   0.65rem + 0.2vw,  0.8rem);
+  --text-sm:               clamp(0.8rem,   0.75rem + 0.25vw, 0.95rem);
+  --text-base:             clamp(0.95rem,  0.88rem + 0.35vw, 1.15rem);
+  --text-lg:               clamp(1.15rem,  1.05rem + 0.5vw,  1.4rem);
+  --text-xl:               clamp(1.35rem,  1.2rem  + 0.7vw,  1.8rem);
+  --text-2xl:              clamp(1.6rem,   1.4rem  + 1vw,    2.3rem);
+  --text-3xl:              clamp(2rem,     1.7rem  + 1.5vw,  3rem);
+  --text-4xl:              clamp(2.5rem,   2rem    + 2.2vw,  4rem);
+  --text-5xl:              clamp(3rem,     2.4rem  + 3vw,    5rem);
+  --text-display:          clamp(3.5rem,   2.8rem  + 4vw,    6.5rem);
+  --text-hero:             clamp(4rem,     3rem    + 5vw,    8rem);
+
+  /* - Line Heights - */
+  --leading-none:          1;
+  --leading-tight:         1.1;
+  --leading-snug:          1.25;
+  --leading-normal:        1.5;
+  --leading-relaxed:       1.65;
+
+  /* - Letter Spacing - */
+  --tracking-tight:        -0.02em;
+  --tracking-normal:       0;
+  --tracking-wide:         0.04em;
+  --tracking-wider:        0.08em;
+  --tracking-widest:       0.16em;
+
+  /* - Spacing - */
+  --space-1:               0.25rem;
+  --space-2:               0.5rem;
+  --space-3:               0.75rem;
+  --space-4:               1rem;
+  --space-5:               1.25rem;
+  --space-6:               1.5rem;
+  --space-8:               2rem;
+  --space-10:              2.5rem;
+  --space-12:              3rem;
+  --space-16:              4rem;
+  --space-20:              5rem;
+  --space-24:              6rem;
+  --space-32:              8rem;
+  --space-40:              10rem;
+
+  /* - Border Radius - */
+  --radius-sm:             0.25rem;
+  --radius-md:             0.5rem;
+  --radius-lg:             0.75rem;
+  --radius-xl:             1rem;
+  --radius-2xl:            1.5rem;
+  --radius-pill:           9999px;
+  --radius-ellipse:        50%;
+
+  /* - Shadows - */
+  --shadow-sm:             0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md:             0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-lg:             0 8px 32px rgba(0, 0, 0, 0.28);
+  --shadow-xl:             0 16px 56px rgba(0, 0, 0, 0.36);
+
+  /* - Transitions - */
+  --ease-smooth:           cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out:              cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast:         150ms;
+  --duration-normal:       300ms;
+  --duration-slow:         600ms;
+  --duration-slower:       900ms;
+
+  /* - Layout - */
+  --container-narrow:      680px;
+  --container-md:          900px;
+  --container-lg:          1100px;
+  --container-xl:          1280px;
+  --container-2xl:         1440px;
+}
+
+
+/* ------------------------------------------------------------
+   2. RESET & BASE
+   ------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-on-dark);
+  background-color: var(--color-bg-dark);
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+
+/* ------------------------------------------------------------
+   3. TYPOGRAPHY
+   ------------------------------------------------------------ */
+
+/*
+   BRAND RULE:
+   Headlines → Instrument Serif Regular (with Italic for emphasis/highlights)
+   Body text → Rethink Sans Regular
+   Labels/UI → Rethink Sans Medium-Bold, uppercase, wide tracking
+*/
+
+/* - Headings: Instrument Serif - */
+
+h1, h2, h3, h4, h5, h6,
+.heading {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-regular);  /* Instrument Serif is used at 400 */
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: inherit;
+}
+
+h1, .h1 {
+  font-size: var(--text-hero);
+  line-height: var(--leading-none);
+}
+
+h2, .h2 {
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+}
+
+h3, .h3 {
+  font-size: var(--text-5xl);
+}
+
+h4, .h4 {
+  font-size: var(--text-4xl);
+}
+
+h5, .h5 {
+  font-size: var(--text-3xl);
+}
+
+h6, .h6 {
+  font-size: var(--text-2xl);
+}
+
+/* - Italic Highlights (the brand signature) - */
+
+.italic,
+em,
+h1 em, h2 em, h3 em, h4 em, h5 em, h6 em {
+  font-style: italic;
+  font-weight: var(--weight-regular);
+}
+
+/* - Serif Accent Taglines ("Experience.", "Create.", "Perform.") - */
+
+.tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: var(--weight-regular);
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+}
+
+.tagline--futureman  { color: var(--futureman-yellow); }
+.tagline--sketchdeck { color: var(--sketchdeck-blue); }
+.tagline--markacy    { color: var(--markacy-orange); }
+
+/* - Body Copy: Rethink Sans - */
+
+p {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-4);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* - Eyebrow / Overline (small label above headlines) - */
+
+.eyebrow,
+.overline {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+/* - Text Size Utilities - */
+
+.text-xs      { font-size: var(--text-xs); }
+.text-sm      { font-size: var(--text-sm); }
+.text-base    { font-size: var(--text-base); }
+.text-lg      { font-size: var(--text-lg); }
+.text-xl      { font-size: var(--text-xl); }
+.text-2xl     { font-size: var(--text-2xl); }
+.text-3xl     { font-size: var(--text-3xl); }
+
+
+/* ------------------------------------------------------------
+   4. GRAIN TEXTURE & ATMOSPHERIC EFFECTS
+   ------------------------------------------------------------ */
+
+/*
+   The 24SA brand uses a prominent film-grain texture on dark surfaces.
+   This is NOT subtle - it's a defining visual element.
+   Apply .grain to any section that needs the textured dark look.
+*/
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* Ensure content sits above the grain */
+.grain > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* - Radial Light Sweep (the warm glow on dark grainy backgrounds) - */
+
+.glow {
+  position: relative;
+}
+
+.glow::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 120%;
+  height: 80%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(243, 238, 231, 0.07) 0%,
+    rgba(243, 238, 231, 0.03) 35%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* - Cool Blue Glow Variant (seen in some brand textures) - */
+
+.glow--blue::before {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(192, 216, 255, 0.06) 0%,
+    rgba(192, 216, 255, 0.02) 35%,
+    transparent 65%
+  );
+}
+
+
+/* ------------------------------------------------------------
+   5. ELLIPSE / OVAL SHAPES
+   ------------------------------------------------------------ */
+
+/*
+   The 24SA brand uses thin-stroked ellipses/ovals as a signature
+   graphic element - seen in the agency logos layout with overlapping
+   oval containers. These are NOT rounded rectangles.
+*/
+
+.ellipse {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--warm-border);
+  border-radius: var(--radius-ellipse);
+  padding: var(--space-8) var(--space-16);
+  transition: border-color var(--duration-normal) var(--ease-smooth),
+              background-color var(--duration-normal) var(--ease-smooth);
+}
+
+.ellipse:hover {
+  border-color: var(--warm-border-hover);
+}
+
+.ellipse--filled {
+  background-color: var(--24sa-black);
+  border-color: rgba(243, 238, 231, 0.12);
+}
+
+/* - Overlapping Ellipse Stack (3 ovals stacked vertically, slightly overlapping) - */
+
+.ellipse-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--space-4) * -1); /* Negative gap for overlap */
+}
+
+.ellipse-stack .ellipse {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 2.5 / 1;
+}
+
+/* - Flowing Orbit Line (the yellow curved line in the "Experience" hero) - */
+
+.orbit-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.orbit-line svg {
+  width: 100%;
+  height: 100%;
+}
+
+.orbit-line path {
+  fill: none;
+  stroke: var(--futureman-yellow);
+  stroke-width: 1.5;
+}
+
+
+/* ------------------------------------------------------------
+   6. LAYOUT
+   ------------------------------------------------------------ */
+
+.container {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.container--narrow  { max-width: var(--container-narrow); }
+.container--md      { max-width: var(--container-md); }
+.container--wide    { max-width: var(--container-2xl); }
+
+/* - Sections: generous vertical rhythm - */
+
+.section {
+  padding-block: var(--space-32);
+}
+
+.section--compact {
+  padding-block: var(--space-20);
+}
+
+.section--hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-20) var(--space-6);
+}
+
+/* - Grid - */
+
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.grid--2col { grid-template-columns: repeat(2, 1fr); }
+.grid--3col { grid-template-columns: repeat(3, 1fr); }
+.grid--4col { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+  .grid--2col,
+  .grid--3col,
+  .grid--4col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* - Flex - */
+
+.flex           { display: flex; }
+.flex-col       { flex-direction: column; }
+.flex-wrap      { flex-wrap: wrap; }
+.items-center   { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-2  { gap: var(--space-2); }
+.gap-4  { gap: var(--space-4); }
+.gap-6  { gap: var(--space-6); }
+.gap-8  { gap: var(--space-8); }
+.gap-12 { gap: var(--space-12); }
+
+
+/* ------------------------------------------------------------
+   7. THEME VARIANTS
+   ------------------------------------------------------------ */
+
+/* Dark (default) */
+.theme-dark,
+[data-theme="dark"] {
+  background-color: var(--24sa-black);
+  color: var(--24sa-off-white);
+}
+
+/* Light / Off-White */
+.theme-light,
+[data-theme="light"] {
+  background-color: var(--24sa-off-white);
+  color: var(--24sa-black);
+}
+
+/* Futureman Yellow */
+.theme-futureman,
+[data-theme="futureman"] {
+  background-color: var(--futureman-yellow);
+  color: var(--24sa-black);
+}
+
+/* SketchDeck Blue */
+.theme-sketchdeck,
+[data-theme="sketchdeck"] {
+  background-color: var(--sketchdeck-blue);
+  color: var(--24sa-black);
+}
+
+/* Markacy Orange */
+.theme-markacy,
+[data-theme="markacy"] {
+  background-color: var(--markacy-orange);
+  color: var(--24sa-black);
+}
+
+
+/* ------------------------------------------------------------
+   8. COMPONENTS
+   ------------------------------------------------------------ */
+
+/* - Card - */
+
+.card {
+  background-color: var(--warm-card);
+  border: 1px solid var(--warm-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8) var(--space-6);
+  transition: transform var(--duration-normal) var(--ease-smooth),
+              border-color var(--duration-normal) var(--ease-smooth),
+              box-shadow var(--duration-normal) var(--ease-smooth);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--warm-border-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.card--light {
+  background-color: var(--24sa-off-white);
+  color: var(--24sa-black);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.card--yellow {
+  background-color: var(--futureman-yellow);
+  color: var(--24sa-black);
+  border-color: transparent;
+}
+
+.card--blue {
+  background-color: var(--sketchdeck-blue);
+  color: var(--24sa-black);
+  border-color: transparent;
+}
+
+.card--orange {
+  background-color: var(--markacy-orange);
+  color: var(--24sa-black);
+  border-color: transparent;
+}
+
+/* - Button - */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  padding: var(--space-3) var(--space-8);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  text-decoration: none;
+}
+
+.btn--primary {
+  background-color: var(--24sa-off-white);
+  color: var(--24sa-black);
+  border-color: var(--24sa-off-white);
+}
+
+.btn--primary:hover {
+  background-color: transparent;
+  color: var(--24sa-off-white);
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: var(--24sa-off-white);
+  border-color: var(--24sa-off-white);
+}
+
+.btn--outline:hover {
+  background-color: var(--24sa-off-white);
+  color: var(--24sa-black);
+}
+
+.btn--yellow {
+  background-color: var(--futureman-yellow);
+  color: var(--24sa-black);
+  border-color: var(--futureman-yellow);
+}
+
+.btn--yellow:hover {
+  background-color: transparent;
+  color: var(--futureman-yellow);
+}
+
+.btn--orange {
+  background-color: var(--markacy-orange);
+  color: var(--24sa-black);
+  border-color: var(--markacy-orange);
+}
+
+.btn--orange:hover {
+  background-color: transparent;
+  color: var(--markacy-orange);
+}
+
+/* - Navigation - */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+}
+
+.nav__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+/* "24|seven" in light sans, "agencies" in bold serif */
+.nav__brand-prefix {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  color: var(--24sa-off-white);
+}
+
+.nav__brand-name {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-lg);
+  color: var(--24sa-off-white);
+  margin-left: var(--space-1);
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  list-style: none;
+}
+
+.nav__link {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--muted-text);
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+
+.nav__link:hover {
+  color: var(--24sa-off-white);
+}
+
+/* - Hero - */
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-20) var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-bottom: var(--space-6);
+}
+
+.hero__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-hero);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-tight);
+  color: var(--24sa-off-white);
+  max-width: 16ch;
+}
+
+.hero__subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+  color: var(--muted-text);
+  margin-top: var(--space-6);
+  max-width: 48ch;
+}
+
+/* - Agency Badge Row - */
+
+.agency-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .agency-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.agency-cell {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.agency-cell__header {
+  padding: var(--space-4) var(--space-5);
+}
+
+.agency-cell__logo {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-extrabold);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-2);
+}
+
+.agency-cell__tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+}
+
+.agency-cell__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.agency-cell__services {
+  padding: var(--space-5);
+  background-color: var(--24sa-black);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--24sa-off-white);
+}
+
+.agency-cell__desc {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--muted-text);
+  margin-top: var(--space-3);
+}
+
+/* - Divider - */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--warm-border);
+}
+
+.divider--orange {
+  background-color: var(--markacy-orange);
+  height: 2px;
+}
+
+/* - Logo Bar - */
+
+.logo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+  padding: var(--space-8) 0;
+}
+
+.logo-bar img,
+.logo-bar svg {
+  height: 24px;
+  width: auto;
+  opacity: 0.6;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+.logo-bar img:hover,
+.logo-bar svg:hover {
+  opacity: 1;
+}
+
+/* - Footer - */
+
+.footer {
+  padding: var(--space-12) var(--space-6) var(--space-8);
+  text-align: center;
+}
+
+.footer__agencies {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-12);
+  margin-bottom: var(--space-6);
+}
+
+.footer__agency-logo {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--24sa-off-white);
+  opacity: 0.7;
+}
+
+.footer__brand {
+  margin-bottom: var(--space-4);
+}
+
+.footer__brand-prefix {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--24sa-off-white);
+}
+
+.footer__brand-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  color: var(--24sa-off-white);
+}
+
+.footer__copy {
+  font-size: var(--text-xs);
+  color: var(--muted-text);
+}
+
+
+/* ------------------------------------------------------------
+   9. UTILITY CLASSES
+   ------------------------------------------------------------ */
+
+/* - Text Colors - */
+.text-off-white  { color: var(--24sa-off-white); }
+.text-black      { color: var(--24sa-black); }
+.text-yellow     { color: var(--futureman-yellow); }
+.text-blue       { color: var(--sketchdeck-blue); }
+.text-orange     { color: var(--markacy-orange); }
+.text-muted      { color: var(--muted-text); }
+
+/* - Background Colors - */
+.bg-black        { background-color: var(--24sa-black); }
+.bg-off-white    { background-color: var(--24sa-off-white); }
+.bg-yellow       { background-color: var(--futureman-yellow); }
+.bg-blue         { background-color: var(--sketchdeck-blue); }
+.bg-orange       { background-color: var(--markacy-orange); }
+.bg-warm-dark    { background-color: var(--warm-dark); }
+.bg-warm-surface { background-color: var(--warm-surface); }
+
+/* - Font Families - */
+.font-serif      { font-family: var(--font-serif); }
+.font-sans       { font-family: var(--font-sans); }
+
+/* - Font Styles - */
+.italic          { font-style: italic; }
+.uppercase       { text-transform: uppercase; }
+.tracking-wide   { letter-spacing: var(--tracking-wide); }
+.tracking-wider  { letter-spacing: var(--tracking-wider); }
+.tracking-widest { letter-spacing: var(--tracking-widest); }
+
+/* - Text Alignment - */
+.text-center     { text-align: center; }
+.text-left       { text-align: left; }
+.text-right      { text-align: right; }
+
+/* - Spacing - */
+.mt-4   { margin-top: var(--space-4); }
+.mt-6   { margin-top: var(--space-6); }
+.mt-8   { margin-top: var(--space-8); }
+.mt-12  { margin-top: var(--space-12); }
+.mt-16  { margin-top: var(--space-16); }
+.mt-20  { margin-top: var(--space-20); }
+.mb-4   { margin-bottom: var(--space-4); }
+.mb-8   { margin-bottom: var(--space-8); }
+.mb-12  { margin-bottom: var(--space-12); }
+.p-4    { padding: var(--space-4); }
+.p-6    { padding: var(--space-6); }
+.p-8    { padding: var(--space-8); }
+
+/* - Visibility - */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+/* ------------------------------------------------------------
+   10. SCROLL ANIMATIONS
+   ------------------------------------------------------------ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+}
+
+/* Staggered children */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: 80ms; }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: 160ms; }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: 240ms; }
+.reveal-stagger.visible > *:nth-child(5) { transition-delay: 320ms; }
+.reveal-stagger.visible > *:nth-child(6) { transition-delay: 400ms; }
+
+.reveal-stagger.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+}
+
+
+/* ------------------------------------------------------------
+   11. RESPONSIVE
+   ------------------------------------------------------------ */
+
+@media (max-width: 1024px) {
+  .section {
+    padding-block: var(--space-24);
+  }
+
+  .hero {
+    min-height: 80vh;
+    padding: var(--space-16) var(--space-6);
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-block: var(--space-16);
+  }
+
+  .hero {
+    min-height: 70vh;
+    padding: var(--space-12) var(--space-4);
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .nav__links {
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo-bar {
+    gap: var(--space-6);
+  }
+
+  .footer__agencies {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* Reduce grain intensity on mobile for performance */
+  .grain::after {
+    opacity: 0.2;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-inline: var(--space-4);
+  }
+}
