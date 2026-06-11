@@ -41,8 +41,10 @@ Current placeholder rates (pending confirmation, label everything "Estimate, not
 ## Verification checklist (run after any change)
 
 - Any symposium can be set to any tier, and each event's price recalculates independently.
-- Expected defaults with current placeholders: London (Lean) $11,500, Ottawa (Signature) $23,900, Canberra (Premium) $40,600, per-symposium program total $76,000; Quick estimate at Signature x3 is $23,900 per deck, $71,700 program.
-- Exact per-deck math before rounding: Lean 11,450; Signature 23,845; Premium 40,570.
+- Expected defaults with current placeholders: London (Lean) $11,500, Ottawa (Signature) $20,400, Canberra (Premium) $39,400, per-symposium program total $71,300; Quick estimate at Signature x3 is $20,400 per deck, $61,200 program.
+- Exact per-deck math before rounding: Lean 11,450; Signature 20,345; Premium 39,315.
+- Preset on-site is Premium-only (Lean and Signature presets are onSiteDays: 0; Premium is 2). On-site days remain configurable on any tier via the Custom panel.
+- Premium preset includes 2 dry runs managed.
 - No formula numbers in `index.html`; `node --check pricing.config.js` passes; no em dashes in any file.
 - Headline figures are always >= the exact breakdown total and within $100 of it (plus on-site already included in both).
 

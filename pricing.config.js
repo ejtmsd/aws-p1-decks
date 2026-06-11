@@ -93,13 +93,13 @@ window.PRICING_CONFIG = {
       id: 'signature',
       label: 'Signature',
       tagline: 'Scripting and speaker support',
-      preset: { band: 'b35', depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteDays: 1 }
+      preset: { band: 'b35', depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteDays: 0 }
     },
     {
       id: 'premium',
       label: 'Premium',
       tagline: 'Full narrative, full coverage',
-      preset: { band: 'b50', depth: 'full',   speakers: 5, edits: 4, dryRuns: 3, onSiteDays: 2 }
+      preset: { band: 'b50', depth: 'full',   speakers: 5, edits: 4, dryRuns: 2, onSiteDays: 2 }
     }
   ],
 
