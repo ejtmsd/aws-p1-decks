@@ -48,10 +48,10 @@ Approved copy source: `AWS_1P_Symposiums_Proposal_Content_v1.md`.
 
 How the math works, per deck:
 
-1. Writing depth picks cumulative base hours (each level adds onto the previous).
+1. Writing depth sets absolute base hours per level (what you see in the config is what that level costs before modifiers).
 2. Modifiers add hours: extra slides above 20 add design hours, speakers add speaker management, edit rounds add design and writing, dry runs add PM and writing.
-3. Cost = sum of role hours x rates, plus flat on-site day rate x days if enabled.
-4. Headline figures round to the nearest $250 (`roundTo` in config); the role breakdown table shows exact math. Program totals sum the rounded per-deck figures so visible math adds up.
+3. Cost = sum of role hours x rates, plus flat on-site day rate x days (0 days = no on-site).
+4. Headline figures round UP to the nearest $100 (`roundUpTo` in config); the role breakdown table shows exact math. Program totals sum the rounded per-deck figures so visible math adds up.
 
 Two independent axes, deliberately decoupled: tiers (Lean / Signature / Premium) are service-level options that can apply to any event, and symposiums (London, Ottawa, Canberra) are the three events. Each symposium carries a client-facing readiness note and a `recommendedTier`, which is our suggested starting point based on readiness (the only per-event distinction the client confirmed). It is a changeable default, not an identity; any symposium can run at any service level.
 

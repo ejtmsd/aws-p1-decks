@@ -10,9 +10,10 @@
 
 window.PRICING_CONFIG = {
 
-  /* Displayed prices round to the nearest roundTo dollars.
-     The role breakdown table shows exact math. */
-  roundTo: 250,
+  /* Displayed prices round UP to the nearest roundUpTo dollars.
+     The role breakdown table shows exact math; headline figures
+     may sit up to this amount above the breakdown total. */
+  roundUpTo: 100,
 
   /* Hourly rates per role. Order here controls row order in
      the breakdown table. */
@@ -38,23 +39,24 @@ window.PRICING_CONFIG = {
     { id: 'b50', label: 'Up to 50', slides: 50 }
   ],
 
-  /* Writing and content depth. Hours are CUMULATIVE: each level
-     starts from the previous level's hours and adds addHours. */
+  /* Writing and content depth. Each level lists its ABSOLUTE base
+     hours per deck; what you see is what that level costs before
+     modifiers. */
   depthLevels: [
     {
       id: 'mods',
       label: 'Deck mods only',
-      baseHours: { design: 20, designDir: 3, pm: 6, qc: 5, writing: 4, speakerMgmt: 0 }
+      hours: { writing: 4,  speakerMgmt: 0,  design: 20, designDir: 3, pm: 6, qc: 5 }
     },
     {
       id: 'script',
       label: 'Scripting from framework',
-      addHours: { writing: 16, speakerMgmt: 8 }
+      hours: { writing: 20, speakerMgmt: 8,  design: 20, designDir: 3, pm: 6, qc: 5 }
     },
     {
       id: 'full',
       label: 'Full narrative + scripting',
-      addHours: { writing: 28, speakerMgmt: 14, designDir: 5 }
+      hours: { writing: 48, speakerMgmt: 22, design: 20, designDir: 8, pm: 6, qc: 5 }
     }
   ],
 
@@ -67,13 +69,13 @@ window.PRICING_CONFIG = {
     perDryRun:    { pm: 4, writing: 3 }
   },
 
-  /* Stepper limits. */
+  /* Stepper limits. On-site days of 0 means no on-site support. */
   limits: {
     symposiums: { min: 1, max: 3 },
     speakers:   { min: 1, max: 12 },
     edits:      { min: 0, max: 10 },
     dryRuns:    { min: 0, max: 6 },
-    onSiteDays: { min: 1, max: 5 }
+    onSiteDays: { min: 0, max: 5 }
   },
 
   /* Service-level tiers. These are independent options that can
@@ -85,19 +87,19 @@ window.PRICING_CONFIG = {
       id: 'lean',
       label: 'Lean',
       tagline: 'Deck mods, light support',
-      preset: { band: 'b20', depth: 'mods',   speakers: 3, edits: 2, dryRuns: 1, onSiteOn: false, onSiteDays: 1 }
+      preset: { band: 'b20', depth: 'mods',   speakers: 3, edits: 2, dryRuns: 1, onSiteDays: 0 }
     },
     {
       id: 'signature',
       label: 'Signature',
       tagline: 'Scripting and speaker support',
-      preset: { band: 'b35', depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteOn: true,  onSiteDays: 1 }
+      preset: { band: 'b35', depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteDays: 1 }
     },
     {
       id: 'premium',
       label: 'Premium',
       tagline: 'Full narrative, full coverage',
-      preset: { band: 'b50', depth: 'full',   speakers: 5, edits: 4, dryRuns: 3, onSiteOn: true,  onSiteDays: 2 }
+      preset: { band: 'b50', depth: 'full',   speakers: 5, edits: 4, dryRuns: 3, onSiteDays: 2 }
     }
   ],
 

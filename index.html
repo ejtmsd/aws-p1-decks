@@ -2035,67 +2035,13 @@ a:hover { color: var(--accent); }
   text-align: center;
 }
 
-.pricing-stepper--small .pricing-step-btn {
-  width: 26px;
-  height: 26px;
-  font-size: var(--text-sm);
-}
-
-.pricing-stepper--small .pricing-step-value {
-  font-size: var(--text-lg);
-  min-width: 22px;
-}
-
-/* On-site toggle switch */
-.pricing-onsite-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.pricing-switch {
-  width: 46px;
-  height: 26px;
-  border-radius: var(--radius-pill, 9999px);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.08);
-  position: relative;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-  flex-shrink: 0;
-}
-
-.pricing-switch-knob {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--24sa-off-white);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease;
-}
-
-.pricing-switch[aria-checked="true"] {
-  background: var(--24sa-black);
-  border-color: var(--24sa-black);
-}
-
-.pricing-switch[aria-checked="true"] .pricing-switch-knob {
-  transform: translateX(20px);
-}
-
-.pricing-onsite-unit {
+/* On-site days hint */
+.pricing-control-hint {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   color: var(--muted-text-light);
-}
-
-.pricing-onsite-row.is-off .pricing-stepper,
-.pricing-onsite-row.is-off .pricing-onsite-unit {
-  opacity: 0.3;
-  pointer-events: none;
+  margin-top: var(--space-2);
+  opacity: 0.7;
 }
 
 /* - Configurator: per-symposium summary strip - */
@@ -3057,18 +3003,13 @@ a:hover { color: var(--accent); }
         </div>
 
         <div class="pricing-control">
-          <p class="pricing-control-label">On-site support</p>
-          <div class="pricing-onsite-row">
-            <button type="button" class="pricing-switch" id="ctlOnSite" role="switch" aria-checked="false" aria-label="Toggle on-site support">
-              <span class="pricing-switch-knob"></span>
-            </button>
-            <div class="pricing-stepper pricing-stepper--small" id="ctlOnSiteDays">
-              <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer on-site days">&minus;</button>
-              <span class="pricing-step-value">1</span>
-              <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More on-site days">+</button>
-            </div>
-            <span class="pricing-onsite-unit" id="ctlOnSiteUnit">day</span>
+          <p class="pricing-control-label">On-site support days</p>
+          <div class="pricing-stepper" id="ctlOnSiteDays">
+            <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer on-site days">&minus;</button>
+            <span class="pricing-step-value">1</span>
+            <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More on-site days">+</button>
           </div>
+          <p class="pricing-control-hint" id="ctlOnSiteHint">0 = no on-site support</p>
         </div>
 
       </div>
@@ -3108,7 +3049,7 @@ a:hover { color: var(--accent); }
         </thead>
         <tbody id="pricingBreakdownBody"></tbody>
       </table>
-      <p class="pricing-footnote">Breakdown shows exact math. Headline figures round to the nearest $250.</p>
+      <p class="pricing-footnote">Breakdown shows exact math. Headline figures round up to the nearest $100.</p>
     </div>
 
     <p class="pricing-footnote reveal">Figures are planning estimates. Final scope and pricing confirmed after the scoping conversation.</p>
@@ -3562,7 +3503,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   // ---- helpers ----
   function $(id) { return document.getElementById(id); }
   function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
-  function roundDisp(n) { return Math.round(n / C.roundTo) * C.roundTo; }
+  function roundDisp(n) { return Math.ceil(n / C.roundUpTo) * C.roundUpTo; }
   function fmtHours(h) {
     var r = Math.round(h * 4) / 4;
     return r % 1 === 0 ? r.toString() : r.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
@@ -3583,20 +3524,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       tier: tierId,
       band: p.band, depth: p.depth,
       speakers: p.speakers, edits: p.edits, dryRuns: p.dryRuns,
-      onSiteOn: p.onSiteOn, onSiteDays: p.onSiteDays
+      onSiteDays: p.onSiteDays
     };
   }
 
   // ---- pricing engine ----
-  // Depth hours are cumulative: each level adds onto the previous.
+  // Each depth level lists its absolute base hours.
   function depthHours(depthId) {
     var h = {};
     C.roles.forEach(function(r) { h[r.key] = 0; });
     for (var i = 0; i < C.depthLevels.length; i++) {
-      var lvl = C.depthLevels[i];
-      var add = lvl.baseHours || lvl.addHours || {};
-      for (var k in add) h[k] += add[k];
-      if (lvl.id === depthId) break;
+      if (C.depthLevels[i].id === depthId) {
+        var hrs = C.depthLevels[i].hours;
+        for (var k in hrs) h[k] = hrs[k];
+        break;
+      }
     }
     return h;
   }
@@ -3621,7 +3563,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       }
     });
 
-    if (cfg.onSiteOn && cfg.onSiteDays > 0) {
+    if (cfg.onSiteDays > 0) {
       var onSiteAmt = cfg.onSiteDays * C.onSite.dayRate;
       rows.push({
         label: C.onSite.label,
@@ -3779,9 +3721,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     setStepper('ctlEdits', cfg.edits, C.limits.edits);
     setStepper('ctlDryRuns', cfg.dryRuns, C.limits.dryRuns);
     setStepper('ctlOnSiteDays', cfg.onSiteDays, C.limits.onSiteDays);
-    $('ctlOnSite').setAttribute('aria-checked', cfg.onSiteOn ? 'true' : 'false');
-    $('ctlOnSite').parentElement.classList.toggle('is-off', !cfg.onSiteOn);
-    $('ctlOnSiteUnit').textContent = cfg.onSiteDays === 1 ? 'day' : 'days';
 
     // metrics
     // Program totals sum the ROUNDED per-deck figures so the visible
@@ -3804,7 +3743,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
 
     $('pricingPerDeck').textContent = fmt(perDeckDisp);
-    $('pricingPerDeckSub').textContent = fmtHours(deck.totalHours) + ' role hours' + (cfg.onSiteOn ? ' + on-site' : '');
+    $('pricingPerDeckSub').textContent = fmtHours(deck.totalHours) + ' role hours' + (cfg.onSiteDays > 0 ? ' + on-site' : '');
     $('pricingProgramTotal').textContent = fmt(programTotal);
     $('pricingProgramSub').textContent = programSub;
 
@@ -3913,11 +3852,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var btn = e.target.closest('.pricing-seg-btn');
     if (!btn) return;
     var cfg = activeCfg(); cfg.depth = btn.dataset.value; markCustom(cfg);
-    render();
-  });
-
-  $('ctlOnSite').addEventListener('click', function() {
-    var cfg = activeCfg(); cfg.onSiteOn = !cfg.onSiteOn; markCustom(cfg);
     render();
   });
 
