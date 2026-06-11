@@ -1167,6 +1167,52 @@ a:hover { color: var(--accent); }
   letter-spacing: var(--tracking-wide);
 }
 
+.team-org-tier-label {
+  align-self: center;
+  margin-bottom: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest, 0.12em);
+  text-transform: uppercase;
+  color: var(--markacy-orange);
+}
+
+.team-org-tier-label--secondary {
+  color: var(--24sa-off-white);
+  opacity: 0.7;
+  margin-top: var(--space-3);
+}
+
+/* AWS stakeholder tiles: ghosted, orange-outlined to contrast with cream SketchDeck tiles */
+.team-org-node--aws {
+  background: transparent;
+  border: 1.5px solid var(--markacy-orange);
+}
+
+.team-org-node--aws:hover {
+  border-color: var(--markacy-orange);
+  background: rgba(255, 94, 46, 0.08);
+}
+
+.team-org-node--aws .team-card-role {
+  color: var(--24sa-off-white);
+}
+
+.team-org-node--aws .team-card-desc {
+  color: var(--24sa-off-white);
+  opacity: 0.85;
+}
+
+/* Vertical connector line that bridges the AWS tier to the SketchDeck tier */
+.team-org-bridge {
+  align-self: center;
+  width: 2px;
+  height: 56px;
+  background: linear-gradient(to bottom, var(--markacy-orange) 0%, var(--markacy-orange) 50%, rgba(243, 238, 231, 0.8) 50%, rgba(243, 238, 231, 0.8) 100%);
+  margin: var(--space-3) 0;
+}
+
 .team-face-info {
   display: flex;
   flex-direction: column;
@@ -1781,6 +1827,12 @@ a:hover { color: var(--accent); }
   opacity: 0.7;
 }
 
+/* The hidden attribute must always win, even over display:flex/grid
+   set by component classes below. */
+.section-pricing [hidden] {
+  display: none !important;
+}
+
 /* - Configurator: disclaimer - */
 .pricing-disclaimer {
   font-family: var(--font-sans);
@@ -1850,6 +1902,18 @@ a:hover { color: var(--accent); }
   font-weight: var(--weight-regular);
   color: var(--muted-text-light);
   margin-top: 2px;
+}
+
+/* - Configurator: symposium count (quick mode) - */
+.pricing-symcount {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.pricing-symcount .pricing-control-label {
+  margin-bottom: 0;
 }
 
 /* - Configurator: readiness note - */
@@ -1935,6 +1999,87 @@ a:hover { color: var(--accent); }
 
 .pricing-tier-badge[hidden] {
   display: none;
+}
+
+.pricing-tier-inclusions {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-3);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.pricing-tier-inclusions li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  color: var(--muted-text-light);
+}
+
+.pricing-tier-inclusions li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  margin-top: 0.5em;
+}
+
+/* - Configurator: custom configuration panel - */
+.pricing-custom-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.pricing-custom-head svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--24sa-black);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.pricing-custom-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--24sa-black);
+}
+
+.pricing-caret {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+
+.pricing-custom-head[aria-expanded="true"] .pricing-caret {
+  transform: rotate(180deg);
+}
+
+.pricing-custom-hint {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  margin-top: var(--space-2);
+}
+
+.pricing-custom-body {
+  margin-top: var(--space-5);
 }
 
 .pricing-tier-custom-note {
@@ -2418,7 +2563,7 @@ a:hover { color: var(--accent); }
      ============================================================ -->
 <section id="hero" class="grain glow">
   <div class="hero-content">
-    <h1 class="hero-headline">Keynotes worthy of the room.</h1>
+    <h1 class="hero-headline">Keynotes worthy of AWS Events.</h1>
 
     <div class="hero-marquee-wrap" id="heroMarquee">
       <!-- Row 1: scrolls left -->
@@ -2661,6 +2806,65 @@ a:hover { color: var(--accent); }
     <h2 class="section-heading reveal">Your Team &amp; Working Model</h2>
     <p class="team-subheading reveal">Purpose-built for this account. Fluent in AWS before the first brief lands.</p>
 
+    <p class="team-label reveal">How the Model Works</p>
+    <p class="team-model-intro reveal">We operate as the connective layer between AWS stakeholders setting direction at the top and the SketchDeck team executing below.</p>
+
+    <div class="team-org reveal-stagger" style="margin-top: var(--space-6);">
+      <p class="team-org-tier-label">AWS Stakeholders</p>
+      <div class="team-org-tier team-org-tier--two">
+        <div class="team-org-node team-org-node--aws">
+          <p class="team-card-role">The 1P Program Leads</p>
+          <p class="team-card-desc">Makenzie, Sara, and the business stakeholders own the narrative, the budget, and the strategy. We turn that direction into execution and give them total visibility every step of the way.</p>
+        </div>
+        <div class="team-org-node team-org-node--aws">
+          <p class="team-card-role">The Event Speakers</p>
+          <p class="team-card-desc">AWS executives and customer voices who need their story shaped, their slides built, and their nerves handled. We work hand-to-hand with each of them.</p>
+        </div>
+      </div>
+
+      <div class="team-org-bridge" aria-hidden="true"></div>
+
+      <p class="team-org-tier-label team-org-tier-label--secondary">SketchDeck Core Project Team</p>
+      <div class="team-org-tier">
+        <div class="team-org-node">
+          <p class="team-card-role">Senior Writer / Content Strategist</p>
+          <p class="team-card-desc">Owns the AWS voice and turns frameworks into speaker-ready story. The heartbeat of this engagement.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">Project Manager</p>
+          <p class="team-card-desc">Single point of accountability across speakers, agencies, revisions, and deliverables.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">Design Director</p>
+          <p class="team-card-desc">Creative oversight, brand stewardship, and the quality bar.</p>
+        </div>
+      </div>
+      <div class="team-org-connector"></div>
+      <div class="team-org-tier team-org-tier--branched">
+        <div class="team-org-node">
+          <p class="team-card-role">Senior Designer</p>
+          <p class="team-card-desc">Deck modification and narrative-to-slide translation.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">QC Specialist</p>
+          <p class="team-card-desc">Final-pass review on every deliverable before it leaves our hands.</p>
+        </div>
+        <div class="team-org-node">
+          <p class="team-card-role">On-Site Designer</p>
+          <p class="team-card-desc">Live, backstage change support at the event.</p>
+        </div>
+      </div>
+      <div class="team-org-wide-box">200+ creatives are on call</div>
+    </div>
+
+    <p class="team-model-intro reveal" style="margin-top: var(--space-6);">Our job is to keep both sides aligned to one story, so the leads stay firmly in control and the speakers feel genuinely cared for, all the way to the stage.</p>
+
+    <div class="team-callouts reveal-stagger" style="margin-top: var(--space-8);">
+      <div class="team-callout">Trained on AWS brand and voice before the first deck begins</div>
+      <div class="team-callout">Contributors span multiple time zones for continuous workflow, and your global symposium calendar</div>
+      <div class="team-callout">We scale the model to match the work: light where you're covered, full where you're not</div>
+    </div>
+
     <p class="team-label reveal">Who's on This Partnership</p>
     <div class="team-faces-grid reveal-stagger">
       <div class="team-face-card">
@@ -2714,64 +2918,6 @@ a:hover { color: var(--accent); }
     </div>
     <p class="team-model-intro reveal" style="margin-top: var(--space-6);"><em>Plus your dedicated delivery team, assigned post-scoping.</em></p>
     <p class="team-model-intro reveal">AWS partners: Makenzie Delmotte (1P Cohort Events) · Sara Morgan (PMM, Public Sector)</p>
-
-    <p class="team-label reveal">How the Model Works</p>
-    <p class="team-model-intro reveal">We operate as the connective layer between two groups who have to move as one:</p>
-    <div class="team-org reveal-stagger" style="margin-top: var(--space-6);">
-      <div class="team-org-tier team-org-tier--two">
-        <div class="team-org-node">
-          <p class="team-card-role">The 1P Program Leads</p>
-          <p class="team-card-desc">Makenzie, Sara, and the business stakeholders own the narrative, the budget, and the strategy. We turn that direction into execution and give them total visibility every step of the way.</p>
-        </div>
-        <div class="team-org-node">
-          <p class="team-card-role">The Event Speakers</p>
-          <p class="team-card-desc">AWS executives and customer voices who need their story shaped, their slides built, and their nerves handled. We work hand-to-hand with each of them.</p>
-        </div>
-      </div>
-    </div>
-    <p class="team-model-intro reveal" style="margin-top: var(--space-6);">Our job is to keep both sides aligned to one story, so the leads stay firmly in control and the speakers feel genuinely cared for, all the way to the stage.</p>
-
-    <p class="team-label reveal">Core Project Team</p>
-    <div class="team-org reveal-stagger">
-      <!-- Top tier: three equal leadership roles -->
-      <div class="team-org-tier">
-        <div class="team-org-node">
-          <p class="team-card-role">Senior Writer / Content Strategist</p>
-          <p class="team-card-desc">Owns the AWS voice and turns frameworks into speaker-ready story. The heartbeat of this engagement.</p>
-        </div>
-        <div class="team-org-node">
-          <p class="team-card-role">Project Manager</p>
-          <p class="team-card-desc">Single point of accountability across speakers, agencies, revisions, and deliverables.</p>
-        </div>
-        <div class="team-org-node">
-          <p class="team-card-role">Design Director</p>
-          <p class="team-card-desc">Creative oversight, brand stewardship, and the quality bar.</p>
-        </div>
-      </div>
-      <div class="team-org-connector"></div>
-      <!-- Delivery tier -->
-      <div class="team-org-tier team-org-tier--branched">
-        <div class="team-org-node">
-          <p class="team-card-role">Senior Designer</p>
-          <p class="team-card-desc">Deck modification and narrative-to-slide translation.</p>
-        </div>
-        <div class="team-org-node">
-          <p class="team-card-role">QC Specialist</p>
-          <p class="team-card-desc">Final-pass review on every deliverable before it leaves our hands.</p>
-        </div>
-        <div class="team-org-node">
-          <p class="team-card-role">On-Site Designer</p>
-          <p class="team-card-desc">Live, backstage change support at the event.</p>
-        </div>
-      </div>
-      <div class="team-org-wide-box">200+ creatives are on call</div>
-    </div>
-
-    <div class="team-callouts reveal-stagger" style="margin-top: var(--space-8);">
-      <div class="team-callout">Trained on AWS brand and voice before the first deck begins</div>
-      <div class="team-callout">Contributors span multiple time zones for continuous workflow, and your global symposium calendar</div>
-      <div class="team-callout">We scale the model to match the work: light where you're covered, full where you're not</div>
-    </div>
 
     <p class="team-closing reveal">You get a dedicated team, not a shared resource pool. Everyone who touches your work knows your brand and your voice before the work begins.</p>
   </div>
@@ -2945,25 +3091,33 @@ a:hover { color: var(--accent); }
     <!-- Client-facing readiness note for the active symposium -->
     <p class="pricing-readiness" id="pricingReadiness" hidden></p>
 
+    <!-- Number of symposiums (quick estimate mode only) -->
+    <div class="pricing-symcount reveal" id="ctlSymposiumsWrap">
+      <p class="pricing-control-label">Number of symposiums</p>
+      <div class="pricing-stepper" id="ctlSymposiums">
+        <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer symposiums">&minus;</button>
+        <span class="pricing-step-value">3</span>
+        <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More symposiums">+</button>
+      </div>
+    </div>
+
     <!-- Service-level selector (built from config).
          Tiers are options that apply to any symposium; the
          recommended tier per event is a changeable default. -->
     <p class="pricing-tiers-label" id="pricingTiersLabel">Service level</p>
     <div class="pricing-tiers reveal" id="pricingTiers"></div>
 
-    <!-- Inputs -->
-    <div class="pricing-card reveal">
-      <p class="pricing-card-label" id="pricingConfigLabel">Configure</p>
+    <!-- Custom configuration: collapsed by default. Presets cover the
+         standard paths; this panel is for fine-tuning individual variables. -->
+    <div class="pricing-card reveal" id="pricingCustomCard">
+      <button type="button" class="pricing-custom-head" id="pricingCustomToggle" aria-expanded="false" aria-controls="pricingCustomBody">
+        <svg class="pricing-gear" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="pricing-custom-title" id="pricingConfigLabel">Custom configuration</span>
+        <svg class="pricing-caret" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <p class="pricing-custom-hint">Fine-tune individual variables instead of using a preset service level.</p>
+      <div class="pricing-custom-body" id="pricingCustomBody" hidden>
       <div class="pricing-controls">
-
-        <div class="pricing-control" id="ctlSymposiumsWrap">
-          <p class="pricing-control-label">Number of symposiums</p>
-          <div class="pricing-stepper" id="ctlSymposiums">
-            <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer symposiums">&minus;</button>
-            <span class="pricing-step-value">3</span>
-            <button type="button" class="pricing-step-btn" data-dir="1" aria-label="More symposiums">+</button>
-          </div>
-        </div>
 
         <div class="pricing-control">
           <p class="pricing-control-label">Slides per deck</p>
@@ -3013,6 +3167,7 @@ a:hover { color: var(--accent); }
         </div>
 
       </div>
+      </div><!-- /.pricing-custom-body -->
     </div>
 
     <!-- Live outputs -->
@@ -3516,7 +3671,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     for (var i = 0; i < C.slideBands.length; i++) if (C.slideBands[i].id === id) return C.slideBands[i];
     return C.slideBands[0];
   }
+  function depthLabel(id) {
+    for (var i = 0; i < C.depthLevels.length; i++) if (C.depthLevels[i].id === id) return C.depthLevels[i].label;
+    return id;
+  }
+  function plural(n, word) { return n + ' ' + word + (n === 1 ? '' : 's'); }
   function clamp(n, lim) { return Math.min(lim.max, Math.max(lim.min, n)); }
+
+  /* What each preset includes, derived from the config so the
+     cards never drift from the actual numbers. */
+  function presetInclusions(t) {
+    var p = t.preset;
+    return [
+      bandById(p.band).label + ' slides per deck',
+      depthLabel(p.depth),
+      plural(p.speakers, 'speaker') + ' per keynote',
+      plural(p.edits, 'round') + ' of edits',
+      plural(p.dryRuns, 'dry run') + ' managed',
+      p.onSiteDays > 0 ? plural(p.onSiteDays, 'on-site day') : 'No on-site support'
+    ];
+  }
 
   function configFromTier(tierId) {
     var p = tierById(tierId).preset;
@@ -3582,6 +3756,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     mode: C.defaults.mode,
     symposiumCount: C.defaults.symposiumCount,
     showBreakdown: C.defaults.showBreakdown,
+    customOpen: false,
     quick: configFromTier(C.defaults.quickTier),
     per: {},
     activeCity: C.symposiums[0].id
@@ -3627,7 +3802,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     card.dataset.tier = t.id;
     card.innerHTML = '<span class="pricing-tier-badge" hidden>Recommended</span>' +
                      '<p class="pricing-tier-name">' + t.label + '</p>' +
-                     '<p class="pricing-tier-tagline">' + t.tagline + '</p>';
+                     '<p class="pricing-tier-tagline">' + t.tagline + '</p>' +
+                     '<ul class="pricing-tier-inclusions">' +
+                     presetInclusions(t).map(function(item) { return '<li>' + item + '</li>'; }).join('') +
+                     '</ul>';
     tiersEl.appendChild(card);
   });
   var customNote = document.createElement('p');
@@ -3708,10 +3886,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       ? 'Custom configuration. Select a service level to reset the inputs.'
       : '';
 
-    // config label
+    // custom configuration panel
+    $('pricingCustomBody').hidden = !state.customOpen;
+    $('pricingCustomToggle').setAttribute('aria-expanded', state.customOpen ? 'true' : 'false');
     $('pricingConfigLabel').textContent = isQuick
-      ? 'Configure (applies to all symposiums)'
-      : 'Configure ' + cityLabel(state.activeCity);
+      ? 'Custom configuration (applies to all symposiums)'
+      : 'Custom configuration for ' + cityLabel(state.activeCity);
 
     // inputs
     setStepper('ctlSymposiums', state.symposiumCount, C.limits.symposiums);
@@ -3811,6 +3991,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var fresh = configFromTier(card.dataset.tier);
     if (state.mode === 'quick') state.quick = fresh;
     else state.per[state.activeCity] = fresh;
+    state.customOpen = false; // presets close the custom panel
+    render();
+  });
+
+  $('pricingCustomToggle').addEventListener('click', function() {
+    state.customOpen = !state.customOpen;
     render();
   });
 

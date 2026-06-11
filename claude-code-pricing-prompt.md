@@ -31,8 +31,10 @@ Current placeholder rates (pending confirmation, label everything "Estimate, not
 
 ## UI spec
 
-- Two modes. Quick estimate: one global service-level selector and one config applied across a symposium-count stepper (1 to 3, default 3). Per-symposium: tabs for London, Ottawa, Canberra; each event has its own service-level selector defaulting to its `recommendedTier` with a "Recommended" badge that stays on the suggestion even when another tier is selected, its own scope inputs, and its readiness note shown above the selector. Program total is the sum of the three.
-- Inputs per config: slide band (segmented), writing depth (segmented, 3 levels), speakers / edit rounds / dry runs / on-site days (steppers). Changing any input after selecting a tier marks the config Custom; selecting a tier resets inputs to its preset.
+- Two modes. Quick estimate: one global service-level selector and one config applied across a symposium-count stepper (1 to 3, default 3, displayed outside the custom panel). Per-symposium: tabs for London, Ottawa, Canberra; each event has its own service-level selector defaulting to its `recommendedTier` with a "Recommended" badge that stays on the suggestion even when another tier is selected, its own scope inputs, and its readiness note shown above the selector. Program total is the sum of the three.
+- Tier cards are presets: each shows an inclusions list (slides band, depth, speakers, edit rounds, dry runs, on-site days) DERIVED from its preset in the config via `presetInclusions()`, never hardcoded in markup.
+- Scope inputs live in a "Custom configuration" panel that is collapsed by default behind a gear icon header (`pricingCustomToggle`). Opening it and changing any input marks the config Custom; selecting a preset tier resets inputs and collapses the panel. Inputs: slide band (segmented), writing depth (segmented, 3 levels), speakers / edit rounds / dry runs / on-site days (steppers).
+- Gotcha: several configurator components set display:flex or grid, which beats the hidden attribute. The rule `.section-pricing [hidden] { display: none !important; }` must stay; without it, city tabs and the summary strip leak into Quick estimate mode.
 - Live outputs: per-deck cost, program total, and a toggleable role-by-role breakdown (role, hours, rate, amount; on-site as a flat line). Breakdown is currently shown by default (`defaults.showBreakdown`).
 - Match the existing brand exactly; reuse the existing pricing classes and tokens.
 

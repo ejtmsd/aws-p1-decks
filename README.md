@@ -55,7 +55,9 @@ How the math works, per deck:
 
 Two independent axes, deliberately decoupled: tiers (Lean / Signature / Premium) are service-level options that can apply to any event, and symposiums (London, Ottawa, Canberra) are the three events. Each symposium carries a client-facing readiness note and a `recommendedTier`, which is our suggested starting point based on readiness (the only per-event distinction the client confirmed). It is a changeable default, not an identity; any symposium can run at any service level.
 
-Two modes: Quick estimate (one global service level x number of symposiums) and Per-symposium (each event has its own service-level selector, defaulting to its recommended tier with a "Recommended" badge, plus independent scope inputs; the program total sums the three). Changing any input after selecting a tier marks the config Custom.
+Two modes: Quick estimate (one global service level x number of symposiums) and Per-symposium (each event has its own service-level selector, defaulting to its recommended tier with a "Recommended" badge, plus independent scope inputs; the program total sums the three).
+
+Tier cards are presets showing an inclusions list derived from the config (`presetInclusions()` in the configurator script). Scope inputs sit in a "Custom configuration" panel, collapsed by default behind a gear icon; changing any input there marks the config Custom, and selecting a preset tier resets the inputs and collapses the panel. Note the CSS guard `.section-pricing [hidden] { display: none !important; }`, required because component display values would otherwise override the hidden attribute.
 
 The role breakdown is shown by default (`defaults.showBreakdown: true`). Set it to `false` before sharing if hours and rates should stay private until toggled.
 
