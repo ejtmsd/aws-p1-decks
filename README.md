@@ -55,7 +55,7 @@ How the math works, per deck:
 
 Two modes: Quick estimate (one config x number of symposiums) and Per-symposium (London, Ottawa, Canberra configured independently; defaults Lean / Signature / Premium). Changing any input after selecting a tier marks the config Custom.
 
-The role breakdown is hidden by default (`defaults.showBreakdown`) so hours and rates are not exposed to the client unless toggled.
+The role breakdown is shown by default (`defaults.showBreakdown: true`). Set it to `false` before sharing if hours and rates should stay private until toggled.
 
 ## Editing tips
 

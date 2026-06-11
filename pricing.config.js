@@ -113,6 +113,6 @@ window.PRICING_CONFIG = {
     mode: 'quick',            /* 'quick' or 'per' */
     quickTier: 'signature',
     symposiumCount: 3,
-    showBreakdown: false
+    showBreakdown: true
   }
 };
