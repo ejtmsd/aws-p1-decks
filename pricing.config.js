@@ -32,12 +32,22 @@ window.PRICING_CONFIG = {
     dayRate: 3000
   },
 
-  /* Slide bands. The slide modifier uses the band's slide count. */
-  slideBands: [
-    { id: 'b20', label: 'Up to 20', slides: 20 },
-    { id: 'b35', label: 'Up to 35', slides: 35 },
-    { id: 'b50', label: 'Up to 50', slides: 50 }
+  /* Motion-enhanced slides: three levels. Cost = total slides x perSlide.
+     "Just a few" assumes motion on fewer than half the slides (blended rate);
+     "Most slides" assumes motion across the majority of the deck. */
+  motionLevels: [
+    { id: 'none', label: 'None',        rowLabel: null,                       perSlide: 0   },
+    { id: 'few',  label: 'Just a few',  rowLabel: 'Motion on a few slides',   perSlide: 75  },
+    { id: 'most', label: 'Most slides', rowLabel: 'Motion on most slides',    perSlide: 150 }
   ],
+
+  /* Slides per deck is a continuous slider. The slide modifier
+     uses the chosen slide count directly. */
+  slides: {
+    min: 5,
+    max: 150,
+    step: 1
+  },
 
   /* Writing and content depth. Each level lists its ABSOLUTE base
      hours per deck; what you see is what that level costs before
@@ -87,19 +97,19 @@ window.PRICING_CONFIG = {
       id: 'lean',
       label: 'Lean',
       tagline: 'Light copyedits, light support',
-      preset: { band: 'b20', depth: 'mods',   speakers: 3, edits: 2, dryRuns: 1, onSiteDays: 0 }
+      preset: { slides: 20, depth: 'mods',   speakers: 3, edits: 2, dryRuns: 1, onSiteDays: 0, motionLevel: 'none' }
     },
     {
       id: 'signature',
       label: 'Signature',
       tagline: 'Scripting and speaker support',
-      preset: { band: 'b35', depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteDays: 0 }
+      preset: { slides: 35, depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteDays: 0, motionLevel: 'few' }
     },
     {
       id: 'premium',
       label: 'Premium',
       tagline: 'Full narrative, full coverage',
-      preset: { band: 'b50', depth: 'full',   speakers: 5, edits: 4, dryRuns: 2, onSiteDays: 2 }
+      preset: { slides: 50, depth: 'full',   speakers: 5, edits: 4, dryRuns: 2, onSiteDays: 2, motionLevel: 'most' }
     }
   ],
 

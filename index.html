@@ -2098,7 +2098,7 @@ a:hover { color: var(--accent); }
   margin-bottom: var(--space-2);
 }
 
-/* Segmented buttons (slide bands, writing depth) */
+/* Segmented buttons (writing depth) */
 .pricing-seg {
   display: flex;
   flex-wrap: wrap;
@@ -2121,6 +2121,137 @@ a:hover { color: var(--accent); }
   background: var(--24sa-black);
   border-color: var(--24sa-black);
   color: var(--24sa-off-white);
+}
+
+/* Slide-count slider */
+.pricing-slider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 420px;
+}
+
+.pricing-slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+
+.pricing-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--24sa-black);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.pricing-slider-input::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.pricing-slider-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--24sa-black);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.pricing-slider-input::-moz-range-thumb:hover {
+  transform: scale(1.1);
+}
+
+.pricing-slider-input::-moz-range-track {
+  height: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+}
+
+.pricing-slider-value {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  color: var(--24sa-black);
+  min-width: 56px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Motion-on burst: card dances, price values pop, confetti flies. */
+@keyframes pricing-card-dance {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  15%      { transform: rotate(-1.2deg) translateY(-4px); }
+  30%      { transform: rotate(1.2deg)  translateY(-2px); }
+  45%      { transform: rotate(-0.8deg) translateY(-3px); }
+  60%      { transform: rotate(0.8deg)  translateY(-1px); }
+  80%      { transform: rotate(-0.3deg) translateY(0); }
+}
+
+.pricing-card.is-dancing {
+  animation: pricing-card-dance 720ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  transform-origin: center bottom;
+}
+
+@keyframes pricing-value-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.pricing-metric-value.is-popping {
+  animation: pricing-value-pop 550ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: left center;
+}
+
+/* Confetti */
+.pricing-confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.pricing-confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  border-radius: 1px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: pricing-confetti-fly var(--dur, 1300ms) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.pricing-confetti-piece.is-round {
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+}
+
+@keyframes pricing-confetti-fly {
+  0%   { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+  15%  { opacity: 1; }
+  45%  { transform: translate(calc(-50% + var(--tx) * 0.6), calc(-50% + var(--ty-up))) rotate(calc(var(--r) * 0.45)); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty-down))) rotate(var(--r)); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-card.is-dancing,
+  .pricing-metric-value.is-popping,
+  .pricing-confetti-piece {
+    animation: none;
+  }
+  .pricing-confetti-layer { display: none; }
 }
 
 /* Steppers */
@@ -3060,9 +3191,17 @@ a:hover { color: var(--accent); }
       <div class="pricing-custom-body" id="pricingCustomBody" hidden>
       <div class="pricing-controls">
 
-        <div class="pricing-control">
+        <div class="pricing-control pricing-control--wide">
           <p class="pricing-control-label">Slides per deck</p>
-          <div class="pricing-seg" id="ctlBand"></div>
+          <div class="pricing-slider" id="ctlSlides">
+            <input type="range" class="pricing-slider-input" id="ctlSlidesInput" aria-label="Slides per deck">
+            <span class="pricing-slider-value" id="ctlSlidesValue">0</span>
+          </div>
+        </div>
+
+        <div class="pricing-control pricing-control--wide">
+          <p class="pricing-control-label">Motion-enhanced slides</p>
+          <div class="pricing-seg" id="ctlMotion"></div>
         </div>
 
         <div class="pricing-control pricing-control--wide">
@@ -3605,13 +3744,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     for (var i = 0; i < C.tiers.length; i++) if (C.tiers[i].id === id) return C.tiers[i];
     return null;
   }
-  function bandById(id) {
-    for (var i = 0; i < C.slideBands.length; i++) if (C.slideBands[i].id === id) return C.slideBands[i];
-    return C.slideBands[0];
-  }
   function depthLabel(id) {
     for (var i = 0; i < C.depthLevels.length; i++) if (C.depthLevels[i].id === id) return C.depthLevels[i].label;
     return id;
+  }
+  function motionLevelById(id) {
+    for (var i = 0; i < C.motionLevels.length; i++) if (C.motionLevels[i].id === id) return C.motionLevels[i];
+    return C.motionLevels[0];
   }
   function plural(n, word) { return n + ' ' + word + (n === 1 ? '' : 's'); }
   function clamp(n, lim) { return Math.min(lim.max, Math.max(lim.min, n)); }
@@ -3620,13 +3759,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
      cards never drift from the actual numbers. */
   function presetInclusions(t) {
     var p = t.preset;
+    var motion = motionLevelById(p.motionLevel);
     return [
-      bandById(p.band).label + ' slides per deck',
+      p.slides + ' slides per deck',
       depthLabel(p.depth),
       plural(p.speakers, 'speaker') + ' per keynote',
       plural(p.edits, 'round') + ' of edits',
       plural(p.dryRuns, 'dry run') + ' managed',
-      p.onSiteDays > 0 ? plural(p.onSiteDays, 'on-site day') : 'No on-site support'
+      p.onSiteDays > 0 ? plural(p.onSiteDays, 'on-site day') : 'No on-site support',
+      motion.rowLabel || 'Static slides'
     ];
   }
 
@@ -3634,10 +3775,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var p = tierById(tierId).preset;
     return {
       tier: tierId,
-      band: p.band, depth: p.depth,
+      slides: p.slides, depth: p.depth,
       speakers: p.speakers, edits: p.edits, dryRuns: p.dryRuns,
-      onSiteDays: p.onSiteDays
+      onSiteDays: p.onSiteDays,
+      motionLevel: p.motionLevel || 'none'
     };
+  }
+
+  function clampSlides(n) {
+    var s = C.slides;
+    if (isNaN(n)) return s.min;
+    return Math.min(s.max, Math.max(s.min, Math.round(n)));
   }
 
   // ---- pricing engine ----
@@ -3659,7 +3807,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var m = C.modifiers;
     var h = depthHours(cfg.depth);
 
-    var extraSlides = Math.max(0, bandById(cfg.band).slides - m.slidesIncluded);
+    var extraSlides = Math.max(0, cfg.slides - m.slidesIncluded);
     h.design += extraSlides * m.designHoursPerExtraSlide;
     h.speakerMgmt += cfg.speakers * m.speakerMgmtHoursPerSpeaker;
     for (var k in m.perEditRound) h[k] += cfg.edits * m.perEditRound[k];
@@ -3684,6 +3832,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         amount: onSiteAmt
       });
       total += onSiteAmt;
+    }
+
+    var motion = motionLevelById(cfg.motionLevel);
+    if (motion.perSlide > 0) {
+      var motionAmt = cfg.slides * motion.perSlide;
+      rows.push({
+        label: motion.rowLabel || motion.label,
+        hours: null,
+        rate: '$' + motion.perSlide + '/slide x ' + cfg.slides,
+        amount: motionAmt
+      });
+      total += motionAmt;
     }
 
     return { rows: rows, total: total, totalHours: totalHours };
@@ -3714,8 +3874,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
   }
 
-  buildSeg($('ctlBand'), C.slideBands, function(x) { return x.id; }, function(x) { return x.label; });
   buildSeg($('ctlDepth'), C.depthLevels, function(x) { return x.id; }, function(x) { return x.label; });
+  buildSeg($('ctlMotion'), C.motionLevels, function(x) { return x.id; }, function(x) { return x.label; });
+
+  // Slide-count slider attributes come from config.
+  (function initSlidesSlider() {
+    var input = $('ctlSlidesInput');
+    input.min = C.slides.min;
+    input.max = C.slides.max;
+    input.step = C.slides.step;
+  })();
 
   var tiersEl = $('pricingTiers');
   tiersEl.innerHTML = '';
@@ -3770,8 +3938,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     // inputs
     setStepper('ctlSymposiums', state.symposiumCount, C.limits.symposiums);
-    setSegActive($('ctlBand'), cfg.band);
+    $('ctlSlidesInput').value = cfg.slides;
+    $('ctlSlidesValue').textContent = cfg.slides;
     setSegActive($('ctlDepth'), cfg.depth);
+    setSegActive($('ctlMotion'), cfg.motionLevel);
     setStepper('ctlSpeakers', cfg.speakers, C.limits.speakers);
     setStepper('ctlEdits', cfg.edits, C.limits.edits);
     setStepper('ctlDryRuns', cfg.dryRuns, C.limits.dryRuns);
@@ -3857,11 +4027,85 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var cfg = activeCfg(); cfg.onSiteDays = clamp(cfg.onSiteDays + dir, lim); markCustom(cfg);
   });
 
-  $('ctlBand').addEventListener('click', function(e) {
+  $('ctlSlidesInput').addEventListener('input', function(e) {
+    var cfg = activeCfg();
+    cfg.slides = clampSlides(parseInt(e.target.value, 10));
+    markCustom(cfg);
+    render();
+  });
+
+  function retriggerAnim(el, cls) {
+    if (!el) return;
+    el.classList.remove(cls);
+    void el.offsetWidth; // force reflow so animation restarts on rapid re-toggles
+    el.classList.add(cls);
+    el.addEventListener('animationend', function handler() {
+      el.classList.remove(cls);
+      el.removeEventListener('animationend', handler);
+    });
+  }
+
+  function launchConfetti(originEl) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var rect = originEl.getBoundingClientRect();
+    var originX = rect.left + rect.width / 2;
+    var originY = rect.top + rect.height / 2;
+
+    var layer = document.createElement('div');
+    layer.className = 'pricing-confetti-layer';
+    document.body.appendChild(layer);
+
+    var palette = ['#FF9900', '#FFB84D', '#232F3E', '#FF6B35', '#F5C26B', '#000000'];
+    var count = 42;
+    var maxDur = 0;
+
+    for (var i = 0; i < count; i++) {
+      var piece = document.createElement('span');
+      piece.className = 'pricing-confetti-piece';
+      if (Math.random() < 0.35) piece.classList.add('is-round');
+
+      var angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+      var distance = 160 + Math.random() * 220;
+      var tx = Math.cos(angle) * distance;
+      var tyUp = -100 - Math.random() * 140;
+      var tyDown = 260 + Math.random() * 240;
+      var rot = (Math.random() < 0.5 ? -1 : 1) * (360 + Math.random() * 720);
+      var dur = 1100 + Math.random() * 600;
+      if (dur > maxDur) maxDur = dur;
+
+      piece.style.left = originX + 'px';
+      piece.style.top = originY + 'px';
+      piece.style.background = palette[Math.floor(Math.random() * palette.length)];
+      piece.style.setProperty('--tx', tx + 'px');
+      piece.style.setProperty('--ty-up', tyUp + 'px');
+      piece.style.setProperty('--ty-down', tyDown + 'px');
+      piece.style.setProperty('--r', rot + 'deg');
+      piece.style.setProperty('--dur', dur + 'ms');
+
+      layer.appendChild(piece);
+    }
+
+    setTimeout(function() { layer.remove(); }, maxDur + 200);
+  }
+
+  function playMotionBurst(originEl) {
+    retriggerAnim($('pricingCustomCard'), 'is-dancing');
+    [$('pricingPerDeck'), $('pricingProgramTotal')].forEach(function(el) {
+      retriggerAnim(el, 'is-popping');
+    });
+    launchConfetti(originEl || $('ctlMotion'));
+  }
+
+  $('ctlMotion').addEventListener('click', function(e) {
     var btn = e.target.closest('.pricing-seg-btn');
     if (!btn) return;
-    var cfg = activeCfg(); cfg.band = btn.dataset.value; markCustom(cfg);
+    var cfg = activeCfg();
+    var prev = cfg.motionLevel;
+    cfg.motionLevel = btn.dataset.value;
+    if (prev === cfg.motionLevel) return;
+    markCustom(cfg);
     render();
+    if (prev === 'none' && cfg.motionLevel !== 'none') playMotionBurst(btn);
   });
 
   $('ctlDepth').addEventListener('click', function(e) {
