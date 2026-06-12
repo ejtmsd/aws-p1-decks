@@ -1900,35 +1900,7 @@ a:hover { color: var(--accent); }
   margin-bottom: var(--space-8);
 }
 
-/* - Configurator: mode toggle - */
-.pricing-mode-toggle {
-  display: inline-flex;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: var(--radius-pill, 9999px);
-  padding: 3px;
-  gap: 3px;
-  background: rgba(0, 0, 0, 0.03);
-}
-
-.pricing-mode-btn {
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--24sa-black);
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-pill, 9999px);
-  padding: var(--space-2) var(--space-5);
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.pricing-mode-btn.is-active {
-  background: var(--24sa-black);
-  color: var(--24sa-off-white);
-}
-
-/* - Configurator: symposium count (quick mode) - */
+/* - Configurator: symposium count - */
 .pricing-symcount {
   display: flex;
   align-items: center;
@@ -1938,16 +1910,6 @@ a:hover { color: var(--accent); }
 
 .pricing-symcount .pricing-control-label {
   margin-bottom: 0;
-}
-
-/* - Configurator: readiness note - */
-.pricing-readiness {
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  line-height: var(--leading-relaxed);
-  color: var(--muted-text-light);
-  margin-top: var(--space-4);
-  max-width: 640px;
 }
 
 /* - Configurator: service-level selector - */
@@ -3070,18 +3032,8 @@ a:hover { color: var(--accent); }
     <h2 class="section-heading reveal">Pricing Estimate</h2>
     <p class="pricing-disclaimer reveal">Estimate, not a quote. Configure each variable to see how the investment flexes.</p>
 
-    <!-- Mode toggle: one config across all symposiums, or per-symposium -->
-    <div class="pricing-mode-toggle reveal" id="pricingModeToggle">
-      <button type="button" class="pricing-mode-btn" data-mode="quick">Multi-event program</button>
-      <button type="button" class="pricing-mode-btn" data-mode="per">Per-symposium</button>
-    </div>
-
-
-    <!-- Client-facing readiness note for the active symposium -->
-    <p class="pricing-readiness" id="pricingReadiness" hidden></p>
-
-    <!-- Number of symposiums (quick estimate mode only) -->
-    <div class="pricing-symcount reveal" id="ctlSymposiumsWrap">
+    <!-- Number of symposiums -->
+    <div class="pricing-symcount reveal">
       <p class="pricing-control-label">Number of symposiums</p>
       <div class="pricing-stepper" id="ctlSymposiums">
         <button type="button" class="pricing-step-btn" data-dir="-1" aria-label="Fewer symposiums">&minus;</button>
@@ -3739,23 +3691,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
   // ---- state ----
   var state = {
-    mode: C.defaults.mode,
     symposiumCount: C.defaults.symposiumCount,
     showBreakdown: C.defaults.showBreakdown,
     customOpen: false,
-    quick: configFromTier(C.defaults.quickTier),
-    per: {},
-    activeCity: C.symposiums[0].id
+    quick: configFromTier(C.defaults.quickTier)
   };
-  C.symposiums.forEach(function(s) { state.per[s.id] = configFromTier(s.recommendedTier); });
 
   function activeCfg() {
-    return state.mode === 'quick' ? state.quick : state.per[state.activeCity];
-  }
-
-  function symposiumById(id) {
-    for (var i = 0; i < C.symposiums.length; i++) if (C.symposiums[i].id === id) return C.symposiums[i];
-    return null;
+    return state.quick;
   }
 
   // ---- build static option groups from config ----
@@ -3811,24 +3754,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var cfg = activeCfg();
     var deck = calcDeck(cfg);
 
-    // mode toggle
-    $('pricingModeToggle').querySelectorAll('.pricing-mode-btn').forEach(function(b) {
-      b.classList.toggle('is-active', b.dataset.mode === state.mode);
-    });
-
-    var isQuick = state.mode === 'quick';
-    $('ctlSymposiumsWrap').style.display = isQuick ? '' : 'none';
-
-    // readiness note for the active symposium (per-symposium mode only)
-    var readinessEl = $('pricingReadiness');
-    if (isQuick) {
-      readinessEl.hidden = true;
-    } else {
-      var sym = symposiumById(state.activeCity);
-      readinessEl.hidden = !(sym && sym.readiness);
-      if (sym && sym.readiness) readinessEl.textContent = sym.readiness;
-    }
-
     // service-level selector. Tiers are independent options; the
     tiersEl.querySelectorAll('.pricing-tier-card').forEach(function(card) {
       card.classList.toggle('is-active', card.dataset.tier === cfg.tier);
@@ -3856,19 +3781,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     // Program totals sum the ROUNDED per-deck figures so the visible
     // math always adds up for the client.
     var perDeckDisp = roundDisp(deck.total);
-    var programTotal, programSub;
-    if (isQuick) {
-      programTotal = perDeckDisp * state.symposiumCount;
-      programSub = state.symposiumCount + (state.symposiumCount === 1 ? ' symposium' : ' symposiums') + ' x ' + fmt(perDeckDisp);
-    } else {
-      programTotal = 0;
-      var parts = [];
-      C.symposiums.forEach(function(s) {
-        programTotal += roundDisp(calcDeck(state.per[s.id]).total);
-        parts.push(fmt(roundDisp(calcDeck(state.per[s.id]).total)));
-      });
-      programSub = parts.join(' + ');
-    }
+    var programTotal = perDeckDisp * state.symposiumCount;
+    var programSub = state.symposiumCount + (state.symposiumCount === 1 ? ' symposium' : ' symposiums') + ' x ' + fmt(perDeckDisp);
     $('pricingPerDeckLabel').textContent = 'Per deck';
 
     $('pricingPerDeck').textContent = fmt(perDeckDisp);
@@ -3903,19 +3817,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   }
 
   // ---- events ----
-  $('pricingModeToggle').addEventListener('click', function(e) {
-    var btn = e.target.closest('.pricing-mode-btn');
-    if (!btn) return;
-    state.mode = btn.dataset.mode;
-    render();
-  });
-
   tiersEl.addEventListener('click', function(e) {
     var card = e.target.closest('.pricing-tier-card');
     if (!card) return;
-    var fresh = configFromTier(card.dataset.tier);
-    if (state.mode === 'quick') state.quick = fresh;
-    else state.per[state.activeCity] = fresh;
+    state.quick = configFromTier(card.dataset.tier);
     state.customOpen = false; // presets close the custom panel
     render();
   });

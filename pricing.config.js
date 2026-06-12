@@ -103,35 +103,8 @@ window.PRICING_CONFIG = {
     }
   ],
 
-  /* The three events. Confirmed facts: the events exist and sit at
-     different readiness levels (the only per-event distinction the
-     client gave us). recommendedTier is OUR suggested starting
-     point based on readiness; it is a changeable default, not an
-     identity. Any symposium can run at any service level. */
-  symposiums: [
-    {
-      id: 'london',
-      label: 'Symposium 1',
-      readiness: 'Content is already written. We recommend starting light: modification and polish of the existing deck.',
-      recommendedTier: 'lean'
-    },
-    {
-      id: 'ottawa',
-      label: 'Symposium 2',
-      readiness: 'An owner is in place, but the story still needs writing. We recommend starting with scripting-level support.',
-      recommendedTier: 'signature'
-    },
-    {
-      id: 'canberra',
-      label: 'Symposium 3',
-      readiness: 'Starting from scratch. We recommend a full narrative build with the deepest coverage.',
-      recommendedTier: 'premium'
-    }
-  ],
-
   /* Initial UI state. */
   defaults: {
-    mode: 'quick',            /* 'quick' or 'per' */
     quickTier: 'signature',
     symposiumCount: 3,
     showBreakdown: true
