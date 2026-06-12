@@ -996,6 +996,20 @@ a:hover { color: var(--accent); }
   margin-bottom: var(--space-2);
 }
 
+.team-card-badge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs, 0.65rem);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest, 0.12em);
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill, 999px);
+  padding: 2px 8px;
+  margin-bottom: var(--space-2);
+}
+
 .team-card-desc {
   font-family: var(--font-sans);
   font-size: var(--text-sm);
@@ -1132,12 +1146,11 @@ a:hover { color: var(--accent); }
 .team-closing {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   line-height: var(--leading-snug);
   color: var(--24sa-off-white);
-  margin-top: var(--space-12);
-  padding-top: var(--space-8);
-  border-top: 1px solid var(--warm-border);
+  max-width: 720px;
+  margin-top: var(--space-6);
 }
 
 /* - On-call face cards - */
@@ -1349,7 +1362,7 @@ a:hover { color: var(--accent); }
   justify-content: center;
   overflow: hidden;
   position: relative;
-  margin-top: 26rem;
+  margin-top: 40rem;
 }
 
 .platform-video-label {
@@ -2892,6 +2905,7 @@ a:hover { color: var(--accent); }
           <p class="team-card-desc">Final-pass review on every deliverable before it leaves our hands.</p>
         </div>
         <div class="team-org-node">
+          <span class="team-card-badge">Optional</span>
           <p class="team-card-role">On-Site Designer</p>
           <p class="team-card-desc">Live, backstage change support at the event.</p>
         </div>
@@ -2950,7 +2964,7 @@ a:hover { color: var(--accent); }
         </div>
       </div>
       <div class="team-face-card">
-        <div class="team-face-avatar team-face-avatar--placeholder" aria-hidden="true">JK</div>
+        <img src="headshots/Jasmin.jpg" alt="Jasmin Khatkar" class="team-face-avatar">
         <div class="team-face-info">
           <p class="team-face-name">Jasmin Khatkar</p>
           <p class="team-face-title">Project Manager</p>

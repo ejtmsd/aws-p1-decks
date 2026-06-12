@@ -18,7 +18,7 @@ window.PRICING_CONFIG = {
   /* Hourly rates per role. Order here controls row order in
      the breakdown table. */
   roles: [
-    { key: 'writing',     label: 'Content Strategy / Writing', rate: 200 },
+    { key: 'writing',     label: 'Content Strategy / Writing', rate: 250 },
     { key: 'speakerMgmt', label: 'Speaker Management',         rate: 150 },
     { key: 'design',      label: 'Design',                     rate: 150 },
     { key: 'designDir',   label: 'Design Direction',           rate: 200 },
@@ -29,7 +29,7 @@ window.PRICING_CONFIG = {
   /* On-site support is a flat day rate, not hourly. */
   onSite: {
     label: 'On-Site Support',
-    dayRate: 3500
+    dayRate: 3000
   },
 
   /* Slide bands. The slide modifier uses the band's slide count. */
@@ -46,12 +46,12 @@ window.PRICING_CONFIG = {
     {
       id: 'mods',
       label: 'Light copyedits only',
-      hours: { writing: 4,  speakerMgmt: 2,  design: 20, designDir: 3, pm: 6,  qc: 5 }
+      hours: { writing: 6,  speakerMgmt: 2,  design: 20, designDir: 3, pm: 6,  qc: 5 }
     },
     {
       id: 'script',
       label: 'Scripting from framework',
-      hours: { writing: 20, speakerMgmt: 8,  design: 20, designDir: 3, pm: 8,  qc: 6 }
+      hours: { writing: 24, speakerMgmt: 8,  design: 20, designDir: 3, pm: 8,  qc: 6 }
     },
     {
       id: 'full',
