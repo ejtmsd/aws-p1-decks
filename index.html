@@ -1928,40 +1928,6 @@ a:hover { color: var(--accent); }
   color: var(--24sa-off-white);
 }
 
-/* - Configurator: symposium tabs - */
-.pricing-city-tabs {
-  display: flex;
-  gap: var(--space-6);
-  margin-top: var(--space-6);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.pricing-city-tab {
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--muted-text-light);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  padding: var(--space-2) 0 var(--space-3);
-  cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.pricing-city-tab.is-active {
-  color: var(--24sa-black);
-  border-bottom-color: var(--24sa-black);
-}
-
-.pricing-city-tab-cost {
-  display: block;
-  font-size: var(--text-xs);
-  font-weight: var(--weight-regular);
-  color: var(--muted-text-light);
-  margin-top: 2px;
-}
-
 /* - Configurator: symposium count (quick mode) - */
 .pricing-symcount {
   display: flex;
@@ -2245,44 +2211,6 @@ a:hover { color: var(--accent); }
   color: var(--muted-text-light);
   margin-top: var(--space-2);
   opacity: 0.7;
-}
-
-/* - Configurator: per-symposium summary strip - */
-.pricing-city-summary {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-  margin-top: var(--space-3);
-}
-
-@media (max-width: 640px) {
-  .pricing-city-summary {
-    grid-template-columns: 1fr;
-  }
-}
-
-.pricing-city-summary-item {
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3) var(--space-4);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  color: var(--24sa-black);
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-2);
-}
-
-.pricing-city-summary-item .city-tier {
-  font-size: var(--text-xs);
-  color: var(--muted-text-light);
-}
-
-.pricing-city-summary-item .city-cost {
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
 }
 
 /* - Configurator: breakdown toggle and footnotes - */
@@ -3148,8 +3076,6 @@ a:hover { color: var(--accent); }
       <button type="button" class="pricing-mode-btn" data-mode="per">Per-symposium</button>
     </div>
 
-    <!-- Symposium tabs (per-symposium mode only, built from config) -->
-    <div class="pricing-city-tabs" id="pricingCityTabs" hidden></div>
 
     <!-- Client-facing readiness note for the active symposium -->
     <p class="pricing-readiness" id="pricingReadiness" hidden></p>
@@ -3246,9 +3172,6 @@ a:hover { color: var(--accent); }
         <p class="pricing-metric-sub" id="pricingProgramSub"></p>
       </div>
     </div>
-
-    <!-- Per-symposium summary strip (per-symposium mode only) -->
-    <div class="pricing-city-summary" id="pricingCitySummary" hidden></div>
 
     <!-- Role breakdown, toggleable so hours and rates stay private when needed -->
     <div class="pricing-breakdown-row reveal">
@@ -3835,11 +3758,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     return null;
   }
 
-  function cityLabel(id) {
-    var s = symposiumById(id);
-    return s ? s.label : id;
-  }
-
   // ---- build static option groups from config ----
   function buildSeg(el, items, getId, getLabel) {
     el.innerHTML = '';
@@ -3875,17 +3793,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   customNote.id = 'pricingCustomNote';
   tiersEl.appendChild(customNote);
 
-  var tabsEl = $('pricingCityTabs');
-  tabsEl.innerHTML = '';
-  C.symposiums.forEach(function(s) {
-    var tab = document.createElement('button');
-    tab.type = 'button';
-    tab.className = 'pricing-city-tab';
-    tab.dataset.city = s.id;
-    tab.innerHTML = s.label + '<span class="pricing-city-tab-cost" data-cost></span>';
-    tabsEl.appendChild(tab);
-  });
-
   // ---- render ----
   function setSegActive(el, value) {
     el.querySelectorAll('.pricing-seg-btn').forEach(function(b) {
@@ -3910,18 +3817,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 
     var isQuick = state.mode === 'quick';
-    tabsEl.hidden = isQuick;
     $('ctlSymposiumsWrap').style.display = isQuick ? '' : 'none';
-    $('pricingCitySummary').hidden = isQuick;
-
-    // city tabs
-    if (!isQuick) {
-      tabsEl.querySelectorAll('.pricing-city-tab').forEach(function(tab) {
-        tab.classList.toggle('is-active', tab.dataset.city === state.activeCity);
-        var cost = calcDeck(state.per[tab.dataset.city]).total;
-        tab.querySelector('[data-cost]').textContent = fmt(roundDisp(cost));
-      });
-    }
 
     // readiness note for the active symposium (per-symposium mode only)
     var readinessEl = $('pricingReadiness');
@@ -3937,9 +3833,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     tiersEl.querySelectorAll('.pricing-tier-card').forEach(function(card) {
       card.classList.toggle('is-active', card.dataset.tier === cfg.tier);
     });
-    $('pricingTiersLabel').textContent = isQuick
-      ? 'Service level (applies to all symposiums)'
-      : 'Service level for ' + cityLabel(state.activeCity);
+    $('pricingTiersLabel').textContent = 'Service level';
     $('pricingCustomNote').textContent = cfg.tier === 'custom'
       ? 'Custom configuration. Select a service level to reset the inputs.'
       : '';
@@ -3947,9 +3841,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     // custom configuration panel
     $('pricingCustomBody').hidden = !state.customOpen;
     $('pricingCustomToggle').setAttribute('aria-expanded', state.customOpen ? 'true' : 'false');
-    $('pricingConfigLabel').textContent = isQuick
-      ? 'Custom configuration (applies to all symposiums)'
-      : 'Custom configuration for ' + cityLabel(state.activeCity);
+    $('pricingConfigLabel').textContent = 'Custom configuration';
 
     // inputs
     setStepper('ctlSymposiums', state.symposiumCount, C.limits.symposiums);
@@ -3968,46 +3860,28 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (isQuick) {
       programTotal = perDeckDisp * state.symposiumCount;
       programSub = state.symposiumCount + (state.symposiumCount === 1 ? ' symposium' : ' symposiums') + ' x ' + fmt(perDeckDisp);
-      $('pricingPerDeckLabel').textContent = 'Per deck';
     } else {
       programTotal = 0;
       var parts = [];
       C.symposiums.forEach(function(s) {
         programTotal += roundDisp(calcDeck(state.per[s.id]).total);
-        parts.push(s.label);
+        parts.push(fmt(roundDisp(calcDeck(state.per[s.id]).total)));
       });
       programSub = parts.join(' + ');
-      $('pricingPerDeckLabel').textContent = 'Per deck · ' + cityLabel(state.activeCity);
     }
+    $('pricingPerDeckLabel').textContent = 'Per deck';
 
     $('pricingPerDeck').textContent = fmt(perDeckDisp);
     $('pricingPerDeckSub').textContent = fmtHours(deck.totalHours) + ' role hours' + (cfg.onSiteDays > 0 ? ' + on-site' : '');
     $('pricingProgramTotal').textContent = fmt(programTotal);
     $('pricingProgramSub').textContent = programSub;
 
-    // per-symposium summary strip
-    if (!isQuick) {
-      var strip = $('pricingCitySummary');
-      strip.innerHTML = '';
-      C.symposiums.forEach(function(s) {
-        var sCfg = state.per[s.id];
-        var sTier = sCfg.tier === 'custom' ? 'Custom' : tierById(sCfg.tier).label;
-        var item = document.createElement('div');
-        item.className = 'pricing-city-summary-item';
-        item.innerHTML = '<span>' + s.label + ' <span class="city-tier">Service level: ' + sTier + '</span></span>' +
-                         '<span class="city-cost">' + fmt(roundDisp(calcDeck(sCfg).total)) + '</span>';
-        strip.appendChild(item);
-      });
-    }
-
     // breakdown
     $('pricingBreakdownCard').hidden = !state.showBreakdown;
     $('pricingBreakdownToggle').textContent = state.showBreakdown ? 'Hide role breakdown' : 'Show role breakdown';
     $('pricingBreakdownToggle').setAttribute('aria-expanded', state.showBreakdown ? 'true' : 'false');
     if (state.showBreakdown) {
-      $('pricingBreakdownLabel').textContent = isQuick
-        ? 'Role breakdown, per deck'
-        : 'Role breakdown, per deck · ' + cityLabel(state.activeCity);
+      $('pricingBreakdownLabel').textContent = 'Role breakdown, per deck';
       var body = $('pricingBreakdownBody');
       body.innerHTML = '';
       deck.rows.forEach(function(r) {
@@ -4033,13 +3907,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var btn = e.target.closest('.pricing-mode-btn');
     if (!btn) return;
     state.mode = btn.dataset.mode;
-    render();
-  });
-
-  tabsEl.addEventListener('click', function(e) {
-    var tab = e.target.closest('.pricing-city-tab');
-    if (!tab) return;
-    state.activeCity = tab.dataset.city;
     render();
   });
 
