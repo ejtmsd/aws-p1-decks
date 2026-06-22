@@ -49,7 +49,7 @@ Approved copy source: `AWS_1P_Symposiums_Proposal_Content_v1.md`.
 How the math works, per deck:
 
 1. Writing depth sets absolute base hours per level (what you see in the config is what that level costs before modifiers).
-2. Modifiers add hours: extra slides above 20 add design hours, speakers add speaker management, edit rounds add design and writing, dry runs add PM and writing.
+2. Modifiers add hours: design slides above 20 add design hours and scripting slides above 20 add writing hours (scaled by depth via `writingHoursPerExtraSlide.byDepth`), speakers add speaker management, edit rounds add design and writing, dry runs add PM and writing. Design slides and scripting slides are independent inputs.
 3. Cost = sum of role hours x rates, plus flat on-site day rate x days (0 days = no on-site).
 4. Headline figures round UP to the nearest $100 (`roundUpTo` in config); the role breakdown table shows exact math. Program totals sum the rounded per-deck figures so visible math adds up.
 

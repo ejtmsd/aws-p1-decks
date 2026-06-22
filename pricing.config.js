@@ -41,8 +41,10 @@ window.PRICING_CONFIG = {
     { id: 'most', label: 'Most slides', rowLabel: 'Motion on most slides',    perSlide: 150 }
   ],
 
-  /* Slides per deck is a continuous slider. The slide modifier
-     uses the chosen slide count directly. */
+  /* Slider bounds shared by both slide inputs (Design slides and
+     Scripting slides). Each input scrolls independently within these
+     bounds; design slides drive design hours, scripting slides drive
+     writing hours. */
   slides: {
     min: 5,
     max: 150,
@@ -72,8 +74,12 @@ window.PRICING_CONFIG = {
 
   /* Modifiers added on top of the depth-level base hours. */
   modifiers: {
-    slidesIncluded: 20,                 /* slides above this add design hours */
-    designHoursPerExtraSlide: 0.6,
+    slidesIncluded: 20,                 /* slides above this add design AND writing hours */
+    designHoursPerExtraSlide: 0.6,      /* per design slide above slidesIncluded */
+    /* Writing hours per scripting slide above slidesIncluded, indexed
+       by writing depth: Light copyedits, Scripting, Full narrative.
+       Light copyedits do not scale with slide count. */
+    writingHoursPerExtraSlide: { byDepth: [0, 0.5, 0.75] },
     speakerMgmtHoursPerSpeaker: 3,
     perEditRound: { design: 4, writing: 2 },
     perDryRun:    { pm: 4, writing: 3 }
@@ -97,19 +103,19 @@ window.PRICING_CONFIG = {
       id: 'lean',
       label: 'Lean',
       tagline: 'Light copyedits, light support',
-      preset: { slides: 20, depth: 'mods',   speakers: 3, edits: 2, dryRuns: 1, onSiteDays: 0, motionLevel: 'none' }
+      preset: { designSlides: 20, scriptSlides: 20, depth: 'mods',   speakers: 3, edits: 2, dryRuns: 1, onSiteDays: 0, motionLevel: 'none' }
     },
     {
       id: 'signature',
       label: 'Signature',
       tagline: 'Scripting and speaker support',
-      preset: { slides: 35, depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteDays: 0, motionLevel: 'few' }
+      preset: { designSlides: 35, scriptSlides: 35, depth: 'script', speakers: 4, edits: 3, dryRuns: 2, onSiteDays: 0, motionLevel: 'few' }
     },
     {
       id: 'premium',
       label: 'Premium',
       tagline: 'Full narrative, full coverage',
-      preset: { slides: 50, depth: 'full',   speakers: 5, edits: 4, dryRuns: 2, onSiteDays: 2, motionLevel: 'most' }
+      preset: { designSlides: 50, scriptSlides: 50, depth: 'full',   speakers: 5, edits: 4, dryRuns: 2, onSiteDays: 2, motionLevel: 'most' }
     }
   ],
 

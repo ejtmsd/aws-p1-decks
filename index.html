@@ -3192,10 +3192,18 @@ a:hover { color: var(--accent); }
       <div class="pricing-controls">
 
         <div class="pricing-control pricing-control--wide">
-          <p class="pricing-control-label">Slides per deck</p>
-          <div class="pricing-slider" id="ctlSlides">
-            <input type="range" class="pricing-slider-input" id="ctlSlidesInput" aria-label="Slides per deck">
-            <span class="pricing-slider-value" id="ctlSlidesValue">0</span>
+          <p class="pricing-control-label">Design slides</p>
+          <div class="pricing-slider" id="ctlDesignSlides">
+            <input type="range" class="pricing-slider-input" id="ctlDesignSlidesInput" aria-label="Design slides">
+            <span class="pricing-slider-value" id="ctlDesignSlidesValue">0</span>
+          </div>
+        </div>
+
+        <div class="pricing-control pricing-control--wide">
+          <p class="pricing-control-label">Scripting slides</p>
+          <div class="pricing-slider" id="ctlScriptSlides">
+            <input type="range" class="pricing-slider-input" id="ctlScriptSlidesInput" aria-label="Scripting slides">
+            <span class="pricing-slider-value" id="ctlScriptSlidesValue">0</span>
           </div>
         </div>
 
@@ -3761,7 +3769,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var p = t.preset;
     var motion = motionLevelById(p.motionLevel);
     return [
-      p.slides + ' slides per deck',
+      p.designSlides + ' design slides',
+      p.scriptSlides + ' scripting slides',
       depthLabel(p.depth),
       plural(p.speakers, 'speaker') + ' per keynote',
       plural(p.edits, 'round') + ' of edits',
@@ -3775,7 +3784,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var p = tierById(tierId).preset;
     return {
       tier: tierId,
-      slides: p.slides, depth: p.depth,
+      designSlides: p.designSlides, scriptSlides: p.scriptSlides, depth: p.depth,
       speakers: p.speakers, edits: p.edits, dryRuns: p.dryRuns,
       onSiteDays: p.onSiteDays,
       motionLevel: p.motionLevel || 'none'
@@ -3803,12 +3812,28 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     return h;
   }
 
+  // Position of a depth level in the config order. Drives the
+  // depth-indexed writing-per-slide modifier (byDepth).
+  function depthIndex(depthId) {
+    for (var i = 0; i < C.depthLevels.length; i++) {
+      if (C.depthLevels[i].id === depthId) return i;
+    }
+    return 0;
+  }
+
   function calcDeck(cfg) {
     var m = C.modifiers;
     var h = depthHours(cfg.depth);
+    var d = depthIndex(cfg.depth);
 
-    var extraSlides = Math.max(0, cfg.slides - m.slidesIncluded);
-    h.design += extraSlides * m.designHoursPerExtraSlide;
+    // Design slides drive design hours; scripting slides drive writing
+    // hours. Both share the same inclusion threshold (slidesIncluded).
+    var extraDesignSlides = Math.max(0, cfg.designSlides - m.slidesIncluded);
+    var extraScriptSlides = Math.max(0, cfg.scriptSlides - m.slidesIncluded);
+    var writingPerSlide = m.writingHoursPerExtraSlide.byDepth[d] || 0;
+
+    h.design += extraDesignSlides * m.designHoursPerExtraSlide;
+    h.writing += extraScriptSlides * writingPerSlide;
     h.speakerMgmt += cfg.speakers * m.speakerMgmtHoursPerSpeaker;
     for (var k in m.perEditRound) h[k] += cfg.edits * m.perEditRound[k];
     for (var k2 in m.perDryRun) h[k2] += cfg.dryRuns * m.perDryRun[k2];
@@ -3836,11 +3861,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     var motion = motionLevelById(cfg.motionLevel);
     if (motion.perSlide > 0) {
-      var motionAmt = cfg.slides * motion.perSlide;
+      var motionAmt = cfg.designSlides * motion.perSlide;
       rows.push({
         label: motion.rowLabel || motion.label,
         hours: null,
-        rate: '$' + motion.perSlide + '/slide x ' + cfg.slides,
+        rate: '$' + motion.perSlide + '/slide x ' + cfg.designSlides,
         amount: motionAmt
       });
       total += motionAmt;
@@ -3877,12 +3902,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   buildSeg($('ctlDepth'), C.depthLevels, function(x) { return x.id; }, function(x) { return x.label; });
   buildSeg($('ctlMotion'), C.motionLevels, function(x) { return x.id; }, function(x) { return x.label; });
 
-  // Slide-count slider attributes come from config.
-  (function initSlidesSlider() {
-    var input = $('ctlSlidesInput');
-    input.min = C.slides.min;
-    input.max = C.slides.max;
-    input.step = C.slides.step;
+  // Both slide sliders share the same bounds from config.
+  (function initSlidesSliders() {
+    ['ctlDesignSlidesInput', 'ctlScriptSlidesInput'].forEach(function(id) {
+      var input = $(id);
+      input.min = C.slides.min;
+      input.max = C.slides.max;
+      input.step = C.slides.step;
+    });
   })();
 
   var tiersEl = $('pricingTiers');
@@ -3938,8 +3965,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     // inputs
     setStepper('ctlSymposiums', state.symposiumCount, C.limits.symposiums);
-    $('ctlSlidesInput').value = cfg.slides;
-    $('ctlSlidesValue').textContent = cfg.slides;
+    $('ctlDesignSlidesInput').value = cfg.designSlides;
+    $('ctlDesignSlidesValue').textContent = cfg.designSlides;
+    $('ctlScriptSlidesInput').value = cfg.scriptSlides;
+    $('ctlScriptSlidesValue').textContent = cfg.scriptSlides;
     setSegActive($('ctlDepth'), cfg.depth);
     setSegActive($('ctlMotion'), cfg.motionLevel);
     setStepper('ctlSpeakers', cfg.speakers, C.limits.speakers);
@@ -4027,9 +4056,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     var cfg = activeCfg(); cfg.onSiteDays = clamp(cfg.onSiteDays + dir, lim); markCustom(cfg);
   });
 
-  $('ctlSlidesInput').addEventListener('input', function(e) {
+  $('ctlDesignSlidesInput').addEventListener('input', function(e) {
     var cfg = activeCfg();
-    cfg.slides = clampSlides(parseInt(e.target.value, 10));
+    cfg.designSlides = clampSlides(parseInt(e.target.value, 10));
+    markCustom(cfg);
+    render();
+  });
+
+  $('ctlScriptSlidesInput').addEventListener('input', function(e) {
+    var cfg = activeCfg();
+    cfg.scriptSlides = clampSlides(parseInt(e.target.value, 10));
     markCustom(cfg);
     render();
   });
